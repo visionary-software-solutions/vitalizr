@@ -1,7 +1,7 @@
-package visionarysoftwaresolutions.vitalizr.weight;
+package software.visionary.vitalizr.weight;
 
-import visionarysoftwaresolutions.vitalizr.api.Scalable;
-import visionarysoftwaresolutions.vitalizr.api.Unit;
+import software.visionary.vitalizr.api.Scalable;
+import software.visionary.vitalizr.api.Unit;
 
 import java.time.Instant;
 import java.util.Objects;

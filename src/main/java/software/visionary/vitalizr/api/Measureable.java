@@ -1,4 +1,4 @@
-package visionarysoftwaresolutions.vitalizr.api;
+package software.visionary.vitalizr.api;
 
 import java.time.Instant;
 

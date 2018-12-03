@@ -1,9 +1,9 @@
-package visionarysoftwaresolutions.vitalizr.weight;
+package software.visionary.vitalizr.weight;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import visionarysoftwaresolutions.vitalizr.api.Unit;
+import software.visionary.vitalizr.api.Unit;
 
 import java.time.Instant;
 import java.util.concurrent.ThreadLocalRandom;

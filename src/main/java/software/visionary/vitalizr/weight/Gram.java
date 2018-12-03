@@ -1,6 +1,6 @@
-package visionarysoftwaresolutions.vitalizr.weight;
+package software.visionary.vitalizr.weight;
 
-import visionarysoftwaresolutions.vitalizr.api.Unit;
+import software.visionary.vitalizr.api.Unit;
 
 public class Gram implements Unit {
     @Override

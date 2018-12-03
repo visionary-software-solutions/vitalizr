@@ -1,4 +1,4 @@
-package visionarysoftwaresolutions.vitalizr.weight;
+package software.visionary.vitalizr.weight;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
