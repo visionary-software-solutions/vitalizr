@@ -1,11 +1,13 @@
 package software.visionary.vitalizr;
 
+import org.threeten.extra.Interval;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.api.VitalRepository;
 import software.visionary.vitalizr.weight.InMemoryPersonWeightRepository;
 import software.visionary.vitalizr.weight.PersonWeight;
 import software.visionary.vitalizr.weight.Weight;
 
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,13 +24,24 @@ public final class Vitalizr {
         REPOSITORY.accept(pw -> {
             if (pw.getPerson().equals(toFind)) {
                 found.add(pw);
-            }});
+            }
+        });
         return found;
     }
 
     public static Collection<Person> listPeople() {
         final Collection<Person> found = new ArrayList<>();
         REPOSITORY.accept( pw -> found.add(pw.getPerson()));
+        return found;
+    }
+
+    public static Collection<PersonWeight> getWeightsInInterval(final Person person, final Interval interval) {
+        final Collection<PersonWeight> found = new ArrayList<>();
+        REPOSITORY.accept(pw -> {
+            if (pw.getPerson().equals(person) && interval.contains(pw.observedAt())) {
+                found.add(pw);
+            }
+        });
         return found;
     }
 }

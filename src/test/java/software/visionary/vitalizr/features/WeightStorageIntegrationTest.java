@@ -1,15 +1,17 @@
-package software.visionary.vitalizr.weight;
+package software.visionary.vitalizr.features;
 
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
+import software.visionary.vitalizr.weight.PersonWeight;
+import software.visionary.vitalizr.weight.Weight;
 
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class WeightIntegrationTest {
+class WeightStorageIntegrationTest {
     @Test
     void canStoreWeight() {
         // Given: A weight at a particular point in time and quantity to be stored
