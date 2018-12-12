@@ -4,6 +4,10 @@ import software.visionary.vitalizr.api.Birthdate;
 import software.visionary.vitalizr.api.EmailAddress;
 import software.visionary.vitalizr.api.Name;
 import software.visionary.vitalizr.api.Person;
+import software.visionary.vitalizr.bloodPressure.BloodPressure;
+import software.visionary.vitalizr.bloodPressure.Combined;
+import software.visionary.vitalizr.bloodPressure.Diastolic;
+import software.visionary.vitalizr.bloodPressure.Systolic;
 import software.visionary.vitalizr.weight.Gram;
 import software.visionary.vitalizr.weight.Weight;
 
@@ -11,6 +15,7 @@ import java.time.Instant;
 import java.time.Month;
 import java.time.MonthDay;
 import java.time.Year;
+import java.time.temporal.ChronoUnit;
 
 public class Fixtures {
     public static Weight weight() {
@@ -59,5 +64,9 @@ public class Fixtures {
                 };
             }
         };
+    }
+
+    public static BloodPressure bloodPressure() {
+        return new Combined(new Systolic(Instant.now(), new NaturalNumber(153)), new Diastolic(Instant.now(), new NaturalNumber(80)));
     }
 }
