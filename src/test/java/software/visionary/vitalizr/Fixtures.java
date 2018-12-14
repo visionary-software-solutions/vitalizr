@@ -124,7 +124,7 @@ public class Fixtures {
         return bloodSugarAt(137, Instant.now());
     }
 
-    private static BloodSugar bloodSugarAt(final int level, final Instant instant) {
+    public static BloodSugar bloodSugarAt(final int level, final Instant instant) {
         return new BloodSugar() {
             @Override
             public Number getQuantity() {

@@ -147,4 +147,14 @@ public final class Vitalizr {
         });
         return found;
     }
+
+    public static Collection<PersonBloodSugar> getBloodSugarsInInterval(final Person person, final Interval interval) {
+        final Collection<PersonBloodSugar> found = new ArrayList<>();
+        SUGARS.accept(pw -> {
+            if (pw.getPerson().equals(person) && interval.contains(pw.observedAt())) {
+                found.add(pw);
+            }
+        });
+        return found;
+    }
 }
