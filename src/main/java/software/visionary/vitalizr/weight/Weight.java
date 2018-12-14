@@ -12,7 +12,7 @@ public final class Weight implements Scalable {
     private final NaturalNumber number;
     private final Unit unit;
 
-    public Weight(final Instant observed, final NaturalNumber number, final Unit unit) {
+    Weight(final Instant observed, final NaturalNumber number, final Unit unit) {
         this.observed = Objects.requireNonNull(observed);
         this.number = Objects.requireNonNull(number);
         this.unit = Objects.requireNonNull(unit);
@@ -20,11 +20,6 @@ public final class Weight implements Scalable {
 
     public static Weight inKilograms(final int kilos, final Instant observedAt) {
         return new Weight(observedAt, new NaturalNumber(kilos * 1000), new Gram());
-    }
-
-    @Override
-    public Unit getUnit() {
-        return unit;
     }
 
     @Override
@@ -48,6 +43,11 @@ public final class Weight implements Scalable {
         final Weight weight = (Weight) o;
         return Objects.equals(number, weight.number) &&
                 Objects.equals(getUnit(), weight.getUnit());
+    }
+
+    @Override
+    public Unit getUnit() {
+        return unit;
     }
 
     @Override

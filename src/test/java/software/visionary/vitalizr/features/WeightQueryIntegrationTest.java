@@ -43,5 +43,4 @@ class WeightQueryIntegrationTest {
         // And: the first weight is not stored
         assertFalse(result.contains(new PersonWeight(mom, first)));
     }
-
 }

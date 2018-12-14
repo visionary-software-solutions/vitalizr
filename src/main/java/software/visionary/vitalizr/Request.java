@@ -18,8 +18,7 @@ final class Request implements Runnable {
     @Override
     public void run() {
         try {
-            final byte[] data = received.readAllBytes();
-            final String asString = new String(data, StandardCharsets.UTF_8);
+            final String asString = new String(received.readAllBytes(), StandardCharsets.UTF_8);
             System.out.println(asString);
             sent.write(String.format("Got %s %n", asString).getBytes(StandardCharsets.UTF_8));
         } catch (final IOException e) {

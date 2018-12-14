@@ -16,7 +16,7 @@ class WeightTest {
     Weight toTest;
 
     @BeforeEach
-    void setup () {
+    void setup() {
         observedAt = Instant.now();
         value = ThreadLocalRandom.current().nextInt(0, 300);
         toTest = new Weight(observedAt, new NaturalNumber(value.intValue()), unit);
@@ -68,7 +68,7 @@ class WeightTest {
         final Weight another = new Weight(observedAt, new NaturalNumber(value.intValue()), unit);
         Assertions.assertEquals(toTest, another);
         Assertions.assertEquals(another, toTest);
-        final Weight aThird= new Weight(observedAt, new NaturalNumber(value.intValue()), unit);
+        final Weight aThird = new Weight(observedAt, new NaturalNumber(value.intValue()), unit);
         Assertions.assertEquals(another, aThird);
         Assertions.assertEquals(toTest, aThird);
     }

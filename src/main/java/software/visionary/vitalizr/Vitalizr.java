@@ -16,13 +16,15 @@ import java.util.Collection;
 public final class Vitalizr {
     private static final VitalRepository<PersonWeight> WEIGHTS = new InMemoryPersonWeightRepository();
     private static final VitalRepository<PersonBloodPressure> PRESSURES = new InMemoryPersonBloodPressureRepository();
-    private Vitalizr() {}
 
-    public static void storeWeightFor(Person mom, Weight toStore) {
+    private Vitalizr() {
+    }
+
+    public static void storeWeightFor(final Person mom, final Weight toStore) {
         WEIGHTS.save(new PersonWeight(mom, toStore));
     }
 
-    public static Collection<PersonWeight> getWeightsFor(Person toFind) {
+    public static Collection<PersonWeight> getWeightsFor(final Person toFind) {
         final Collection<PersonWeight> found = new ArrayList<>();
         WEIGHTS.accept(pw -> {
             if (pw.getPerson().equals(toFind)) {
@@ -32,7 +34,7 @@ public final class Vitalizr {
         return found;
     }
 
-    public static Collection<Person> listPeople() {
+    static Collection<Person> listPeople() {
         final Collection<Person> found = new ArrayList<>();
         WEIGHTS.accept(pw -> found.add(pw.getPerson()));
         return found;
@@ -48,11 +50,11 @@ public final class Vitalizr {
         return found;
     }
 
-    public static void storeBloodPressureFor(Person person, BloodPressure toStore) {
+    public static void storeBloodPressureFor(final Person person, final BloodPressure toStore) {
         PRESSURES.save(new PersonBloodPressure(person, toStore));
     }
 
-    public static Collection<PersonBloodPressure> getBloodPressuresFor(Person person) {
+    public static Collection<PersonBloodPressure> getBloodPressuresFor(final Person person) {
         final Collection<PersonBloodPressure> found = new ArrayList<>();
         PRESSURES.accept(pb -> {
             if (pb.getPerson().equals(person)) {

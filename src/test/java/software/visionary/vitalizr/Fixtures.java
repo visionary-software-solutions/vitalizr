@@ -11,7 +11,12 @@ import software.visionary.vitalizr.bloodPressure.Diastolic;
 import software.visionary.vitalizr.bloodPressure.Systolic;
 import software.visionary.vitalizr.weight.Weight;
 
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.MonthDay;
+import java.time.Year;
+import java.time.ZoneOffset;
 
 public class Fixtures {
     public static Weight weight() {

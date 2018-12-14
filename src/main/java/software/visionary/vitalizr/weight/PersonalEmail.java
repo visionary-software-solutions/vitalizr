@@ -9,12 +9,12 @@ public final class PersonalEmail implements EmailAddress {
     private final Name userName;
     private final Name domain;
 
-    public PersonalEmail(final Name userName, final Name domain) {
+    private PersonalEmail(final Name userName, final Name domain) {
         this.userName = Objects.requireNonNull(userName);
         this.domain = Objects.requireNonNull(domain);
     }
 
-    public static EmailAddress createFrom(final String input) {
+    static EmailAddress createFrom(final String input) {
         final String[] parts = input.split("@");
         return new PersonalEmail(new Name(parts[0]), new Name(parts[1]));
     }
@@ -25,17 +25,21 @@ public final class PersonalEmail implements EmailAddress {
     }
 
     @Override
-    public Name getDomain() {
-        return domain;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final PersonalEmail that = (PersonalEmail) o;
+        return Objects.equals(userName, that.userName) &&
+                Objects.equals(getDomain(), that.getDomain());
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PersonalEmail that = (PersonalEmail) o;
-        return Objects.equals(userName, that.userName) &&
-                Objects.equals(getDomain(), that.getDomain());
+    public Name getDomain() {
+        return domain;
     }
 
     @Override

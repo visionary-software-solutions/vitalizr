@@ -34,12 +34,14 @@ public final class NaturalNumber extends Number implements Comparable<NaturalNum
     }
 
     @Override
-    public int compareTo(NaturalNumber o) {
+    public int compareTo(final NaturalNumber o) {
         return Comparator.nullsFirst(Comparator.comparingInt((NaturalNumber n) -> n.number)).compare(this, o);
     }
 
     @Override
-    public String toString() { return String.valueOf(number); }
+    public String toString() {
+        return String.valueOf(number);
+    }
 
     @Override
     public boolean equals(final Object o) {

@@ -30,10 +30,14 @@ public final class Combined implements BloodPressure {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Combined combined = (Combined) o;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final Combined combined = (Combined) o;
         return Objects.equals(systolic, combined.systolic) &&
                 Objects.equals(diastolic, combined.diastolic);
     }

@@ -15,22 +15,26 @@ public final class Diastolic implements BloodPressure {
     }
 
     @Override
-    public Number getQuantity() {
-        return quantity;
-    }
-
-    @Override
     public Instant observedAt() {
         return observedAt;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Diastolic systolic = (Diastolic) o;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final Diastolic systolic = (Diastolic) o;
         return Objects.equals(getQuantity(), systolic.getQuantity()) &&
                 Objects.equals(observedAt, systolic.observedAt);
+    }
+
+    @Override
+    public Number getQuantity() {
+        return quantity;
     }
 
     @Override

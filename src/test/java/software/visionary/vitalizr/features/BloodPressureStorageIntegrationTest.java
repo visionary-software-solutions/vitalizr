@@ -21,7 +21,7 @@ class BloodPressureStorageIntegrationTest {
         // When: I call store
         Vitalizr.storeBloodPressureFor(mom, toStore);
         // Then: the weight is stored
-        Collection<PersonBloodPressure> stored = Vitalizr.getBloodPressuresFor(mom);
+        final Collection<PersonBloodPressure> stored = Vitalizr.getBloodPressuresFor(mom);
         assertTrue(stored.contains(new PersonBloodPressure(mom, toStore)));
     }
 }

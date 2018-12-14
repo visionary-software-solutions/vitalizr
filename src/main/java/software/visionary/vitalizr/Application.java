@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
  * Starts an endpoint and busy beavers.
  */
 public final class Application {
-    private Application() {}
+    private Application() {
+    }
 
     public static void main(final String[] args) throws UnknownHostException {
         final Integer numberOfThreads = (args.length > 0) ? Integer.parseInt(args[0]) : Runtime.getRuntime().availableProcessors() * 2;
@@ -35,24 +36,35 @@ public final class Application {
     }
 
     private static void busyWait() {
+        printMenu();
+        final Scanner input = new Scanner(System.in);
+        while (true) {
+            switch (input.nextLine()) {
+                case "1":
+                    listPeople();
+                    break;
+                case "2":
+                    addWeightToPerson(input.nextLine());
+                    break;
+                case "3":
+                    getWeightsForPerson(input.nextLine());
+                    break;
+                case "q":
+                case "Q":
+                    System.exit(1);
+                default:
+                    throw new UnsupportedOperationException("Please select from valid options");
+            }
+        }
+    }
+
+    private static void printMenu() {
         System.out.println("Welcome to Vitalzr!");
         System.out.println("Please select from the following options");
         System.out.println("1. List People");
         System.out.println("2. Add Weight for Person");
         System.out.println("3. Get Weights for Person");
         System.out.println("Q. Quit");
-        Scanner input = new Scanner(System.in);
-        while (true) {
-            switch(input.nextLine()) {
-                case "1": listPeople(); break;
-                case "2": addWeightToPerson(input.nextLine()); break;
-                case "3": getWeightsForPerson(input.nextLine()); break;
-                case "q":
-                case "Q":
-                    System.exit(1);
-                default: throw new UnsupportedOperationException("Please select from valid options");
-            }
-        }
     }
 
     private static void getWeightsForPerson(final String input) {
@@ -61,7 +73,7 @@ public final class Application {
         displayWeights(result);
     }
 
-    private static void displayWeights(Collection<PersonWeight> result) {
+    private static void displayWeights(final Collection<PersonWeight> result) {
         if (result.isEmpty()) {
             System.out.println("No People stored");
         } else {
@@ -72,6 +84,10 @@ public final class Application {
                 });
             });
         }
+    }
+
+    private static void display(final Person person) {
+        System.out.printf("%s%n", person);
     }
 
     private static void addWeightToPerson(final String input) {
@@ -90,10 +106,6 @@ public final class Application {
         } else {
             people.forEach(Application::display);
         }
-    }
-
-    private static void display(Person person) {
-        System.out.printf("%s%n", person);
     }
 
 }

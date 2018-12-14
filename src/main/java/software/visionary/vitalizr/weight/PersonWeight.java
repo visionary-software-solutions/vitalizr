@@ -17,11 +17,6 @@ public final class PersonWeight implements Vital {
     }
 
     @Override
-    public Person getPerson() {
-        return person;
-    }
-
-    @Override
     public Unit getUnit() {
         return weight.getUnit();
     }
@@ -37,12 +32,21 @@ public final class PersonWeight implements Vital {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PersonWeight that = (PersonWeight) o;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final PersonWeight that = (PersonWeight) o;
         return Objects.equals(getPerson(), that.getPerson()) &&
                 Objects.equals(weight, that.weight);
+    }
+
+    @Override
+    public Person getPerson() {
+        return person;
     }
 
     @Override

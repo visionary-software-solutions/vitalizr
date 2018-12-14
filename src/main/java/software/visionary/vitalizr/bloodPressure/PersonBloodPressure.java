@@ -11,14 +11,9 @@ public final class PersonBloodPressure implements Vital {
     private final Person person;
     private final BloodPressure bloodPressure;
 
-    public PersonBloodPressure(Person person, BloodPressure toStore) {
+    public PersonBloodPressure(final Person person, final BloodPressure toStore) {
         this.person = Objects.requireNonNull(person);
         this.bloodPressure = Objects.requireNonNull(toStore);
-    }
-
-    @Override
-    public Person getPerson() {
-        return person;
     }
 
     @Override
@@ -37,12 +32,21 @@ public final class PersonBloodPressure implements Vital {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PersonBloodPressure that = (PersonBloodPressure) o;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final PersonBloodPressure that = (PersonBloodPressure) o;
         return Objects.equals(getPerson(), that.getPerson()) &&
                 Objects.equals(bloodPressure, that.bloodPressure);
+    }
+
+    @Override
+    public Person getPerson() {
+        return person;
     }
 
     @Override

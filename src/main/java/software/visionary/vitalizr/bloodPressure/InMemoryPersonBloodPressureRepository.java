@@ -3,7 +3,6 @@ package software.visionary.vitalizr.bloodPressure;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.api.VitalRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,11 +20,7 @@ public class InMemoryPersonBloodPressureRepository implements VitalRepository<Pe
     @Override
     public void save(final PersonBloodPressure toSave) {
         stored.computeIfPresent(toSave.getPerson(), (person, pressures) -> Stream.concat(pressures.stream(), Stream.of(toSave)).collect(Collectors.toList()));
-        stored.putIfAbsent(toSave.getPerson(), new ArrayList<>() {
-            {
-                add(toSave);
-            }
-        });
+        stored.putIfAbsent(toSave.getPerson(), Stream.of(toSave).collect(Collectors.toList()));
     }
 
     @Override

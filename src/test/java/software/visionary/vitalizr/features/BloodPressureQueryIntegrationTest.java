@@ -49,5 +49,4 @@ class BloodPressureQueryIntegrationTest {
         // And: the first weight is not stored
         assertFalse(result.contains(new PersonBloodPressure(mom, first)));
     }
-
 }
