@@ -6,6 +6,9 @@ import software.visionary.vitalizr.api.VitalRepository;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodPressure.InMemoryPersonBloodPressureRepository;
 import software.visionary.vitalizr.bloodPressure.PersonBloodPressure;
+import software.visionary.vitalizr.bloodSugar.BloodSugar;
+import software.visionary.vitalizr.bloodSugar.InMemoryPersonBloodSugarRepository;
+import software.visionary.vitalizr.bloodSugar.PersonBloodSugar;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.oxygen.InMemoryPersonBloodOxygenRepository;
 import software.visionary.vitalizr.oxygen.PersonBloodOxygen;
@@ -24,6 +27,7 @@ public final class Vitalizr {
     private static final VitalRepository<PersonBloodPressure> PRESSURES = new InMemoryPersonBloodPressureRepository();
     private static final VitalRepository<PersonPulse> PULSES = new InMemoryPersonPulseRepository();
     private static final VitalRepository<PersonBloodOxygen> OXYGENS = new InMemoryPersonBloodOxygenRepository();
+    private static final VitalRepository<PersonBloodSugar> SUGARS = new InMemoryPersonBloodSugarRepository();
 
     private Vitalizr() {
     }
@@ -125,6 +129,20 @@ public final class Vitalizr {
         OXYGENS.accept(pw -> {
             if (pw.getPerson().equals(person) && interval.contains(pw.observedAt())) {
                 found.add(pw);
+            }
+        });
+        return found;
+    }
+
+    public static void storeBloodSugarFor(final Person person, final BloodSugar toStore) {
+        SUGARS.save(new PersonBloodSugar(person, toStore));
+    }
+
+    public static Collection<PersonBloodSugar> getBloodSugarsFor(final Person person) {
+        final Collection<PersonBloodSugar> found = new ArrayList<>();
+        SUGARS.accept(pb -> {
+            if (pb.getPerson().equals(person)) {
+                found.add(pb);
             }
         });
         return found;

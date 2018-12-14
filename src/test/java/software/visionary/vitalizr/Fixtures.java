@@ -5,10 +5,13 @@ import software.visionary.vitalizr.api.Birthdate;
 import software.visionary.vitalizr.api.EmailAddress;
 import software.visionary.vitalizr.api.Name;
 import software.visionary.vitalizr.api.Person;
+import software.visionary.vitalizr.api.Unit;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodPressure.Combined;
 import software.visionary.vitalizr.bloodPressure.Diastolic;
 import software.visionary.vitalizr.bloodPressure.Systolic;
+import software.visionary.vitalizr.bloodSugar.BloodSugar;
+import software.visionary.vitalizr.bloodSugar.MilligramsPerDecilitre;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
 import software.visionary.vitalizr.weight.Weight;
@@ -113,6 +116,29 @@ public class Fixtures {
             @Override
             public Instant observedAt() {
                 return instant;
+            }
+        };
+    }
+
+    public static BloodSugar bloodSugar() {
+        return bloodSugarAt(137, Instant.now());
+    }
+
+    private static BloodSugar bloodSugarAt(final int level, final Instant instant) {
+        return new BloodSugar() {
+            @Override
+            public Number getQuantity() {
+                return level;
+            }
+
+            @Override
+            public Instant observedAt() {
+                return instant;
+            }
+
+            @Override
+            public Unit getUnit() {
+                return new MilligramsPerDecilitre();
             }
         };
     }
