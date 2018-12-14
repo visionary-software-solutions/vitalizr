@@ -39,7 +39,7 @@ public final class Vitalizr {
     public static Collection<PersonWeight> getWeightsFor(final Person toFind) {
         final Collection<PersonWeight> found = new ArrayList<>();
         WEIGHTS.accept(pw -> {
-            if (pw.getPerson().equals(toFind)) {
+            if (pw.belongsTo().equals(toFind)) {
                 found.add(pw);
             }
         });
@@ -48,14 +48,14 @@ public final class Vitalizr {
 
     static Collection<Person> listPeople() {
         final Collection<Person> found = new ArrayList<>();
-        WEIGHTS.accept(pw -> found.add(pw.getPerson()));
+        WEIGHTS.accept(pw -> found.add(pw.belongsTo()));
         return found;
     }
 
     public static Collection<PersonWeight> getWeightsInInterval(final Person person, final Interval interval) {
         final Collection<PersonWeight> found = new ArrayList<>();
         WEIGHTS.accept(pw -> {
-            if (pw.getPerson().equals(person) && interval.contains(pw.observedAt())) {
+            if (pw.belongsTo().equals(person) && interval.contains(pw.observedAt())) {
                 found.add(pw);
             }
         });
@@ -69,7 +69,7 @@ public final class Vitalizr {
     public static Collection<PersonBloodPressure> getBloodPressuresFor(final Person person) {
         final Collection<PersonBloodPressure> found = new ArrayList<>();
         PRESSURES.accept(pb -> {
-            if (pb.getPerson().equals(person)) {
+            if (pb.belongsTo().equals(person)) {
                 found.add(pb);
             }
         });
@@ -79,7 +79,7 @@ public final class Vitalizr {
     public static Collection<PersonBloodPressure> getBloodPressuresInInterval(final Person person, final Interval interval) {
         final Collection<PersonBloodPressure> found = new ArrayList<>();
         PRESSURES.accept(pw -> {
-            if (pw.getPerson().equals(person) && interval.contains(pw.observedAt())) {
+            if (pw.belongsTo().equals(person) && interval.contains(pw.observedAt())) {
                 found.add(pw);
             }
         });
@@ -93,7 +93,7 @@ public final class Vitalizr {
     public static Collection<PersonPulse> getPulsesFor(final Person person) {
         final Collection<PersonPulse> found = new ArrayList<>();
         PULSES.accept(pb -> {
-            if (pb.getPerson().equals(person)) {
+            if (pb.belongsTo().equals(person)) {
                 found.add(pb);
             }
         });
@@ -103,7 +103,7 @@ public final class Vitalizr {
     public static Collection<PersonPulse> getPulsesInInterval(final Person person, final Interval interval) {
         final Collection<PersonPulse> found = new ArrayList<>();
         PULSES.accept(pw -> {
-            if (pw.getPerson().equals(person) && interval.contains(pw.observedAt())) {
+            if (pw.belongsTo().equals(person) && interval.contains(pw.observedAt())) {
                 found.add(pw);
             }
         });
@@ -117,7 +117,7 @@ public final class Vitalizr {
     public static Collection<PersonBloodOxygen> getBloodOxygensFor(final Person person) {
         final Collection<PersonBloodOxygen> found = new ArrayList<>();
         OXYGENS.accept(pb -> {
-            if (pb.getPerson().equals(person)) {
+            if (pb.belongsTo().equals(person)) {
                 found.add(pb);
             }
         });
@@ -127,7 +127,7 @@ public final class Vitalizr {
     public static Collection<PersonBloodOxygen> getBloodOxygensInInterval(final Person person, final Interval interval) {
         final Collection<PersonBloodOxygen> found = new ArrayList<>();
         OXYGENS.accept(pw -> {
-            if (pw.getPerson().equals(person) && interval.contains(pw.observedAt())) {
+            if (pw.belongsTo().equals(person) && interval.contains(pw.observedAt())) {
                 found.add(pw);
             }
         });
@@ -141,7 +141,7 @@ public final class Vitalizr {
     public static Collection<PersonBloodSugar> getBloodSugarsFor(final Person person) {
         final Collection<PersonBloodSugar> found = new ArrayList<>();
         SUGARS.accept(pb -> {
-            if (pb.getPerson().equals(person)) {
+            if (pb.belongsTo().equals(person)) {
                 found.add(pb);
             }
         });
@@ -151,7 +151,7 @@ public final class Vitalizr {
     public static Collection<PersonBloodSugar> getBloodSugarsInInterval(final Person person, final Interval interval) {
         final Collection<PersonBloodSugar> found = new ArrayList<>();
         SUGARS.accept(pw -> {
-            if (pw.getPerson().equals(person) && interval.contains(pw.observedAt())) {
+            if (pw.belongsTo().equals(person) && interval.contains(pw.observedAt())) {
                 found.add(pw);
             }
         });

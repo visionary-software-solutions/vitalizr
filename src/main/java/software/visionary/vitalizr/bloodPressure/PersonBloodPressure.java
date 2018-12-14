@@ -7,7 +7,7 @@ import software.visionary.vitalizr.api.Vital;
 import java.time.Instant;
 import java.util.Objects;
 
-public final class PersonBloodPressure implements Vital {
+public final class PersonBloodPressure implements Vital<Person> {
     private final Person person;
     private final BloodPressure bloodPressure;
 
@@ -40,18 +40,18 @@ public final class PersonBloodPressure implements Vital {
             return false;
         }
         final PersonBloodPressure that = (PersonBloodPressure) o;
-        return Objects.equals(getPerson(), that.getPerson()) &&
+        return Objects.equals(belongsTo(), that.belongsTo()) &&
                 Objects.equals(bloodPressure, that.bloodPressure);
     }
 
     @Override
-    public Person getPerson() {
+    public Person belongsTo() {
         return person;
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getPerson(), bloodPressure);
+        return Objects.hash(belongsTo(), bloodPressure);
     }
 }

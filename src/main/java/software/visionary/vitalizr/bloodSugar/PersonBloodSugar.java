@@ -7,7 +7,7 @@ import software.visionary.vitalizr.api.Vital;
 import java.time.Instant;
 import java.util.Objects;
 
-public final class PersonBloodSugar implements Vital {
+public final class PersonBloodSugar implements Vital<Person> {
     private final Person person;
     private final BloodSugar level;
 
@@ -48,18 +48,18 @@ public final class PersonBloodSugar implements Vital {
             return false;
         }
         final PersonBloodSugar that = (PersonBloodSugar) o;
-        return Objects.equals(getPerson(), that.getPerson()) &&
+        return Objects.equals(belongsTo(), that.belongsTo()) &&
                 Objects.equals(level, that.level);
     }
 
     @Override
-    public Person getPerson() {
+    public Person belongsTo() {
         return person;
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getPerson(), level);
+        return Objects.hash(belongsTo(), level);
     }
 }

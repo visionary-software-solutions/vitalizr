@@ -1,7 +1,5 @@
 package software.visionary.vitalizr.api;
 
-public interface Person {
-    Name getName();
-    Birthdate getBirthdate();
+public interface Person extends Lifeform {
     EmailAddress getEmailAddress();
 }

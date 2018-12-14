@@ -1,5 +1,5 @@
 package software.visionary.vitalizr.api;
 
-public interface Vital extends Scalable {
-    Person getPerson();
+public interface Vital<T extends Lifeform> extends Scalable {
+    T belongsTo();
 }

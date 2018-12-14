@@ -19,8 +19,8 @@ public class InMemoryPersonBloodOxygenRepository implements VitalRepository<Pers
 
     @Override
     public void save(final PersonBloodOxygen toSave) {
-        stored.computeIfPresent(toSave.getPerson(), (person, pressures) -> Stream.concat(pressures.stream(), Stream.of(toSave)).collect(Collectors.toList()));
-        stored.putIfAbsent(toSave.getPerson(), Stream.of(toSave).collect(Collectors.toList()));
+        stored.computeIfPresent(toSave.belongsTo(), (person, pressures) -> Stream.concat(pressures.stream(), Stream.of(toSave)).collect(Collectors.toList()));
+        stored.putIfAbsent(toSave.belongsTo(), Stream.of(toSave).collect(Collectors.toList()));
     }
 
     @Override

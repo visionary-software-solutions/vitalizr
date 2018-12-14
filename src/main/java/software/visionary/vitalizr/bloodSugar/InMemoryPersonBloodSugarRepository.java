@@ -19,8 +19,8 @@ public class InMemoryPersonBloodSugarRepository implements VitalRepository<Perso
 
     @Override
     public void save(final PersonBloodSugar toSave) {
-        stored.computeIfPresent(toSave.getPerson(), (person, sugars) -> Stream.concat(sugars.stream(), Stream.of(toSave)).collect(Collectors.toList()));
-        stored.putIfAbsent(toSave.getPerson(), Stream.of(toSave).collect(Collectors.toList()));
+        stored.computeIfPresent(toSave.belongsTo(), (person, sugars) -> Stream.concat(sugars.stream(), Stream.of(toSave)).collect(Collectors.toList()));
+        stored.putIfAbsent(toSave.belongsTo(), Stream.of(toSave).collect(Collectors.toList()));
     }
 
     @Override

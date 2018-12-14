@@ -7,7 +7,7 @@ import software.visionary.vitalizr.api.Vital;
 import java.time.Instant;
 import java.util.Objects;
 
-public final class PersonWeight implements Vital {
+public final class PersonWeight implements Vital<Person> {
     private final Person person;
     private final Weight weight;
 
@@ -40,18 +40,18 @@ public final class PersonWeight implements Vital {
             return false;
         }
         final PersonWeight that = (PersonWeight) o;
-        return Objects.equals(getPerson(), that.getPerson()) &&
+        return Objects.equals(belongsTo(), that.belongsTo()) &&
                 Objects.equals(weight, that.weight);
     }
 
     @Override
-    public Person getPerson() {
+    public Person belongsTo() {
         return person;
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getPerson(), weight);
+        return Objects.hash(belongsTo(), weight);
     }
 }

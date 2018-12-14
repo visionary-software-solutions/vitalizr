@@ -77,7 +77,7 @@ public final class Application {
         if (result.isEmpty()) {
             System.out.println("No People stored");
         } else {
-            result.stream().collect(Collectors.groupingBy(PersonWeight::getPerson)).forEach((person, weights) -> {
+            result.stream().collect(Collectors.groupingBy(PersonWeight::belongsTo)).forEach((person, weights) -> {
                 display(person);
                 weights.forEach(pw -> {
                     System.out.printf("%s %s %s %n", pw.observedAt(), pw.getQuantity().doubleValue(), pw.getUnit());
