@@ -1,5 +1,7 @@
 package software.visionary.vitalizr.bloodPressure;
 
+import software.visionary.vitalizr.NaturalNumber;
+
 import java.time.Instant;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -11,6 +13,10 @@ public final class Combined implements BloodPressure {
     public Combined(final Systolic top, final Diastolic bottom) {
         systolic = Objects.requireNonNull(top);
         diastolic = Objects.requireNonNull(bottom);
+    }
+
+    public static Combined systolicAndDiastolicBloodPressure(final Instant observedAt, final int systolic, final int diastolic) {
+        return new Combined(new Systolic(observedAt, new NaturalNumber(systolic)), new Diastolic(observedAt, new NaturalNumber(diastolic)));
     }
 
     @Override

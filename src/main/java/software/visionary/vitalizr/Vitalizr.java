@@ -14,17 +14,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class Vitalizr {
-    private static final VitalRepository<PersonWeight> REPOSITORY = new InMemoryPersonWeightRepository();
+    private static final VitalRepository<PersonWeight> WEIGHTS = new InMemoryPersonWeightRepository();
     private static final VitalRepository<PersonBloodPressure> PRESSURES = new InMemoryPersonBloodPressureRepository();
     private Vitalizr() {}
 
     public static void storeWeightFor(Person mom, Weight toStore) {
-        REPOSITORY.save(new PersonWeight(mom, toStore));
+        WEIGHTS.save(new PersonWeight(mom, toStore));
     }
 
     public static Collection<PersonWeight> getWeightsFor(Person toFind) {
         final Collection<PersonWeight> found = new ArrayList<>();
-        REPOSITORY.accept(pw -> {
+        WEIGHTS.accept(pw -> {
             if (pw.getPerson().equals(toFind)) {
                 found.add(pw);
             }
@@ -34,13 +34,13 @@ public final class Vitalizr {
 
     public static Collection<Person> listPeople() {
         final Collection<Person> found = new ArrayList<>();
-        REPOSITORY.accept( pw -> found.add(pw.getPerson()));
+        WEIGHTS.accept(pw -> found.add(pw.getPerson()));
         return found;
     }
 
     public static Collection<PersonWeight> getWeightsInInterval(final Person person, final Interval interval) {
         final Collection<PersonWeight> found = new ArrayList<>();
-        REPOSITORY.accept(pw -> {
+        WEIGHTS.accept(pw -> {
             if (pw.getPerson().equals(person) && interval.contains(pw.observedAt())) {
                 found.add(pw);
             }
@@ -57,6 +57,16 @@ public final class Vitalizr {
         PRESSURES.accept(pb -> {
             if (pb.getPerson().equals(person)) {
                 found.add(pb);
+            }
+        });
+        return found;
+    }
+
+    public static Collection<PersonBloodPressure> getBloodPressuresInInterval(final Person person, final Interval interval) {
+        final Collection<PersonBloodPressure> found = new ArrayList<>();
+        PRESSURES.accept(pw -> {
+            if (pw.getPerson().equals(person) && interval.contains(pw.observedAt())) {
+                found.add(pw);
             }
         });
         return found;

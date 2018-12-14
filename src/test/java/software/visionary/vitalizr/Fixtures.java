@@ -1,5 +1,6 @@
 package software.visionary.vitalizr;
 
+import org.threeten.extra.Interval;
 import software.visionary.vitalizr.api.Birthdate;
 import software.visionary.vitalizr.api.EmailAddress;
 import software.visionary.vitalizr.api.Name;
@@ -11,10 +12,7 @@ import software.visionary.vitalizr.bloodPressure.Systolic;
 import software.visionary.vitalizr.weight.Gram;
 import software.visionary.vitalizr.weight.Weight;
 
-import java.time.Instant;
-import java.time.Month;
-import java.time.MonthDay;
-import java.time.Year;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
 
 public class Fixtures {
@@ -68,5 +66,13 @@ public class Fixtures {
 
     public static BloodPressure bloodPressure() {
         return new Combined(new Systolic(Instant.now(), new NaturalNumber(153)), new Diastolic(Instant.now(), new NaturalNumber(80)));
+    }
+
+    public static Instant observationAtMidnightNDaysAgo(final int n) {
+        return LocalDate.now().minusDays(n).atStartOfDay().toInstant(ZoneOffset.UTC);
+    }
+
+    public static Interval oneWeekAgoToNow() {
+        return Interval.of(LocalDate.now().minusDays(7).atStartOfDay().toInstant(ZoneOffset.UTC), LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC));
     }
 }

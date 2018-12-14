@@ -29,7 +29,6 @@ of medians, I want to be able to simply calculate summary statistics.</p>
 to use it to improve someone's health.</p>
 
 <h2>User Stories</h2>
-<p>As a patient, because I want to review my health, I want to be retrieve my blood pressure for a time range.</p>
 <p>As a patient, because I want to proactively monitor my health, I want to be able to store my pulse at a particular
 point in time.</p>
 <p>As a patient, because I want to review my health, I want to be retrieve my pulse for a time range.</p>
@@ -54,4 +53,8 @@ record my vitals</p>
 <p>As someone who cares about fitness, I because I want to optimize my regimen, I want to be able to review my vitals</p>
 <p>As a software engineer, because I want to use Vitals in my third-party app integrations, I want an API I can use to
 retrieve Vitals</p>
+<p>As a human being, because I value my privacy, I want to be able to authenticate as a Principal by presenting my Credentials</p>
+<p>As a human being, because I value my privacy, I want access to my information to be allowed only to authorized Principals</p>
+<p>As a software engineer, for legal idemnification, I want actions by Principals in the system to be audited.</p>
+
 

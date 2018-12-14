@@ -17,6 +17,10 @@ public final class Weight implements Scalable {
         this.unit = Objects.requireNonNull(unit);
     }
 
+    public static Weight inKilograms(final int kilos, final Instant observedAt) {
+        return new Weight(observedAt, kilos * 1000, new Gram());
+    }
+
     @Override
     public Unit getUnit() {
         return unit;
