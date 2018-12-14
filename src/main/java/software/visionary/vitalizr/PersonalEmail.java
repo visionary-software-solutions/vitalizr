@@ -1,4 +1,4 @@
-package software.visionary.vitalizr.weight;
+package software.visionary.vitalizr;
 
 import software.visionary.vitalizr.api.EmailAddress;
 import software.visionary.vitalizr.api.Name;

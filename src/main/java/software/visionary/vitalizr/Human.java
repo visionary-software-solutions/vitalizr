@@ -1,13 +1,10 @@
-package software.visionary.vitalizr.weight;
+package software.visionary.vitalizr;
 
 import software.visionary.vitalizr.api.Birthdate;
 import software.visionary.vitalizr.api.EmailAddress;
 import software.visionary.vitalizr.api.Name;
 import software.visionary.vitalizr.api.Person;
 
-import java.time.Month;
-import java.time.MonthDay;
-import java.time.Year;
 import java.util.Objects;
 
 public final class Human implements Person {
@@ -21,7 +18,7 @@ public final class Human implements Person {
         this.email = Objects.requireNonNull(email);
     }
 
-    public static Person createPerson(final String input) {
+    static Person createPerson(final String input) {
         final String delimiter = ":";
         final String[] tokens = input.split(delimiter);
         return new Human(new Name(tokens[0]), Birthday.createFrom(tokens[1]), PersonalEmail.createFrom(tokens[2]));

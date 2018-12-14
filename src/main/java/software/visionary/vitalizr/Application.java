@@ -1,7 +1,6 @@
 package software.visionary.vitalizr;
 
 import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.weight.Human;
 import software.visionary.vitalizr.weight.MetricWeight;
 import software.visionary.vitalizr.weight.PersonWeight;
 
