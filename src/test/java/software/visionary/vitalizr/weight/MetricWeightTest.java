@@ -4,13 +4,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.NaturalNumber;
-import software.visionary.vitalizr.api.Unit;
 
 import java.time.Instant;
 import java.util.concurrent.ThreadLocalRandom;
 
-class WeightTest {
-    private final Unit unit = Gram.INSTANCE;
+class MetricWeightTest {
     private Instant observedAt;
     private Number value;
     private Weight toTest;
@@ -19,22 +17,17 @@ class WeightTest {
     void setup() {
         observedAt = Instant.now();
         value = ThreadLocalRandom.current().nextInt(0, 300);
-        toTest = new Weight(observedAt, new NaturalNumber(value.intValue()), unit);
+        toTest = MetricWeight.inKilograms(value, observedAt);
     }
 
     @Test
     void rejectsNullInstant() {
-        Assertions.assertThrows(NullPointerException.class, () -> new Weight(null, new NaturalNumber(value.intValue()), unit));
+        Assertions.assertThrows(NullPointerException.class, () -> MetricWeight.inKilograms(value, null));
     }
 
     @Test
     void rejectsNullValue() {
-        Assertions.assertThrows(NullPointerException.class, () -> new Weight(observedAt, null, unit));
-    }
-
-    @Test
-    void rejectsNullUnit() {
-        Assertions.assertThrows(NullPointerException.class, () -> new Weight(observedAt, new NaturalNumber(value.intValue()), null));
+        Assertions.assertThrows(NullPointerException.class, () -> MetricWeight.inKilograms(null, observedAt));
     }
 
     @Test
@@ -43,19 +36,19 @@ class WeightTest {
     }
 
     @Test
-    void canGetQuantity() {
-        Assertions.assertEquals(new NaturalNumber(value.intValue()), toTest.getQuantity());
+    void getQuantityConvertsToKilograms() {
+        Assertions.assertEquals(new NaturalNumber(value.intValue() * 1000), toTest.getQuantity());
     }
 
     @Test
-    void canGetUnit() {
-        Assertions.assertEquals(unit, toTest.getUnit());
+    void defaultsToGrams() {
+        Assertions.assertEquals(Gram.INSTANCE, toTest.getUnit());
     }
 
     @Test
     void implementsHashCodeCorrectly() {
         Assertions.assertEquals(toTest.hashCode(), toTest.hashCode());
-        final Weight another = new Weight(observedAt, new NaturalNumber(value.intValue()), unit);
+        final Weight another = MetricWeight.inKilograms(value, observedAt);
         Assertions.assertEquals(toTest.hashCode(), another.hashCode());
         Assertions.assertEquals(another.hashCode(), toTest.hashCode());
     }
@@ -65,10 +58,10 @@ class WeightTest {
         Assertions.assertNotEquals(toTest, null);
         Assertions.assertNotEquals(toTest, new Object());
         Assertions.assertEquals(toTest, toTest);
-        final Weight another = new Weight(observedAt, new NaturalNumber(value.intValue()), unit);
+        final Weight another = MetricWeight.inKilograms(value, observedAt);
         Assertions.assertEquals(toTest, another);
         Assertions.assertEquals(another, toTest);
-        final Weight aThird = new Weight(observedAt, new NaturalNumber(value.intValue()), unit);
+        final Weight aThird = MetricWeight.inKilograms(value, observedAt);
         Assertions.assertEquals(another, aThird);
         Assertions.assertEquals(toTest, aThird);
     }

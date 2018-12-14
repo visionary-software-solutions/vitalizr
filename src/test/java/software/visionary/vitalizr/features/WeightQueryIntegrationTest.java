@@ -5,6 +5,7 @@ import org.threeten.extra.Interval;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
+import software.visionary.vitalizr.weight.MetricWeight;
 import software.visionary.vitalizr.weight.PersonWeight;
 import software.visionary.vitalizr.weight.Weight;
 
@@ -19,16 +20,16 @@ class WeightQueryIntegrationTest {
         // Given: A person to retrieve weight for
         final Person mom = Fixtures.person();
         // And: that person measured their weight 2 weeks ago
-        final Weight first = Weight.inKilograms(235, Fixtures.observationAtMidnightNDaysAgo(14));
+        final Weight first = MetricWeight.inKilograms(235, Fixtures.observationAtMidnightNDaysAgo(14));
         Vitalizr.storeWeightFor(mom, first);
         // And: that person measured their weight 3 days ago
-        final Weight second = Weight.inKilograms(231, Fixtures.observationAtMidnightNDaysAgo(3));
+        final Weight second = MetricWeight.inKilograms(231, Fixtures.observationAtMidnightNDaysAgo(3));
         Vitalizr.storeWeightFor(mom, second);
         // And: that person measured their weight 2 days ago
-        final Weight third = Weight.inKilograms(229, Fixtures.observationAtMidnightNDaysAgo(2));
+        final Weight third = MetricWeight.inKilograms(229, Fixtures.observationAtMidnightNDaysAgo(2));
         Vitalizr.storeWeightFor(mom, third);
         // And: that person measured their weight 1 days ago
-        final Weight fourth = Weight.inKilograms(230, Fixtures.observationAtMidnightNDaysAgo(1));
+        final Weight fourth = MetricWeight.inKilograms(230, Fixtures.observationAtMidnightNDaysAgo(1));
         Vitalizr.storeWeightFor(mom, fourth);
         // And: A time range to query for
         final Interval oneWeekAgoToNow = Fixtures.oneWeekAgoToNow();

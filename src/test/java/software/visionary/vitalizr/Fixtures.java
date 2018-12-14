@@ -14,6 +14,7 @@ import software.visionary.vitalizr.bloodSugar.BloodSugar;
 import software.visionary.vitalizr.bloodSugar.MilligramsPerDecilitre;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
+import software.visionary.vitalizr.weight.MetricWeight;
 import software.visionary.vitalizr.weight.Weight;
 
 import java.time.Instant;
@@ -25,7 +26,7 @@ import java.time.ZoneOffset;
 
 public class Fixtures {
     public static Weight weight() {
-        return Weight.inKilograms(100, Instant.now());
+        return MetricWeight.inKilograms(100, Instant.now());
     }
 
     public static Person person() {

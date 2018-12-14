@@ -2,8 +2,8 @@ package software.visionary.vitalizr;
 
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.weight.Human;
+import software.visionary.vitalizr.weight.MetricWeight;
 import software.visionary.vitalizr.weight.PersonWeight;
-import software.visionary.vitalizr.weight.Weight;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -93,7 +93,7 @@ public final class Application {
     private static void addWeightToPerson(final String input) {
         final String delimiter = "&";
         final String[] tokens = input.split(delimiter);
-        Vitalizr.storeWeightFor(Human.createPerson(tokens[0]), Weight.inKilograms(Integer.valueOf(tokens[1]), Instant.now()));
+        Vitalizr.storeWeightFor(Human.createPerson(tokens[0]), MetricWeight.inKilograms(Integer.valueOf(tokens[1]), Instant.now()));
     }
 
     private static void listPeople() {
