@@ -10,3 +10,4 @@ point in time.</p>
 <p>As a patient, because I want to review my health, I want to be retrieve my o2 for a time range.</p>
 <p>As a patient, because I want to proactively monitor my health, I want to be able to store my O2 at a particular
 point in time.</p>
+<p>As a patient, because I want to review my health, I want to be retrieve my O2 for a time range.</p>

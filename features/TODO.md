@@ -29,9 +29,11 @@ of medians, I want to be able to simply calculate summary statistics.</p>
 to use it to improve someone's health.</p>
 
 <h2>User Stories</h2>
-<p>As a patient, because I want to review my health, I want to be retrieve my O2 for a time range.</p>
+<p>As a patient, because I want to proactively monitor my health, I want to be able to store my blood sugar at a particular
+point in time.</p>
+<p>As a patient, because I want to review my health, I want to be retrieve my blood sugar for a time range.</p>
 <p>As a software engineer, because I don't want to copy-paste code and die in maintenance obscurity, I want weight,
-blood pressure, o2, and O2 to unify behind a common concept, Vitals</p>
+blood pressure, o2, and blood sugar to unify behind a common concept, Vitals</p>
 <p>As a patient, because I want to be able to compare my Vitals over time, I want to be able to see a line graph for a
 time range.</p>
 <p>As family of a patient, because I love my patient health, I want to be able to review my patient's Vitals

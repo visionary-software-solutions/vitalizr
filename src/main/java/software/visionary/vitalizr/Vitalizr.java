@@ -119,4 +119,14 @@ public final class Vitalizr {
         });
         return found;
     }
+
+    public static Collection<PersonBloodOxygen> getBloodOxygensInInterval(final Person person, final Interval interval) {
+        final Collection<PersonBloodOxygen> found = new ArrayList<>();
+        OXYGENS.accept(pw -> {
+            if (pw.getPerson().equals(person) && interval.contains(pw.observedAt())) {
+                found.add(pw);
+            }
+        });
+        return found;
+    }
 }

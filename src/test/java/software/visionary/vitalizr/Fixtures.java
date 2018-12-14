@@ -100,15 +100,19 @@ public class Fixtures {
     }
 
     public static BloodOxygen bloodOxygen() {
+        return oxygenAt(94, Instant.now());
+    }
+
+    public static BloodOxygen oxygenAt(final int o2, final Instant instant) {
         return new BloodOxygen() {
             @Override
             public Number getQuantity() {
-                return 94;
+                return o2;
             }
 
             @Override
             public Instant observedAt() {
-                return Instant.now();
+                return instant;
             }
         };
     }
