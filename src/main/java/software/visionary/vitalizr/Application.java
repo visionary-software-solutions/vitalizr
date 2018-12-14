@@ -1,7 +1,6 @@
 package software.visionary.vitalizr;
 
 import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.weight.Gram;
 import software.visionary.vitalizr.weight.Human;
 import software.visionary.vitalizr.weight.PersonWeight;
 import software.visionary.vitalizr.weight.Weight;
@@ -78,11 +77,7 @@ public final class Application {
     private static void addWeightToPerson(final String input) {
         final String delimiter = "&";
         final String[] tokens = input.split(delimiter);
-        Vitalizr.storeWeightFor(Human.createPerson(tokens[0]), createWeight(tokens[1]));
-    }
-
-    private static Weight createWeight(String token) {
-        return new Weight(Instant.now(), Integer.valueOf(token), new Gram());
+        Vitalizr.storeWeightFor(Human.createPerson(tokens[0]), Weight.inKilograms(Integer.valueOf(tokens[1]), Instant.now()));
     }
 
     private static void listPeople() {

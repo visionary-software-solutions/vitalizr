@@ -9,15 +9,13 @@ import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodPressure.Combined;
 import software.visionary.vitalizr.bloodPressure.Diastolic;
 import software.visionary.vitalizr.bloodPressure.Systolic;
-import software.visionary.vitalizr.weight.Gram;
 import software.visionary.vitalizr.weight.Weight;
 
 import java.time.*;
-import java.time.temporal.ChronoUnit;
 
 public class Fixtures {
     public static Weight weight() {
-        return new Weight(Instant.now(), 99.8, new Gram());
+        return Weight.inKilograms(100, Instant.now());
     }
 
     public static Person person() {

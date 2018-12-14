@@ -1,6 +1,7 @@
 package software.visionary.vitalizr;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 public final class NaturalNumber extends Number implements Comparable<NaturalNumber> {
     private final int number;
@@ -39,4 +40,22 @@ public final class NaturalNumber extends Number implements Comparable<NaturalNum
 
     @Override
     public String toString() { return String.valueOf(number); }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final NaturalNumber that = (NaturalNumber) o;
+        return number == that.number;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(number);
+    }
 }

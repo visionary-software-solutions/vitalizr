@@ -3,6 +3,7 @@ package software.visionary.vitalizr.weight;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import software.visionary.vitalizr.NaturalNumber;
 import software.visionary.vitalizr.api.Unit;
 
 import java.time.Instant;
@@ -17,13 +18,13 @@ class WeightTest {
     @BeforeEach
     void setup () {
         observedAt = Instant.now();
-        value = ThreadLocalRandom.current().nextDouble();
-        toTest = new Weight(observedAt, value, unit);
+        value = ThreadLocalRandom.current().nextInt(0, 300);
+        toTest = new Weight(observedAt, new NaturalNumber(value.intValue()), unit);
     }
 
     @Test
     void rejectsNullInstant() {
-        Assertions.assertThrows(NullPointerException.class, () -> new Weight(null, value, unit));
+        Assertions.assertThrows(NullPointerException.class, () -> new Weight(null, new NaturalNumber(value.intValue()), unit));
     }
 
     @Test
@@ -33,7 +34,7 @@ class WeightTest {
 
     @Test
     void rejectsNullUnit() {
-        Assertions.assertThrows(NullPointerException.class, () -> new Weight(observedAt, value, null));
+        Assertions.assertThrows(NullPointerException.class, () -> new Weight(observedAt, new NaturalNumber(value.intValue()), null));
     }
 
     @Test
@@ -43,7 +44,7 @@ class WeightTest {
 
     @Test
     void canGetQuantity() {
-        Assertions.assertEquals(value, toTest.getQuantity());
+        Assertions.assertEquals(new NaturalNumber(value.intValue()), toTest.getQuantity());
     }
 
     @Test
@@ -54,7 +55,7 @@ class WeightTest {
     @Test
     void implementsHashCodeCorrectly() {
         Assertions.assertEquals(toTest.hashCode(), toTest.hashCode());
-        final Weight another = new Weight(observedAt, value, unit);
+        final Weight another = new Weight(observedAt, new NaturalNumber(value.intValue()), unit);
         Assertions.assertEquals(toTest.hashCode(), another.hashCode());
         Assertions.assertEquals(another.hashCode(), toTest.hashCode());
     }
@@ -64,10 +65,10 @@ class WeightTest {
         Assertions.assertNotEquals(toTest, null);
         Assertions.assertNotEquals(toTest, new Object());
         Assertions.assertEquals(toTest, toTest);
-        final Weight another = new Weight(observedAt, value, unit);
+        final Weight another = new Weight(observedAt, new NaturalNumber(value.intValue()), unit);
         Assertions.assertEquals(toTest, another);
         Assertions.assertEquals(another, toTest);
-        final Weight aThird= new Weight(observedAt, value, unit);
+        final Weight aThird= new Weight(observedAt, new NaturalNumber(value.intValue()), unit);
         Assertions.assertEquals(another, aThird);
         Assertions.assertEquals(toTest, aThird);
     }
