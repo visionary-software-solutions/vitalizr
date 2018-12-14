@@ -9,6 +9,7 @@ import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodPressure.Combined;
 import software.visionary.vitalizr.bloodPressure.Diastolic;
 import software.visionary.vitalizr.bloodPressure.Systolic;
+import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
 import software.visionary.vitalizr.weight.Weight;
 
@@ -94,6 +95,20 @@ public class Fixtures {
             @Override
             public Instant observedAt() {
                 return now;
+            }
+        };
+    }
+
+    public static BloodOxygen bloodOxygen() {
+        return new BloodOxygen() {
+            @Override
+            public Number getQuantity() {
+                return 94;
+            }
+
+            @Override
+            public Instant observedAt() {
+                return Instant.now();
             }
         };
     }
