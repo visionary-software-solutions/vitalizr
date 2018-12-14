@@ -91,4 +91,14 @@ public final class Vitalizr {
         });
         return found;
     }
+
+    public static Collection<PersonPulse> getPulsesInInterval(final Person person, final Interval interval) {
+        final Collection<PersonPulse> found = new ArrayList<>();
+        PULSES.accept(pw -> {
+            if (pw.getPerson().equals(person) && interval.contains(pw.observedAt())) {
+                found.add(pw);
+            }
+        });
+        return found;
+    }
 }

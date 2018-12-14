@@ -81,15 +81,19 @@ public class Fixtures {
     }
 
     public static Pulse pulse() {
+        return pulseAt(91, Instant.now());
+    }
+
+    public static Pulse pulseAt(final int pulse, final Instant now) {
         return new Pulse() {
             @Override
             public Number getQuantity() {
-                return 91;
+                return pulse;
             }
 
             @Override
             public Instant observedAt() {
-                return Instant.now();
+                return now;
             }
         };
     }

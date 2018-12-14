@@ -9,9 +9,6 @@ import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodPressure.Combined;
 import software.visionary.vitalizr.bloodPressure.PersonBloodPressure;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -22,31 +19,29 @@ class BloodPressureQueryIntegrationTest {
     void canQueryBloodPressureForTimeRange() {
         // Given: A person to retrieve BP for
         final Person mom = Fixtures.person();
-        // And: that person measured their weight 2 weeks ago
-        final Instant firstObservation = Fixtures.observationAtMidnightNDaysAgo(14);
-        final BloodPressure first = Combined.systolicAndDiastolicBloodPressure(firstObservation, 151, 71);
+        // And: that person measured their BP 2 weeks ago
+        final BloodPressure first = Combined.systolicAndDiastolicBloodPressure(Fixtures.observationAtMidnightNDaysAgo(14), 151, 71);
         Vitalizr.storeBloodPressureFor(mom, first);
-        // And: that person measured their weight 3 days ago
-        final Instant secondObservation = Fixtures.observationAtMidnightNDaysAgo(3);
-        final BloodPressure second = Combined.systolicAndDiastolicBloodPressure(secondObservation, 139, 68);
+        // And: that person measured their BP 3 days ago
+        final BloodPressure second = Combined.systolicAndDiastolicBloodPressure(Fixtures.observationAtMidnightNDaysAgo(3), 139, 68);
         Vitalizr.storeBloodPressureFor(mom, second);
-        // And: that person measured their weight 2 days ago
+        // And: that person measured their BP 2 days ago
         final BloodPressure third = Combined.systolicAndDiastolicBloodPressure(Fixtures.observationAtMidnightNDaysAgo(2), 145, 71);
         Vitalizr.storeBloodPressureFor(mom, third);
-        // And: that person measured their weight 1 days ago
-        final BloodPressure fourth = Combined.systolicAndDiastolicBloodPressure(secondObservation, 145, 76);
+        // And: that person measured their BP 1 days ago
+        final BloodPressure fourth = Combined.systolicAndDiastolicBloodPressure(Fixtures.observationAtMidnightNDaysAgo(1), 145, 76);
         Vitalizr.storeBloodPressureFor(mom, fourth);
         // And: A time range to query for
-        final Interval oneWeekAgoToNow = Interval.of(Fixtures.observationAtMidnightNDaysAgo(7), LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC));
-        // When: I fetch the weights
+        final Interval oneWeekAgoToNow = Fixtures.oneWeekAgoToNow();
+        // When: I fetch the BPs
         final Collection<PersonBloodPressure> result = Vitalizr.getBloodPressuresInInterval(mom, oneWeekAgoToNow);
-        // Then: the fourth weight is stored
+        // Then: the fourth BP is stored
         assertTrue(result.contains(new PersonBloodPressure(mom, fourth)));
-        // And: the third weight is stored
+        // And: the third BP is stored
         assertTrue(result.contains(new PersonBloodPressure(mom, third)));
-        // And: the second weight is stored
+        // And: the second BP is stored
         assertTrue(result.contains(new PersonBloodPressure(mom, second)));
-        // And: the first weight is not stored
+        // And: the first BP is not stored
         assertFalse(result.contains(new PersonBloodPressure(mom, first)));
     }
 }
