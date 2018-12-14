@@ -6,6 +6,9 @@ import software.visionary.vitalizr.api.VitalRepository;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodPressure.InMemoryPersonBloodPressureRepository;
 import software.visionary.vitalizr.bloodPressure.PersonBloodPressure;
+import software.visionary.vitalizr.pulse.InMemoryPersonPulseRepository;
+import software.visionary.vitalizr.pulse.PersonPulse;
+import software.visionary.vitalizr.pulse.Pulse;
 import software.visionary.vitalizr.weight.InMemoryPersonWeightRepository;
 import software.visionary.vitalizr.weight.PersonWeight;
 import software.visionary.vitalizr.weight.Weight;
@@ -16,6 +19,7 @@ import java.util.Collection;
 public final class Vitalizr {
     private static final VitalRepository<PersonWeight> WEIGHTS = new InMemoryPersonWeightRepository();
     private static final VitalRepository<PersonBloodPressure> PRESSURES = new InMemoryPersonBloodPressureRepository();
+    private static final VitalRepository<PersonPulse> PULSES = new InMemoryPersonPulseRepository();
 
     private Vitalizr() {
     }
@@ -69,6 +73,20 @@ public final class Vitalizr {
         PRESSURES.accept(pw -> {
             if (pw.getPerson().equals(person) && interval.contains(pw.observedAt())) {
                 found.add(pw);
+            }
+        });
+        return found;
+    }
+
+    public static void storePulseFor(final Person person, final Pulse pulse) {
+        PULSES.save(new PersonPulse(person, pulse));
+    }
+
+    public static Collection<PersonPulse> getPulsesFor(final Person person) {
+        final Collection<PersonPulse> found = new ArrayList<>();
+        PULSES.accept(pb -> {
+            if (pb.getPerson().equals(person)) {
+                found.add(pb);
             }
         });
         return found;

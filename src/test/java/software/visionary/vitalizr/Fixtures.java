@@ -9,6 +9,7 @@ import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodPressure.Combined;
 import software.visionary.vitalizr.bloodPressure.Diastolic;
 import software.visionary.vitalizr.bloodPressure.Systolic;
+import software.visionary.vitalizr.pulse.Pulse;
 import software.visionary.vitalizr.weight.Weight;
 
 import java.time.Instant;
@@ -77,5 +78,19 @@ public class Fixtures {
 
     public static Interval oneWeekAgoToNow() {
         return Interval.of(LocalDate.now().minusDays(7).atStartOfDay().toInstant(ZoneOffset.UTC), LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC));
+    }
+
+    public static Pulse pulse() {
+        return new Pulse() {
+            @Override
+            public Number getQuantity() {
+                return 91;
+            }
+
+            @Override
+            public Instant observedAt() {
+                return Instant.now();
+            }
+        };
     }
 }

@@ -29,8 +29,6 @@ of medians, I want to be able to simply calculate summary statistics.</p>
 to use it to improve someone's health.</p>
 
 <h2>User Stories</h2>
-<p>As a patient, because I want to proactively monitor my health, I want to be able to store my pulse at a particular
-point in time.</p>
 <p>As a patient, because I want to review my health, I want to be retrieve my pulse for a time range.</p>
 <p>As a patient, because I want to proactively monitor my health, I want to be able to store my O2 at a particular
 point in time.</p>
