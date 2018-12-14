@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 class GramTest {
     @Test
     void nameIsGram() {
-        Assertions.assertEquals(Gram.class.getSimpleName(), new Gram().getName());
+        Assertions.assertEquals(Gram.class.getSimpleName(), Gram.INSTANCE.getName());
     }
 
     @Test
     void symbolIsG() {
-        Assertions.assertEquals("g", new Gram().getSymbol());
+        Assertions.assertEquals("g", Gram.INSTANCE.getSymbol());
     }
 }

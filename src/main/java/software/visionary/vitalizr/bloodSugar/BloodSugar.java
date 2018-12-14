@@ -6,6 +6,6 @@ import software.visionary.vitalizr.api.Unit;
 public interface BloodSugar extends Scalable {
     @Override
     default Unit getUnit() {
-        return new Millimolar();
+        return Millimolar.INSTANCE;
     }
 }

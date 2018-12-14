@@ -2,7 +2,9 @@ package software.visionary.vitalizr.oxygen;
 
 import software.visionary.vitalizr.api.Unit;
 
-final class OxygenSaturation implements Unit {
+public enum OxygenSaturation implements Unit {
+    INSTANCE;
+
     @Override
     public String getName() {
         return OxygenSaturation.class.getSimpleName();

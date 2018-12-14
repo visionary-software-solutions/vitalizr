@@ -10,10 +10,10 @@ import java.time.Instant;
 import java.util.concurrent.ThreadLocalRandom;
 
 class WeightTest {
-    Instant observedAt;
-    Number value;
-    Unit unit = new Gram();
-    Weight toTest;
+    private final Unit unit = Gram.INSTANCE;
+    private Instant observedAt;
+    private Number value;
+    private Weight toTest;
 
     @BeforeEach
     void setup() {

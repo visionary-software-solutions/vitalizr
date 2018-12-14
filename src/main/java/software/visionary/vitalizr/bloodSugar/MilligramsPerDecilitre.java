@@ -2,7 +2,9 @@ package software.visionary.vitalizr.bloodSugar;
 
 import software.visionary.vitalizr.api.Unit;
 
-public final class MilligramsPerDecilitre implements Unit {
+public enum MilligramsPerDecilitre implements Unit {
+    INSTANCE;
+
     @Override
     public String getName() {
         return MilligramsPerDecilitre.class.getSimpleName();

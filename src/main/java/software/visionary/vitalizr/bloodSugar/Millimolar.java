@@ -2,7 +2,9 @@ package software.visionary.vitalizr.bloodSugar;
 
 import software.visionary.vitalizr.api.Unit;
 
-public final class Millimolar implements Unit {
+public enum Millimolar implements Unit {
+    INSTANCE;
+
     @Override
     public String getName() {
         return Millimolar.class.getSimpleName();

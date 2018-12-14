@@ -19,7 +19,7 @@ public final class Weight implements Scalable {
     }
 
     public static Weight inKilograms(final int kilos, final Instant observedAt) {
-        return new Weight(observedAt, new NaturalNumber(kilos * 1000), new Gram());
+        return new Weight(observedAt, new NaturalNumber(kilos * 1000), Gram.INSTANCE);
     }
 
     @Override

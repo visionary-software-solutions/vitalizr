@@ -138,7 +138,7 @@ public class Fixtures {
 
             @Override
             public Unit getUnit() {
-                return new MilligramsPerDecilitre();
+                return MilligramsPerDecilitre.INSTANCE;
             }
         };
     }

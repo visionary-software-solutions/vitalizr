@@ -6,6 +6,6 @@ import software.visionary.vitalizr.api.Unit;
 public interface Pulse extends Scalable {
     @Override
     default Unit getUnit() {
-        return new HeartbeatsPerMinute();
+        return HeartbeatsPerMinute.INSTANCE;
     }
 }

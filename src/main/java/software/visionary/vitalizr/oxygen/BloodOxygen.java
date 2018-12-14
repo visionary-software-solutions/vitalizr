@@ -6,6 +6,6 @@ import software.visionary.vitalizr.api.Unit;
 public interface BloodOxygen extends Scalable {
     @Override
     default Unit getUnit() {
-        return new OxygenSaturation();
+        return OxygenSaturation.INSTANCE;
     }
 }
