@@ -3,13 +3,10 @@ package software.visionary.vitalizr;
 import org.threeten.extra.Interval;
 import software.visionary.vitalizr.api.Birthdate;
 import software.visionary.vitalizr.api.EmailAddress;
+import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Name;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.api.Unit;
-import software.visionary.vitalizr.bloodPressure.BloodPressure;
-import software.visionary.vitalizr.bloodPressure.Combined;
-import software.visionary.vitalizr.bloodPressure.Diastolic;
-import software.visionary.vitalizr.bloodPressure.Systolic;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
 import software.visionary.vitalizr.bloodSugar.MilligramsPerDecilitre;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
@@ -25,9 +22,6 @@ import java.time.Year;
 import java.time.ZoneOffset;
 
 public class Fixtures {
-    public static Weight weight() {
-        return MetricWeight.inKilograms(100, Instant.now());
-    }
 
     public static Person person() {
         return new Person() {
@@ -73,10 +67,6 @@ public class Fixtures {
         };
     }
 
-    public static BloodPressure bloodPressure() {
-        return new Combined(new Systolic(Instant.now(), new NaturalNumber(153)), new Diastolic(Instant.now(), new NaturalNumber(80)));
-    }
-
     public static Instant observationAtMidnightNDaysAgo(final int n) {
         return LocalDate.now().minusDays(n).atStartOfDay().toInstant(ZoneOffset.UTC);
     }
@@ -85,12 +75,13 @@ public class Fixtures {
         return Interval.of(LocalDate.now().minusDays(7).atStartOfDay().toInstant(ZoneOffset.UTC), LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC));
     }
 
-    public static Pulse pulse() {
-        return pulseAt(91, Instant.now());
-    }
-
-    public static Pulse pulseAt(final int pulse, final Instant now) {
+    public static Pulse pulseAt(final int pulse, final Instant now, final Lifeform lifeform) {
         return new Pulse() {
+            @Override
+            public Lifeform belongsTo() {
+                return lifeform;
+            }
+
             @Override
             public Number getQuantity() {
                 return pulse;
@@ -103,12 +94,13 @@ public class Fixtures {
         };
     }
 
-    public static BloodOxygen bloodOxygen() {
-        return oxygenAt(94, Instant.now());
-    }
-
-    public static BloodOxygen oxygenAt(final int o2, final Instant instant) {
+    public static BloodOxygen oxygenAt(final int o2, final Instant instant, final Lifeform lifeform) {
         return new BloodOxygen() {
+            @Override
+            public Lifeform belongsTo() {
+                return lifeform;
+            }
+
             @Override
             public Number getQuantity() {
                 return o2;
@@ -121,12 +113,13 @@ public class Fixtures {
         };
     }
 
-    public static BloodSugar bloodSugar() {
-        return bloodSugarAt(137, Instant.now());
-    }
-
-    public static BloodSugar bloodSugarAt(final int level, final Instant instant) {
+    public static BloodSugar bloodSugarAt(final int level, final Instant instant, final Lifeform lifeform) {
         return new BloodSugar() {
+            @Override
+            public Lifeform belongsTo() {
+                return lifeform;
+            }
+
             @Override
             public Number getQuantity() {
                 return level;

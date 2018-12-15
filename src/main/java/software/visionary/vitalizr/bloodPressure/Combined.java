@@ -1,6 +1,7 @@
 package software.visionary.vitalizr.bloodPressure;
 
 import software.visionary.vitalizr.NaturalNumber;
+import software.visionary.vitalizr.api.Lifeform;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -15,8 +16,8 @@ public final class Combined implements BloodPressure {
         diastolic = Objects.requireNonNull(bottom);
     }
 
-    public static Combined systolicAndDiastolicBloodPressure(final Instant observedAt, final int systolic, final int diastolic) {
-        return new Combined(new Systolic(observedAt, new NaturalNumber(systolic)), new Diastolic(observedAt, new NaturalNumber(diastolic)));
+    public static Combined systolicAndDiastolicBloodPressure(final Instant observedAt, final int systolic, final int diastolic, final Lifeform measured) {
+        return new Combined(new Systolic(observedAt, new NaturalNumber(systolic), measured), new Diastolic(observedAt, new NaturalNumber(diastolic), measured));
     }
 
     @Override
@@ -45,5 +46,10 @@ public final class Combined implements BloodPressure {
     @Override
     public int hashCode() {
         return Objects.hash(systolic, diastolic);
+    }
+
+    @Override
+    public Lifeform belongsTo() {
+        return systolic.belongsTo();
     }
 }

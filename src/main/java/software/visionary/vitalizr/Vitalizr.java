@@ -1,158 +1,146 @@
 package software.visionary.vitalizr;
 
 import org.threeten.extra.Interval;
+import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Person;
+import software.visionary.vitalizr.api.Vital;
 import software.visionary.vitalizr.api.VitalRepository;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
-import software.visionary.vitalizr.bloodPressure.InMemoryPersonBloodPressureRepository;
-import software.visionary.vitalizr.bloodPressure.PersonBloodPressure;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
-import software.visionary.vitalizr.bloodSugar.InMemoryPersonBloodSugarRepository;
-import software.visionary.vitalizr.bloodSugar.PersonBloodSugar;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
-import software.visionary.vitalizr.oxygen.InMemoryPersonBloodOxygenRepository;
-import software.visionary.vitalizr.oxygen.PersonBloodOxygen;
-import software.visionary.vitalizr.pulse.InMemoryPersonPulseRepository;
-import software.visionary.vitalizr.pulse.PersonPulse;
 import software.visionary.vitalizr.pulse.Pulse;
-import software.visionary.vitalizr.weight.InMemoryPersonWeightRepository;
-import software.visionary.vitalizr.weight.PersonWeight;
 import software.visionary.vitalizr.weight.Weight;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 public final class Vitalizr {
-    private static final VitalRepository<PersonWeight> WEIGHTS = new InMemoryPersonWeightRepository();
-    private static final VitalRepository<PersonBloodPressure> PRESSURES = new InMemoryPersonBloodPressureRepository();
-    private static final VitalRepository<PersonPulse> PULSES = new InMemoryPersonPulseRepository();
-    private static final VitalRepository<PersonBloodOxygen> OXYGENS = new InMemoryPersonBloodOxygenRepository();
-    private static final VitalRepository<PersonBloodSugar> SUGARS = new InMemoryPersonBloodSugarRepository();
+    private static final VitalRepository<Vital> VITALS = new InMemoryVitalRepository();
 
     private Vitalizr() {
     }
 
-    public static void storeWeightFor(final Person mom, final Weight toStore) {
-        WEIGHTS.save(new PersonWeight(mom, toStore));
+    public static void storeWeightFor(final Weight toStore) {
+        VITALS.save(toStore);
     }
 
-    public static Collection<PersonWeight> getWeightsFor(final Person toFind) {
-        final Collection<PersonWeight> found = new ArrayList<>();
-        WEIGHTS.accept(pw -> {
-            if (pw.belongsTo().equals(toFind)) {
-                found.add(pw);
+    public static Collection<Weight> getWeightsFor(final Person toFind) {
+        final Collection<Weight> found = new ArrayList<>();
+        VITALS.accept(vital -> {
+            if (vital.belongsTo().equals(toFind) && vital instanceof Weight) {
+                found.add((Weight) vital);
             }
         });
         return found;
     }
 
-    static Collection<Person> listPeople() {
-        final Collection<Person> found = new ArrayList<>();
-        WEIGHTS.accept(pw -> found.add(pw.belongsTo()));
+    static Collection<Lifeform> listPeople() {
+        final Collection<Lifeform> found = new ArrayList<>();
+        VITALS.accept(vital -> found.add(vital.belongsTo()));
         return found;
     }
 
-    public static Collection<PersonWeight> getWeightsInInterval(final Person person, final Interval interval) {
-        final Collection<PersonWeight> found = new ArrayList<>();
-        WEIGHTS.accept(pw -> {
-            if (pw.belongsTo().equals(person) && interval.contains(pw.observedAt())) {
-                found.add(pw);
+    public static Collection<Weight> getWeightsInInterval(final Person person, final Interval interval) {
+        final Collection<Weight> found = new ArrayList<>();
+        VITALS.accept(vital -> {
+            if (vital.belongsTo().equals(person) && interval.contains(vital.observedAt()) && vital instanceof Weight) {
+                found.add((Weight) vital);
             }
         });
         return found;
     }
 
-    public static void storeBloodPressureFor(final Person person, final BloodPressure toStore) {
-        PRESSURES.save(new PersonBloodPressure(person, toStore));
+    public static void storeBloodPressureFor(final BloodPressure toStore) {
+        VITALS.save(toStore);
     }
 
-    public static Collection<PersonBloodPressure> getBloodPressuresFor(final Person person) {
-        final Collection<PersonBloodPressure> found = new ArrayList<>();
-        PRESSURES.accept(pb -> {
-            if (pb.belongsTo().equals(person)) {
-                found.add(pb);
+    public static Collection<BloodPressure> getBloodPressuresFor(final Person person) {
+        final Collection<BloodPressure> found = new ArrayList<>();
+        VITALS.accept(vital -> {
+            if (vital.belongsTo().equals(person) && vital instanceof BloodPressure) {
+                found.add(((BloodPressure) vital));
             }
         });
         return found;
     }
 
-    public static Collection<PersonBloodPressure> getBloodPressuresInInterval(final Person person, final Interval interval) {
-        final Collection<PersonBloodPressure> found = new ArrayList<>();
-        PRESSURES.accept(pw -> {
-            if (pw.belongsTo().equals(person) && interval.contains(pw.observedAt())) {
-                found.add(pw);
+    public static Collection<BloodPressure> getBloodPressuresInInterval(final Person person, final Interval interval) {
+        final Collection<BloodPressure> found = new ArrayList<>();
+        VITALS.accept(vital -> {
+            if (vital.belongsTo().equals(person) && interval.contains(vital.observedAt()) && vital instanceof BloodPressure) {
+                found.add(((BloodPressure) vital));
             }
         });
         return found;
     }
 
-    public static void storePulseFor(final Person person, final Pulse pulse) {
-        PULSES.save(new PersonPulse(person, pulse));
+    public static void storePulseFor(final Pulse pulse) {
+        VITALS.save(pulse);
     }
 
-    public static Collection<PersonPulse> getPulsesFor(final Person person) {
-        final Collection<PersonPulse> found = new ArrayList<>();
-        PULSES.accept(pb -> {
-            if (pb.belongsTo().equals(person)) {
-                found.add(pb);
+    public static Collection<Pulse> getPulsesFor(final Person person) {
+        final Collection<Pulse> found = new ArrayList<>();
+        VITALS.accept(vital -> {
+            if (vital.belongsTo().equals(person) && vital instanceof Pulse) {
+                found.add((Pulse) vital);
             }
         });
         return found;
     }
 
-    public static Collection<PersonPulse> getPulsesInInterval(final Person person, final Interval interval) {
-        final Collection<PersonPulse> found = new ArrayList<>();
-        PULSES.accept(pw -> {
-            if (pw.belongsTo().equals(person) && interval.contains(pw.observedAt())) {
-                found.add(pw);
+    public static Collection<Pulse> getPulsesInInterval(final Person person, final Interval interval) {
+        final Collection<Pulse> found = new ArrayList<>();
+        VITALS.accept(vital -> {
+            if (vital.belongsTo().equals(person) && interval.contains(vital.observedAt()) && vital instanceof Pulse) {
+                found.add((Pulse) vital);
             }
         });
         return found;
     }
 
-    public static void storeBloodOxygenFor(final Person person, final BloodOxygen oxygen) {
-        OXYGENS.save(new PersonBloodOxygen(person, oxygen));
+    public static void storeBloodOxygenFor(final BloodOxygen oxygen) {
+        VITALS.save(oxygen);
     }
 
-    public static Collection<PersonBloodOxygen> getBloodOxygensFor(final Person person) {
-        final Collection<PersonBloodOxygen> found = new ArrayList<>();
-        OXYGENS.accept(pb -> {
-            if (pb.belongsTo().equals(person)) {
-                found.add(pb);
+    public static Collection<BloodOxygen> getBloodOxygensFor(final Person person) {
+        final Collection<BloodOxygen> found = new ArrayList<>();
+        VITALS.accept(vital -> {
+            if (vital.belongsTo().equals(person) && vital instanceof BloodOxygen) {
+                found.add((BloodOxygen) vital);
             }
         });
         return found;
     }
 
-    public static Collection<PersonBloodOxygen> getBloodOxygensInInterval(final Person person, final Interval interval) {
-        final Collection<PersonBloodOxygen> found = new ArrayList<>();
-        OXYGENS.accept(pw -> {
-            if (pw.belongsTo().equals(person) && interval.contains(pw.observedAt())) {
-                found.add(pw);
+    public static Collection<BloodOxygen> getBloodOxygensInInterval(final Person person, final Interval interval) {
+        final Collection<BloodOxygen> found = new ArrayList<>();
+        VITALS.accept(vital -> {
+            if (vital.belongsTo().equals(person) && interval.contains(vital.observedAt()) && vital instanceof BloodOxygen) {
+                found.add((BloodOxygen) vital);
             }
         });
         return found;
     }
 
-    public static void storeBloodSugarFor(final Person person, final BloodSugar toStore) {
-        SUGARS.save(new PersonBloodSugar(person, toStore));
+    public static void storeBloodSugarFor(final BloodSugar toStore) {
+        VITALS.save(toStore);
     }
 
-    public static Collection<PersonBloodSugar> getBloodSugarsFor(final Person person) {
-        final Collection<PersonBloodSugar> found = new ArrayList<>();
-        SUGARS.accept(pb -> {
-            if (pb.belongsTo().equals(person)) {
-                found.add(pb);
+    public static Collection<BloodSugar> getBloodSugarsFor(final Person person) {
+        final Collection<BloodSugar> found = new ArrayList<>();
+        VITALS.accept(vital -> {
+            if (vital.belongsTo().equals(person) && vital instanceof BloodSugar) {
+                found.add((BloodSugar) vital);
             }
         });
         return found;
     }
 
-    public static Collection<PersonBloodSugar> getBloodSugarsInInterval(final Person person, final Interval interval) {
-        final Collection<PersonBloodSugar> found = new ArrayList<>();
-        SUGARS.accept(pw -> {
-            if (pw.belongsTo().equals(person) && interval.contains(pw.observedAt())) {
-                found.add(pw);
+    public static Collection<BloodSugar> getBloodSugarsInInterval(final Person person, final Interval interval) {
+        final Collection<BloodSugar> found = new ArrayList<>();
+        VITALS.accept(vital -> {
+            if (vital.belongsTo().equals(person) && interval.contains(vital.observedAt()) && vital instanceof BloodSugar) {
+                found.add((BloodSugar) vital);
             }
         });
         return found;

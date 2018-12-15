@@ -5,8 +5,9 @@ import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
-import software.visionary.vitalizr.bloodPressure.PersonBloodPressure;
+import software.visionary.vitalizr.bloodPressure.Combined;
 
+import java.time.Instant;
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,14 +15,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class BloodPressureStorageIntegrationTest {
     @Test
     void canStoreBloodPressure() {
-        // Given: A systolic blood pressure at a particular point in time and quantity to be stored
-        final BloodPressure toStore = Fixtures.bloodPressure();
-        // And: A person to store blood pressure for
+        // Given: A person to store blood pressure for
         final Person mom = Fixtures.person();
+        // And: A blood pressure at a particular point in time and quantity to be stored
+        final BloodPressure toStore = Combined.systolicAndDiastolicBloodPressure(Instant.now(), 153, 80, mom);
         // When: I call store
-        Vitalizr.storeBloodPressureFor(mom, toStore);
+        Vitalizr.storeBloodPressureFor(toStore);
         // Then: the weight is stored
-        final Collection<PersonBloodPressure> stored = Vitalizr.getBloodPressuresFor(mom);
-        assertTrue(stored.contains(new PersonBloodPressure(mom, toStore)));
+        final Collection<BloodPressure> stored = Vitalizr.getBloodPressuresFor(mom);
+        assertTrue(stored.contains(toStore));
     }
 }

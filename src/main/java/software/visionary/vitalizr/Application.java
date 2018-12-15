@@ -1,8 +1,9 @@
 package software.visionary.vitalizr;
 
+import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.weight.MetricWeight;
-import software.visionary.vitalizr.weight.PersonWeight;
+import software.visionary.vitalizr.weight.Weight;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -68,15 +69,15 @@ public final class Application {
 
     private static void getWeightsForPerson(final String input) {
         final Person sought = Human.createPerson(input);
-        final Collection<PersonWeight> result = Vitalizr.getWeightsFor(sought);
+        final Collection<Weight> result = Vitalizr.getWeightsFor(sought);
         displayWeights(result);
     }
 
-    private static void displayWeights(final Collection<PersonWeight> result) {
+    private static void displayWeights(final Collection<Weight> result) {
         if (result.isEmpty()) {
             System.out.println("No People stored");
         } else {
-            result.stream().collect(Collectors.groupingBy(PersonWeight::belongsTo)).forEach((person, weights) -> {
+            result.stream().collect(Collectors.groupingBy(Weight::belongsTo)).forEach((person, weights) -> {
                 display(person);
                 weights.forEach(pw -> {
                     System.out.printf("%s %s %s %n", pw.observedAt(), pw.getQuantity().doubleValue(), pw.getUnit());
@@ -85,21 +86,21 @@ public final class Application {
         }
     }
 
-    private static void display(final Person person) {
+    private static void display(final Lifeform person) {
         System.out.printf("%s%n", person);
     }
 
     private static void addWeightToPerson(final String input) {
         final String delimiter = "&";
         final String[] tokens = input.split(delimiter);
-        Vitalizr.storeWeightFor(Human.createPerson(tokens[0]), MetricWeight.inKilograms(Integer.valueOf(tokens[1]), Instant.now()));
+        Vitalizr.storeWeightFor(MetricWeight.inKilograms(Integer.valueOf(tokens[1]), Instant.now(), Human.createPerson(tokens[0])));
     }
 
     private static void listPeople() {
         display(Vitalizr.listPeople());
     }
 
-    private static void display(final Collection<Person> people) {
+    private static void display(final Collection<Lifeform> people) {
         if (people.isEmpty()) {
             System.out.println("No People stored");
         } else {

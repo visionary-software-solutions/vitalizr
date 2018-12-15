@@ -5,15 +5,8 @@ import org.threeten.extra.Interval;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.bloodPressure.BloodPressure;
-import software.visionary.vitalizr.bloodPressure.Combined;
-import software.visionary.vitalizr.bloodPressure.PersonBloodPressure;
-import software.visionary.vitalizr.pulse.PersonPulse;
 import software.visionary.vitalizr.pulse.Pulse;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -25,32 +18,28 @@ class PulseQueryIntegrationTest {
         // Given: A person to retrieve pulse for
         final Person mom = Fixtures.person();
         // And: that person measured their pulse 2 weeks ago
-        final Instant firstObservation = Fixtures.observationAtMidnightNDaysAgo(14);
-        final Pulse first = Fixtures.pulseAt(90, firstObservation);
-        Vitalizr.storePulseFor(mom, first);
+        final Pulse first = Fixtures.pulseAt(90, Fixtures.observationAtMidnightNDaysAgo(14), mom);
+        Vitalizr.storePulseFor(first);
         // And: that person measured their pulse 3 days ago
-        final Instant secondObservation = Fixtures.observationAtMidnightNDaysAgo(3);
-        final Pulse second = Fixtures.pulseAt(72, secondObservation);
-        Vitalizr.storePulseFor(mom, second);
+        final Pulse second = Fixtures.pulseAt(72, Fixtures.observationAtMidnightNDaysAgo(3), mom);
+        Vitalizr.storePulseFor(second);
         // And: that person measured their pulse 2 days ago
-        final Instant thirdObservation = Fixtures.observationAtMidnightNDaysAgo(2);
-        final Pulse third = Fixtures.pulseAt(81, thirdObservation);
-        Vitalizr.storePulseFor(mom, third);
+        final Pulse third = Fixtures.pulseAt(81, Fixtures.observationAtMidnightNDaysAgo(2), mom);
+        Vitalizr.storePulseFor(third);
         // And: that person measured their pulse 1 days ago
-        final Instant fourthObservation = Fixtures.observationAtMidnightNDaysAgo(1);
-        final Pulse fourth = Fixtures.pulseAt(62, fourthObservation);
-        Vitalizr.storePulseFor(mom, fourth);
+        final Pulse fourth = Fixtures.pulseAt(62, Fixtures.observationAtMidnightNDaysAgo(1), mom);
+        Vitalizr.storePulseFor(fourth);
         // And: A time range to query for
-        final Interval oneWeekAgoToNow = Interval.of(Fixtures.observationAtMidnightNDaysAgo(7), LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC));
+        final Interval oneWeekAgoToNow = Fixtures.oneWeekAgoToNow();
         // When: I fetch the pulses
-        final Collection<PersonPulse> result = Vitalizr.getPulsesInInterval(mom, oneWeekAgoToNow);
+        final Collection<Pulse> result = Vitalizr.getPulsesInInterval(mom, oneWeekAgoToNow);
         // Then: the fourth pulse is stored
-        assertTrue(result.contains(new PersonPulse(mom, fourth)));
+        assertTrue(result.contains(fourth));
         // And: the third pulse is stored
-        assertTrue(result.contains(new PersonPulse(mom, third)));
+        assertTrue(result.contains(third));
         // And: the second pulse is stored
-        assertTrue(result.contains(new PersonPulse(mom, second)));
+        assertTrue(result.contains(second));
         // And: the first pulse is not stored
-        assertFalse(result.contains(new PersonPulse(mom, first)));
+        assertFalse(result.contains(first));
     }
 }
