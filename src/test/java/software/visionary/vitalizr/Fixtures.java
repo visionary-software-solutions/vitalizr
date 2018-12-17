@@ -5,6 +5,7 @@ import software.visionary.vitalizr.api.Birthdate;
 import software.visionary.vitalizr.api.EmailAddress;
 import software.visionary.vitalizr.api.Family;
 import software.visionary.vitalizr.api.Lifeform;
+import software.visionary.vitalizr.api.MedicalProvider;
 import software.visionary.vitalizr.api.Name;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.api.Unit;
@@ -164,6 +165,34 @@ public class Fixtures {
 
             @Override
             public Person getLovedOne() {
+                return person;
+            }
+
+            @Override
+            public EmailAddress getEmailAddress() {
+                return whoIs.getEmailAddress();
+            }
+
+            @Override
+            public Name getName() {
+                return whoIs.getName();
+            }
+
+            @Override
+            public Birthdate getBirthdate() {
+                return whoIs.getBirthdate();
+            }
+        };
+    }
+
+    public static MedicalProvider doctor(final Person person) {
+        return new MedicalProvider() {
+            private final Person whoIs = Fixtures.createPerson(new Name("Dr. Anthony Dash"),
+                    Fixtures.getBirthdate(Year.parse("1957"), MonthDay.of(7, 13)),
+                    Fixtures.getEmailAddress(new Name("doctor"), new Name("good.org")));
+
+            @Override
+            public Person getPatient() {
                 return person;
             }
 

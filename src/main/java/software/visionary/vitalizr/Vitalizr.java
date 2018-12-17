@@ -3,6 +3,7 @@ package software.visionary.vitalizr;
 import org.threeten.extra.Interval;
 import software.visionary.vitalizr.api.Family;
 import software.visionary.vitalizr.api.Lifeform;
+import software.visionary.vitalizr.api.MedicalProvider;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.api.Vital;
 import software.visionary.vitalizr.api.VitalRepository;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 public final class Vitalizr {
     private static final VitalRepository<Vital> VITALS = new InMemoryVitalRepository();
     private static final Collection<Family> MEMBERS = new CopyOnWriteArraySet<>();
+    private static final Collection<MedicalProvider> PROVIDERS = new CopyOnWriteArraySet<>();
 
     private Vitalizr() {
     }
@@ -129,5 +131,13 @@ public final class Vitalizr {
 
     public static Collection<Family> getFamilyFor(final Person person) {
         return MEMBERS.stream().filter(f -> f.getLovedOne().equals(person)).collect(Collectors.toList());
+    }
+
+    public static void addMedicalProvider(final MedicalProvider provider) {
+        PROVIDERS.add(provider);
+    }
+
+    public static Collection<MedicalProvider> getMedicalProvidersFor(final Person person) {
+        return PROVIDERS.stream().filter(f -> f.getPatient().equals(person)).collect(Collectors.toList());
     }
 }

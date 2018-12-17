@@ -20,3 +20,4 @@ blood pressure, level, and blood sugar to unify behind a common concept, Vitals<
 point in time.</p>
 <p>As a patient, because I want to review my health, I want to be retrieve my body temperature for a time range.</p>
 <p>As family of a patient, because I love my patient and care for their health, I want to be known as part of the Family</p>
+<p>As a doctor of the patient, in order to make advanced clinical decisions, I want to to be known as part a medical provider for the patient</p>
