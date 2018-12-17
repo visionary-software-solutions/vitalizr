@@ -1,6 +1,7 @@
 package software.visionary.vitalizr;
 
 import org.threeten.extra.Interval;
+import software.visionary.vitalizr.api.Family;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.api.Vital;
@@ -14,10 +15,14 @@ import software.visionary.vitalizr.weight.Weight;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public final class Vitalizr {
     private static final VitalRepository<Vital> VITALS = new InMemoryVitalRepository();
+    private static final Collection<Family> MEMBERS = new CopyOnWriteArraySet<>();
 
     private Vitalizr() {
     }
@@ -116,5 +121,13 @@ public final class Vitalizr {
 
     public static Collection<BodyTemperature> getBodyTemperaturesInInterval(final Person person, final Interval interval) {
         return getVitalsInInterval(person, interval, BodyTemperature.class);
+    }
+
+    public static void addFamilyMember(final Family family) {
+        MEMBERS.add(family);
+    }
+
+    public static Collection<Family> getFamilyFor(final Person person) {
+        return MEMBERS.stream().filter(f -> f.getLovedOne().equals(person)).collect(Collectors.toList());
     }
 }

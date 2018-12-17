@@ -19,3 +19,4 @@ blood pressure, level, and blood sugar to unify behind a common concept, Vitals<
 <p>As a patient, because I want to proactively monitor my health, I want to be able to store my body temperature at a particular
 point in time.</p>
 <p>As a patient, because I want to review my health, I want to be retrieve my body temperature for a time range.</p>
+<p>As family of a patient, because I love my patient and care for their health, I want to be known as part of the Family</p>

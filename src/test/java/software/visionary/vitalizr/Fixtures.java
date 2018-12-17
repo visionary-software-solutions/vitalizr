@@ -3,6 +3,7 @@ package software.visionary.vitalizr;
 import org.threeten.extra.Interval;
 import software.visionary.vitalizr.api.Birthdate;
 import software.visionary.vitalizr.api.EmailAddress;
+import software.visionary.vitalizr.api.Family;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Name;
 import software.visionary.vitalizr.api.Person;
@@ -24,45 +25,59 @@ import java.time.ZoneOffset;
 public class Fixtures {
 
     public static Person person() {
+        return createPerson(new Name("Barbara Hidalgo-Toledo"),
+                getBirthdate(Year.parse("1959"), MonthDay.of(Month.JANUARY, 9)),
+                getEmailAddress(new Name("mommy"), new Name("mom.net")));
+    }
+
+    private static Person createPerson(final Name name, final Birthdate birthdate, final EmailAddress emailAddress) {
         return new Person() {
             @Override
             public Name getName() {
-                return new Name("Barbara Hidalgo-Toledo");
+                return name;
             }
 
             @Override
             public Birthdate getBirthdate() {
-                return new Birthdate() {
-                    @Override
-                    public Year getYear() {
-                        return Year.parse("1959");
-                    }
-
-                    @Override
-                    public Month getMonth() {
-                        return Month.JANUARY;
-                    }
-
-                    @Override
-                    public MonthDay getDay() {
-                        return MonthDay.of(Month.JANUARY, 9);
-                    }
-                };
+                return birthdate;
             }
 
             @Override
             public EmailAddress getEmailAddress() {
-                return new EmailAddress() {
-                    @Override
-                    public Name getName() {
-                        return new Name("languwiz");
-                    }
+                return emailAddress;
+            }
+        };
+    }
 
-                    @Override
-                    public Name getDomain() {
-                        return new Name("gmail.com");
-                    }
-                };
+    private static EmailAddress getEmailAddress(final Name userName, final Name topLevelDomain) {
+        return new EmailAddress() {
+            @Override
+            public Name getName() {
+                return userName;
+            }
+
+            @Override
+            public Name getDomain() {
+                return topLevelDomain;
+            }
+        };
+    }
+
+    private static Birthdate getBirthdate(final Year year, final MonthDay monthDay) {
+        return new Birthdate() {
+            @Override
+            public Year getYear() {
+                return year;
+            }
+
+            @Override
+            public Month getMonth() {
+                return monthDay.getMonth();
+            }
+
+            @Override
+            public MonthDay getDay() {
+                return monthDay;
             }
         };
     }
@@ -139,5 +154,33 @@ public class Fixtures {
 
     public static BodyTemperature temperatureAt(final double v, final Instant instant, final Person person) {
         return new ImperialTemperature(person, v, instant);
+    }
+
+    public static Family family(final Person person) {
+        return new Family() {
+            private final Person whoIs = Fixtures.createPerson(new Name("Nick Vaidyanathan"),
+                    Fixtures.getBirthdate(Year.parse("1985"), MonthDay.of(6, 11)),
+                    Fixtures.getEmailAddress(new Name("master"), new Name("debater.com")));
+
+            @Override
+            public Person getLovedOne() {
+                return person;
+            }
+
+            @Override
+            public EmailAddress getEmailAddress() {
+                return whoIs.getEmailAddress();
+            }
+
+            @Override
+            public Name getName() {
+                return whoIs.getName();
+            }
+
+            @Override
+            public Birthdate getBirthdate() {
+                return whoIs.getBirthdate();
+            }
+        };
     }
 }

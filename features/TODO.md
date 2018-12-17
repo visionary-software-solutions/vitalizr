@@ -31,12 +31,10 @@ to use it to improve someone's health.</p>
 <h2>User Stories</h2>
 <p>As a patient, because I want to be able to compare my Vitals over time, I want to be able to see a line graph for a
 time range.</p>
-<p>As family of a patient, because I love my patient health, I want to be able to review my patient's Vitals
-for a time range</p>
-<p>As a doctor of the patient, in order to make advanced clinical decisions, I want to be able to review my patient's Vitals
-for a time range</p>
-<p>As a trusted contact, in order review the patient's health, I want to be able to review a patient's Vitals
-for a time range</p>
+<p>As family of a patient, because I love my patient and care for their health, I want to be able to review
+my family member's Vitals</p>
+<p>As a doctor of the patient, in order to make advanced clinical decisions, I want to be able to review my patient's Vitals</p>
+<p>As a trusted contact, in order review the patient's health, I want to be able to review a patient's Vitals</p>
 <p>As a patient, because I don't want to forget, I would like to schedule reminders for when I should collect Vitals</p>
 <p>As a patient, because even reminders are easy to forget to check, I want reminders to automatically push to check my vitals</p>
 <p>As a human being, because all of this work is tedious and mechanical, I would like a configurable automatic system to periodically
