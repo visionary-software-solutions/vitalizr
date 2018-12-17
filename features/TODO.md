@@ -29,9 +29,6 @@ of medians, I want to be able to simply calculate summary statistics.</p>
 to use it to improve someone's health.</p>
 
 <h2>User Stories</h2>
-<p>As a patient, because I want to proactively monitor my health, I want to be able to store my body temperature at a particular
-point in time.</p>
-<p>As a patient, because I want to review my health, I want to be retrieve my body temperature for a time range.</p>
 <p>As a patient, because I want to be able to compare my Vitals over time, I want to be able to see a line graph for a
 time range.</p>
 <p>As family of a patient, because I love my patient health, I want to be able to review my patient's Vitals

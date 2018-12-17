@@ -7,6 +7,7 @@ import software.visionary.vitalizr.api.Vital;
 import software.visionary.vitalizr.api.VitalRepository;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
+import software.visionary.vitalizr.bodyTemperature.BodyTemperature;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
 import software.visionary.vitalizr.weight.Weight;
@@ -141,6 +142,30 @@ public final class Vitalizr {
         VITALS.accept(vital -> {
             if (vital.belongsTo().equals(person) && interval.contains(vital.observedAt()) && vital instanceof BloodSugar) {
                 found.add((BloodSugar) vital);
+            }
+        });
+        return found;
+    }
+
+    public static void storeTemperature(final BodyTemperature toStore) {
+        VITALS.save(toStore);
+    }
+
+    public static Collection<BodyTemperature> getBodyTemperaturesFor(final Person person) {
+        final Collection<BodyTemperature> found = new ArrayList<>();
+        VITALS.accept(vital -> {
+            if (vital.belongsTo().equals(person) && vital instanceof BodyTemperature) {
+                found.add((BodyTemperature) vital);
+            }
+        });
+        return found;
+    }
+
+    public static Collection<BodyTemperature> getBodyTemperaturesInInterval(final Person person, final Interval interval) {
+        final Collection<BodyTemperature> found = new ArrayList<>();
+        VITALS.accept(vital -> {
+            if (vital.belongsTo().equals(person) && interval.contains(vital.observedAt()) && vital instanceof BodyTemperature) {
+                found.add((BodyTemperature) vital);
             }
         });
         return found;

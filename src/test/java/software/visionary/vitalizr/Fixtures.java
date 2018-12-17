@@ -9,10 +9,10 @@ import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.api.Unit;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
 import software.visionary.vitalizr.bloodSugar.MilligramsPerDecilitre;
+import software.visionary.vitalizr.bodyTemperature.BodyTemperature;
+import software.visionary.vitalizr.bodyTemperature.ImperialTemperature;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
-import software.visionary.vitalizr.weight.MetricWeight;
-import software.visionary.vitalizr.weight.Weight;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -135,5 +135,9 @@ public class Fixtures {
                 return MilligramsPerDecilitre.INSTANCE;
             }
         };
+    }
+
+    public static BodyTemperature temperatureAt(final double v, final Instant instant, final Person person) {
+        return new ImperialTemperature(person, v, instant);
     }
 }
