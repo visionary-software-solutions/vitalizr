@@ -13,6 +13,7 @@ import software.visionary.vitalizr.api.VitalRepository;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
 import software.visionary.vitalizr.bodyTemperature.BodyTemperature;
+import software.visionary.vitalizr.notifications.VitalNotification;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
 import software.visionary.vitalizr.weight.Weight;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public final class Vitalizr {
     private static final VitalRepository VITALS = new InMemoryVitalRepository();
@@ -30,7 +32,11 @@ public final class Vitalizr {
     }
 
     public static void storeWeightFor(final Weight toStore) {
-        VITALS.save(toStore);
+        storeVital(toStore);
+    }
+
+    public static void storeVital(final Vital pulse) {
+        VITALS.save(pulse);
     }
 
     public static Collection<Weight> getWeightsFor(final Person toFind) {
@@ -66,7 +72,7 @@ public final class Vitalizr {
     }
 
     public static void storeBloodPressureFor(final BloodPressure toStore) {
-        VITALS.save(toStore);
+        storeVital(toStore);
     }
 
     public static Collection<BloodPressure> getBloodPressuresFor(final Person person) {
@@ -78,7 +84,7 @@ public final class Vitalizr {
     }
 
     public static void storePulseFor(final Pulse pulse) {
-        VITALS.save(pulse);
+        storeVital(pulse);
     }
 
     public static Collection<Pulse> getPulsesFor(final Person person) {
@@ -90,7 +96,7 @@ public final class Vitalizr {
     }
 
     public static void storeBloodOxygenFor(final BloodOxygen oxygen) {
-        VITALS.save(oxygen);
+        storeVital(oxygen);
     }
 
     public static Collection<BloodOxygen> getBloodOxygensFor(final Person person) {
@@ -102,7 +108,7 @@ public final class Vitalizr {
     }
 
     public static void storeBloodSugarFor(final BloodSugar toStore) {
-        VITALS.save(toStore);
+        storeVital(toStore);
     }
 
     public static Collection<BloodSugar> getBloodSugarsFor(final Person person) {
@@ -114,7 +120,7 @@ public final class Vitalizr {
     }
 
     public static void storeTemperature(final BodyTemperature toStore) {
-        VITALS.save(toStore);
+        storeVital(toStore);
     }
 
     public static Collection<BodyTemperature> getBodyTemperaturesFor(final Person person) {
@@ -126,7 +132,11 @@ public final class Vitalizr {
     }
 
     public static void addFamilyMember(final Family family) {
-        CONTACTS.save(family);
+        storeTrustedContact(family);
+    }
+
+    public static void storeTrustedContact(final TrustedContact contact) {
+        CONTACTS.save(contact);
     }
 
     public static Collection<Family> getFamilyFor(final Person person) {
@@ -144,7 +154,7 @@ public final class Vitalizr {
     }
 
     public static void addMedicalProvider(final MedicalProvider provider) {
-        CONTACTS.save(provider);
+        storeTrustedContact(provider);
     }
 
     public static Collection<MedicalProvider> getMedicalProvidersFor(final Person person) {
@@ -152,10 +162,23 @@ public final class Vitalizr {
     }
 
     public static void addCaregiver(final Caregiver giver) {
-        CONTACTS.save(giver);
+        storeTrustedContact(giver);
     }
 
     public static Collection<Caregiver> getCaregiversFor(final Person person) {
         return getTrustedContacts(person, Caregiver.class);
+    }
+
+    public static Collection<VitalNotification> createNotificationsForTrustedContacts(final Person person) {
+        final Collection<VitalNotification> notifications = new ArrayList<>();
+        CONTACTS.accept(tc -> {
+            if (tc.connectedTo().equals(person)) {
+                notifications.addAll(getVitalsMatching(Vital.class, (vital) -> vital.belongsTo().equals(person))
+                        .stream()
+                        .map(v -> new VitalNotification(v, tc))
+                        .collect(Collectors.toList()));
+            }
+        });
+        return notifications;
     }
 }

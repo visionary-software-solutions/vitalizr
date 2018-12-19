@@ -24,3 +24,7 @@ point in time.</p>
 <p>As a caregiver of a patient, in order report and review the patient's health, I want to to be known as part a Caregiver for the patient</p>
 <p>As a software engineer, because I don't want to copy-paste code and die in maintenance obscurity, I want Family,
 MedicalProvider, and Caregiver to unify behind a common concept, TrustedContact</p>
+<p>As family of a patient, because I love my patient and care for their health, I want to be able to review
+my family member's Vitals</p>
+<p>As a doctor of the patient, in order to make advanced clinical decisions, I want to be able to review my patient's Vitals</p>
+<p>As a trusted contact, in order review the patient's health, I want to be able to review a patient's Vitals</p>
