@@ -2,6 +2,7 @@ package software.visionary.vitalizr;
 
 import org.threeten.extra.Interval;
 import software.visionary.vitalizr.api.Birthdate;
+import software.visionary.vitalizr.api.Caregiver;
 import software.visionary.vitalizr.api.EmailAddress;
 import software.visionary.vitalizr.api.Family;
 import software.visionary.vitalizr.api.Lifeform;
@@ -193,6 +194,34 @@ public class Fixtures {
 
             @Override
             public Person getPatient() {
+                return person;
+            }
+
+            @Override
+            public EmailAddress getEmailAddress() {
+                return whoIs.getEmailAddress();
+            }
+
+            @Override
+            public Name getName() {
+                return whoIs.getName();
+            }
+
+            @Override
+            public Birthdate getBirthdate() {
+                return whoIs.getBirthdate();
+            }
+        };
+    }
+
+    public static Caregiver caregiver(final Person person) {
+        return new Caregiver() {
+            private final Person whoIs = Fixtures.createPerson(new Name("Mandy McCray"),
+                    Fixtures.getBirthdate(Year.parse("1978"), MonthDay.of(10, 22)),
+                    Fixtures.getEmailAddress(new Name("caregiver"), new Name("care.org")));
+
+            @Override
+            public Person getDependent() {
                 return person;
             }
 

@@ -1,6 +1,7 @@
 package software.visionary.vitalizr;
 
 import org.threeten.extra.Interval;
+import software.visionary.vitalizr.api.Caregiver;
 import software.visionary.vitalizr.api.Family;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.MedicalProvider;
@@ -16,7 +17,6 @@ import software.visionary.vitalizr.weight.Weight;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -25,6 +25,7 @@ public final class Vitalizr {
     private static final VitalRepository<Vital> VITALS = new InMemoryVitalRepository();
     private static final Collection<Family> MEMBERS = new CopyOnWriteArraySet<>();
     private static final Collection<MedicalProvider> PROVIDERS = new CopyOnWriteArraySet<>();
+    private static final Collection<Caregiver> CAREGIVERS = new CopyOnWriteArraySet<>();
 
     private Vitalizr() {
     }
@@ -139,5 +140,13 @@ public final class Vitalizr {
 
     public static Collection<MedicalProvider> getMedicalProvidersFor(final Person person) {
         return PROVIDERS.stream().filter(f -> f.getPatient().equals(person)).collect(Collectors.toList());
+    }
+
+    public static void addCaregiver(final Caregiver giver) {
+        CAREGIVERS.add(giver);
+    }
+
+    public static Collection<Caregiver> getCaregiversFor(final Person person) {
+        return CAREGIVERS.stream().filter(f -> f.getDependent().equals(person)).collect(Collectors.toList());
     }
 }

@@ -29,6 +29,8 @@ of medians, I want to be able to simply calculate summary statistics.</p>
 to use it to improve someone's health.</p>
 
 <h2>User Stories</h2>
+<p>As a software engineer, because I don't want to copy-paste code and die in maintenance obscurity, I want Family,
+MedicalProvider, and Caregiver to unify behind a common concept, TrustedContact</p>
 <p>As a patient, because I want to be able to compare my Vitals over time, I want to be able to see a line graph for a
 time range.</p>
 <p>As family of a patient, because I love my patient and care for their health, I want to be able to review
