@@ -6,6 +6,7 @@ import software.visionary.vitalizr.api.Family;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.MedicalProvider;
 import software.visionary.vitalizr.api.Person;
+import software.visionary.vitalizr.api.TrustedContact;
 import software.visionary.vitalizr.api.Vital;
 import software.visionary.vitalizr.api.VitalRepository;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
@@ -23,9 +24,7 @@ import java.util.stream.Collectors;
 
 public final class Vitalizr {
     private static final VitalRepository<Vital> VITALS = new InMemoryVitalRepository();
-    private static final Collection<Family> MEMBERS = new CopyOnWriteArraySet<>();
-    private static final Collection<MedicalProvider> PROVIDERS = new CopyOnWriteArraySet<>();
-    private static final Collection<Caregiver> CAREGIVERS = new CopyOnWriteArraySet<>();
+    private static final Collection<TrustedContact> CONTACTS = new CopyOnWriteArraySet<>();
 
     private Vitalizr() {
     }
@@ -127,26 +126,36 @@ public final class Vitalizr {
     }
 
     public static void addFamilyMember(final Family family) {
-        MEMBERS.add(family);
+        CONTACTS.add(family);
     }
 
     public static Collection<Family> getFamilyFor(final Person person) {
-        return MEMBERS.stream().filter(f -> f.getLovedOne().equals(person)).collect(Collectors.toList());
+        return CONTACTS.stream()
+                .filter(f -> f.connectedTo().equals(person))
+                .filter(Family.class::isInstance)
+                .map(Family.class::cast)
+                .collect(Collectors.toList());
     }
 
     public static void addMedicalProvider(final MedicalProvider provider) {
-        PROVIDERS.add(provider);
+        CONTACTS.add(provider);
     }
 
     public static Collection<MedicalProvider> getMedicalProvidersFor(final Person person) {
-        return PROVIDERS.stream().filter(f -> f.getPatient().equals(person)).collect(Collectors.toList());
+        return CONTACTS.stream()
+                .filter(MedicalProvider.class::isInstance)
+                .map(MedicalProvider.class::cast)
+                .filter(f -> f.connectedTo().equals(person)).collect(Collectors.toList());
     }
 
     public static void addCaregiver(final Caregiver giver) {
-        CAREGIVERS.add(giver);
+        CONTACTS.add(giver);
     }
 
     public static Collection<Caregiver> getCaregiversFor(final Person person) {
-        return CAREGIVERS.stream().filter(f -> f.getDependent().equals(person)).collect(Collectors.toList());
+        return CONTACTS.stream()
+                .filter(Caregiver.class::isInstance)
+                .map(Caregiver.class::cast)
+                .filter(f -> f.connectedTo().equals(person)).collect(Collectors.toList());
     }
 }

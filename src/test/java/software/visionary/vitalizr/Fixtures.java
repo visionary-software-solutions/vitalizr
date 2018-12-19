@@ -165,7 +165,7 @@ public class Fixtures {
                     Fixtures.getEmailAddress(new Name("master"), new Name("debater.com")));
 
             @Override
-            public Person getLovedOne() {
+            public Person connectedTo() {
                 return person;
             }
 
@@ -193,7 +193,7 @@ public class Fixtures {
                     Fixtures.getEmailAddress(new Name("doctor"), new Name("good.org")));
 
             @Override
-            public Person getPatient() {
+            public Person connectedTo() {
                 return person;
             }
 
@@ -221,7 +221,7 @@ public class Fixtures {
                     Fixtures.getEmailAddress(new Name("caregiver"), new Name("care.org")));
 
             @Override
-            public Person getDependent() {
+            public Person connectedTo() {
                 return person;
             }
 

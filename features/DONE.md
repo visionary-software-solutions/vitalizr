@@ -22,3 +22,5 @@ point in time.</p>
 <p>As family of a patient, because I love my patient and care for their health, I want to be known as part of the Family</p>
 <p>As a doctor of the patient, in order to make advanced clinical decisions, I want to to be known as a MedicalProvider for the patient</p>
 <p>As a caregiver of a patient, in order report and review the patient's health, I want to to be known as part a Caregiver for the patient</p>
+<p>As a software engineer, because I don't want to copy-paste code and die in maintenance obscurity, I want Family,
+MedicalProvider, and Caregiver to unify behind a common concept, TrustedContact</p>
