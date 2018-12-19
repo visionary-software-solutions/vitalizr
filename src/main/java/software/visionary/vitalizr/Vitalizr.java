@@ -7,6 +7,7 @@ import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.MedicalProvider;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.api.TrustedContact;
+import software.visionary.vitalizr.api.TrustedContactRepository;
 import software.visionary.vitalizr.api.Vital;
 import software.visionary.vitalizr.api.VitalRepository;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
@@ -18,13 +19,12 @@ import software.visionary.vitalizr.weight.Weight;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public final class Vitalizr {
-    private static final VitalRepository<Vital> VITALS = new InMemoryVitalRepository();
-    private static final Collection<TrustedContact> CONTACTS = new CopyOnWriteArraySet<>();
+    private static final VitalRepository VITALS = new InMemoryVitalRepository();
+    private static final TrustedContactRepository CONTACTS = new InMemoryTrustedContactRepository();
 
     private Vitalizr() {
     }
@@ -126,36 +126,36 @@ public final class Vitalizr {
     }
 
     public static void addFamilyMember(final Family family) {
-        CONTACTS.add(family);
+        CONTACTS.save(family);
     }
 
     public static Collection<Family> getFamilyFor(final Person person) {
-        return CONTACTS.stream()
-                .filter(f -> f.connectedTo().equals(person))
-                .filter(Family.class::isInstance)
-                .map(Family.class::cast)
-                .collect(Collectors.toList());
+        return getTrustedContacts(person, Family.class);
+    }
+
+    private static <T extends TrustedContact> Collection<T> getTrustedContacts(final Person person, final Class<T> aClass) {
+        final List<T> found = new ArrayList<>();
+        CONTACTS.accept((TrustedContact tc) -> {
+            if (tc.connectedTo().equals(person) && aClass.isAssignableFrom(tc.getClass())) {
+                found.add(aClass.cast(tc));
+            }
+        });
+        return found;
     }
 
     public static void addMedicalProvider(final MedicalProvider provider) {
-        CONTACTS.add(provider);
+        CONTACTS.save(provider);
     }
 
     public static Collection<MedicalProvider> getMedicalProvidersFor(final Person person) {
-        return CONTACTS.stream()
-                .filter(MedicalProvider.class::isInstance)
-                .map(MedicalProvider.class::cast)
-                .filter(f -> f.connectedTo().equals(person)).collect(Collectors.toList());
+        return getTrustedContacts(person, MedicalProvider.class);
     }
 
     public static void addCaregiver(final Caregiver giver) {
-        CONTACTS.add(giver);
+        CONTACTS.save(giver);
     }
 
     public static Collection<Caregiver> getCaregiversFor(final Person person) {
-        return CONTACTS.stream()
-                .filter(Caregiver.class::isInstance)
-                .map(Caregiver.class::cast)
-                .filter(f -> f.connectedTo().equals(person)).collect(Collectors.toList());
+        return getTrustedContacts(person, Caregiver.class);
     }
 }

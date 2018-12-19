@@ -1,31 +1,26 @@
 package software.visionary.vitalizr;
 
-import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Vital;
 import software.visionary.vitalizr.api.VitalRepository;
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collection;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public final class InMemoryVitalRepository implements VitalRepository<Vital> {
-    private final Map<Lifeform, List<Vital>> stored;
+public final class InMemoryVitalRepository implements VitalRepository {
+    private final Collection<Vital> stored;
 
     InMemoryVitalRepository() {
-        stored = new ConcurrentHashMap<>();
+        stored = new CopyOnWriteArraySet<>();
     }
 
     @Override
     public void save(final Vital toSave) {
-        stored.computeIfPresent(toSave.belongsTo(), (person, pressures) -> Stream.concat(pressures.stream(), Stream.of(toSave)).collect(Collectors.toList()));
-        stored.putIfAbsent(toSave.belongsTo(), Stream.of(toSave).collect(Collectors.toList()));
+        stored.add(toSave);
     }
 
     @Override
     public void accept(final Consumer<Vital> visitor) {
-        stored.values().stream().flatMap(List::stream).forEach(visitor);
+        stored.forEach(visitor);
     }
 }
