@@ -1,32 +1,42 @@
 package software.visionary.vitalizr;
 
 import org.threeten.extra.Interval;
-import software.visionary.vitalizr.api.Caregiver;
-import software.visionary.vitalizr.api.Family;
-import software.visionary.vitalizr.api.Lifeform;
-import software.visionary.vitalizr.api.MedicalProvider;
-import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.api.TrustedContact;
-import software.visionary.vitalizr.api.TrustedContactRepository;
-import software.visionary.vitalizr.api.Vital;
-import software.visionary.vitalizr.api.VitalRepository;
+import software.visionary.vitalizr.api.*;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
 import software.visionary.vitalizr.bodyTemperature.BodyTemperature;
+import software.visionary.vitalizr.notifications.Reminder;
 import software.visionary.vitalizr.notifications.VitalNotification;
+import software.visionary.vitalizr.notifications.VitalReminder;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
 import software.visionary.vitalizr.weight.Weight;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public final class Vitalizr {
     private static final VitalRepository VITALS = new InMemoryVitalRepository();
     private static final TrustedContactRepository CONTACTS = new InMemoryTrustedContactRepository();
+    private static final Repository<Reminder> REMINDERS = new Repository<>() {
+        private final List<Reminder> SAVED = new CopyOnWriteArrayList<>();
+
+        @Override
+        public void save(final Reminder toSave) {
+            SAVED.add(toSave);
+        }
+
+        @Override
+        public void accept(final Consumer<Reminder> visitor) {
+            SAVED.forEach(visitor);
+        }
+    };
 
     private Vitalizr() {
     }
@@ -180,5 +190,19 @@ public final class Vitalizr {
             }
         });
         return notifications;
+    }
+
+    public static <T extends Vital> void addReminderForVital(final Person person, final Class<T> toRemindAbout, final Instant when) {
+        REMINDERS.save(new VitalReminder(when, person, toRemindAbout));
+    }
+
+    public static Collection<VitalReminder> getRemindersFor(final Person person) {
+        final List<VitalReminder> saved = new ArrayList<>();
+        REMINDERS.accept(reminder -> {
+            if (reminder instanceof VitalReminder && reminder.target().equals(person)) {
+                saved.add((VitalReminder) reminder);
+            }
+        });
+        return saved;
     }
 }

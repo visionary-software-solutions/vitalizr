@@ -31,7 +31,6 @@ to use it to improve someone's health.</p>
 <h2>User Stories</h2>
 <p>As a patient, because I want to be able to compare my Vitals over time, I want to be able to see a line graph for a
 time range.</p>
-<p>As a patient, because I don't want to forget, I would like to schedule reminders for when I should collect Vitals</p>
 <p>As a patient, because even reminders are easy to forget to check, I want reminders to automatically push to check my vitals</p>
 <p>As a human being, because all of this work is tedious and mechanical, I would like a configurable automatic system to periodically
 record my vitals</p>
