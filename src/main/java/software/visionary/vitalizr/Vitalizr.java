@@ -10,8 +10,13 @@ import software.visionary.vitalizr.notifications.VitalNotification;
 import software.visionary.vitalizr.notifications.VitalReminder;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
+import software.visionary.vitalizr.serialization.GZipFiles;
+import software.visionary.vitalizr.weight.MetricWeightSerializationProxy;
 import software.visionary.vitalizr.weight.Weight;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -204,5 +209,16 @@ public final class Vitalizr {
             }
         });
         return saved;
+    }
+
+    public static void loadFromFile(final File data) {
+        try {
+            final List<String> entries = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
+            // TODO: For other vitals besides MetricWeight
+            final List<Vital> stored = entries.stream().map(e -> MetricWeightSerializationProxy.fromString(e).toMetricWeight()).collect(Collectors.toList());
+            stored.forEach(VITALS::save);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
     }
 }

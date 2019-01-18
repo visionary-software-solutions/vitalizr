@@ -29,3 +29,4 @@ my family member's Vitals</p>
 <p>As a doctor of the patient, in order to make advanced clinical decisions, I want to be able to review my patient's Vitals</p>
 <p>As a trusted contact, in order review the patient's health, I want to be able to review a patient's Vitals</p>
 <p>As a patient, because I don't want to forget, I would like to schedule reminders for when I should collect Vitals</p>
+<p> As a patient, because I want to be able to review my data stored in other places, I want vitals to be loadable via a file</p>

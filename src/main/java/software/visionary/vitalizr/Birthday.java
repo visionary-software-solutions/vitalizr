@@ -26,25 +26,7 @@ public final class Birthday implements Birthdate {
 
     @Override
     public String toString() {
-        return "Birthday{" +
-                "year=" + year +
-                ", month=" + month +
-                ", day=" + day +
-                '}';
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        final Birthday birthday = (Birthday) o;
-        return Objects.equals(getYear(), birthday.getYear()) &&
-                getMonth() == birthday.getMonth() &&
-                Objects.equals(getDay(), birthday.getDay());
+        return String.format("%s-%s-%s", getYear(), getMonth().getValue(), getDay().getDayOfMonth());
     }
 
     @Override
@@ -60,6 +42,20 @@ public final class Birthday implements Birthdate {
     @Override
     public MonthDay getDay() {
         return day;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final Birthday birthday = (Birthday) o;
+        return Objects.equals(getYear(), birthday.getYear()) &&
+                getMonth() == birthday.getMonth() &&
+                Objects.equals(getDay(), birthday.getDay());
     }
 
     @Override

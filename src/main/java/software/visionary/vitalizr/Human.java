@@ -18,7 +18,7 @@ public final class Human implements Person {
         this.email = Objects.requireNonNull(email);
     }
 
-    static Person createPerson(final String input) {
+    public static Person createPerson(final String input) {
         final String delimiter = ":";
         final String[] tokens = input.split(delimiter);
         return new Human(new Name(tokens[0]), Birthday.createFrom(tokens[1]), PersonalEmail.createFrom(tokens[2]));
@@ -31,11 +31,7 @@ public final class Human implements Person {
 
     @Override
     public String toString() {
-        return "Human{" +
-                "name=" + name +
-                ", birthdate=" + birthdate +
-                ", email=" + email +
-                '}';
+        return String.format("%s:%s:%s", name, birthdate, email);
     }
 
     @Override

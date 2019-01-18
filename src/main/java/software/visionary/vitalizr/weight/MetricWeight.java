@@ -45,7 +45,7 @@ public final class MetricWeight implements Weight {
                 Objects.equals(getUnit(), weight.getUnit()) &&
                 Objects.equals(belongsTo(), weight.belongsTo());
     }
-
+    
     @Override
     public Lifeform belongsTo() {
         return owner;
