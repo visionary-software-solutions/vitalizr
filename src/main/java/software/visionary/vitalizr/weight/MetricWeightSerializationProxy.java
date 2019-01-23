@@ -4,9 +4,13 @@ import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.api.Lifeform;
 
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 public final class MetricWeightSerializationProxy {
-    private final static String DELIMITER = "💩";
+    private static final String FIELD_DELIMITER = "💩";
+    private static final String RECORD_DELIMITER = "\uD83E\uDD2F";
     private final Instant observationTimestamp;
     private final byte observedValue;
     private final String observedUnit;
@@ -26,8 +30,15 @@ public final class MetricWeightSerializationProxy {
                 new LifeformSerializationProxy(toSerialize.belongsTo()).toString());
     }
 
+    public static Stream<MetricWeight> getMetricWeightStream(final List<String> entries) {
+        return entries.stream()
+                .map(e -> e.split(RECORD_DELIMITER))
+                .flatMap(Arrays::stream)
+                .map(record -> fromString(record).toMetricWeight());
+    }
+
     public static MetricWeightSerializationProxy fromString(final String string) {
-        final String[] pieces = string.split(DELIMITER);
+        final String[] pieces = string.split(FIELD_DELIMITER);
         final Instant time = Instant.parse(pieces[0]);
         final byte value = Byte.valueOf(pieces[1]);
         final String unit = pieces[2];
@@ -41,7 +52,15 @@ public final class MetricWeightSerializationProxy {
 
     @Override
     public String toString() {
-        return String.format("%s%s%d%s%s%s%s", observationTimestamp, DELIMITER, observedValue, DELIMITER, observedUnit, DELIMITER, person);
+        return String.format("%s%s%d%s%s%s%s%s",
+                observationTimestamp,
+                FIELD_DELIMITER,
+                observedValue,
+                FIELD_DELIMITER,
+                observedUnit,
+                FIELD_DELIMITER,
+                person,
+                RECORD_DELIMITER);
     }
 
     private static class LifeformSerializationProxy {

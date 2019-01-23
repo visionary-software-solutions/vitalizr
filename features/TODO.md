@@ -29,8 +29,6 @@ of medians, I want to be able to simply calculate summary statistics.</p>
 to use it to improve someone's health.</p>
 
 <h2>User Stories</h2>
-<p> As a patient, because I want to be able to review my data at my own convenience, I want entries to be persisted to some
-permanent storage</p>
 <p>As a patient, because I want to be able to compare my Vitals over time, I want to be able to see a line graph for a
 time range.</p>
 <p>As a patient, because even reminders are easy to forget to check, I want reminders to automatically push to check my vitals</p>
