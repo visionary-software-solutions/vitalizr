@@ -12,6 +12,7 @@ import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.api.Unit;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
 import software.visionary.vitalizr.bloodSugar.MilligramsPerDecilitre;
+import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
 import software.visionary.vitalizr.bodyTemperature.BodyTemperature;
 import software.visionary.vitalizr.bodyTemperature.ImperialTemperature;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
@@ -238,6 +239,25 @@ public class Fixtures {
             @Override
             public Birthdate getBirthdate() {
                 return whoIs.getBirthdate();
+            }
+        };
+    }
+
+    public static BodyMassIndex bmiAt(final double v, final Instant instant, final Person person) {
+        return new BodyMassIndex() {
+            @Override
+            public Lifeform belongsTo() {
+                return person;
+            }
+
+            @Override
+            public Number getQuantity() {
+                return v;
+            }
+
+            @Override
+            public Instant observedAt() {
+                return instant;
             }
         };
     }

@@ -4,6 +4,7 @@ import org.threeten.extra.Interval;
 import software.visionary.vitalizr.api.*;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
+import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
 import software.visionary.vitalizr.bodyTemperature.BodyTemperature;
 import software.visionary.vitalizr.notifications.Reminder;
 import software.visionary.vitalizr.notifications.VitalNotification;
@@ -232,5 +233,17 @@ public final class Vitalizr {
                 new WriteObjectAsGZip<>(MetricWeightSerializationProxy.fromMetricWeight((MetricWeight) v), data.toPath()).run();
             }
         });
+    }
+
+    public static void storeBodyMassIndexFor(final BodyMassIndex bodyMassIndex) {
+        storeVital(bodyMassIndex);
+    }
+
+    public static Collection<BodyMassIndex> getBodyMassIndicesInInterval(final Person person, final Interval interval) {
+        return getVitalsInInterval(person, interval, BodyMassIndex.class);
+    }
+
+    public static Collection<BodyMassIndex> getBodyMassIndicesFor(final Person person) {
+        return getVitalFor(person, BodyMassIndex.class);
     }
 }
