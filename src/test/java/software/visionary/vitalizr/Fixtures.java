@@ -15,6 +15,7 @@ import software.visionary.vitalizr.bloodSugar.MilligramsPerDecilitre;
 import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
 import software.visionary.vitalizr.bodyTemperature.BodyTemperature;
 import software.visionary.vitalizr.bodyTemperature.ImperialTemperature;
+import software.visionary.vitalizr.bodyWater.BodyWaterPercentage;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
 
@@ -258,6 +259,25 @@ public class Fixtures {
             @Override
             public Instant observedAt() {
                 return instant;
+            }
+        };
+    }
+
+    public static BodyWaterPercentage bodyWaterPercentageAt(final double v, final Instant i, final Person p) {
+        return new BodyWaterPercentage() {
+            @Override
+            public Lifeform belongsTo() {
+                return p;
+            }
+
+            @Override
+            public Number getQuantity() {
+                return v;
+            }
+
+            @Override
+            public Instant observedAt() {
+                return i;
             }
         };
     }

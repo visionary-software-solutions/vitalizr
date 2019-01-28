@@ -6,6 +6,7 @@ import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
 import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
 import software.visionary.vitalizr.bodyTemperature.BodyTemperature;
+import software.visionary.vitalizr.bodyWater.BodyWaterPercentage;
 import software.visionary.vitalizr.notifications.Reminder;
 import software.visionary.vitalizr.notifications.VitalNotification;
 import software.visionary.vitalizr.notifications.VitalReminder;
@@ -245,5 +246,17 @@ public final class Vitalizr {
 
     public static Collection<BodyMassIndex> getBodyMassIndicesFor(final Person person) {
         return getVitalFor(person, BodyMassIndex.class);
+    }
+
+    public static void storeBodyWaterPercentageFor(final BodyWaterPercentage toStore) {
+        storeVital(toStore);
+    }
+
+    public static Collection<BodyWaterPercentage> getBodyWaterPercentagesFor(final Person person) {
+        return getVitalFor(person, BodyWaterPercentage.class);
+    }
+
+    public static Collection<BodyWaterPercentage> getBodyWaterPercentagesInInterval(final Person person, final Interval interval) {
+        return getVitalsInInterval(person, interval, BodyWaterPercentage.class);
     }
 }
