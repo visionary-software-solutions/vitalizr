@@ -216,7 +216,7 @@ public final class Vitalizr {
         return saved;
     }
 
-    public static void loadFromFile(final File data) {
+    public static void loadVitalsFromFile(final File data) {
         try {
             final List<String> entries = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
             // TODO: For other vitals besides MetricWeight

@@ -19,9 +19,9 @@ import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class LoadFromFileIntegrationTest {
+class LoadFromVitalsFileIntegrationTest {
     @Test
-    void canLoadFromFile() throws IOException {
+    void canLoadVitalsFromFile() throws IOException {
         // Given: A file containing some vitals for a person
         final Person mom = Human.createPerson("Barbara Hidalgo-Toledo:1959-01-01:mom@mommy.net");
         final MetricWeight toStore = MetricWeight.inKilograms(100, Instant.now(), mom);
@@ -34,8 +34,8 @@ class LoadFromFileIntegrationTest {
         writer.run();
         final WriteObjectAsGZip<MetricWeightSerializationProxy> writer2 = new WriteObjectAsGZip<>(serialized2, data.toPath());
         writer2.run();
-        // When: I call loadFromFile
-        Vitalizr.loadFromFile(data);
+        // When: I call loadVitalsFromFile
+        Vitalizr.loadVitalsFromFile(data);
         // And: I query for vitals I know are in that file
         final Collection<Weight> stored = Vitalizr.getWeightsFor(mom);
         // Then: The vitals should be returned

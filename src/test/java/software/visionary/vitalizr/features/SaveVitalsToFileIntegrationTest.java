@@ -27,9 +27,9 @@ import java.util.zip.GZIPInputStream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SaveToFileIntegrationTest {
+class SaveVitalsToFileIntegrationTest {
     @Test
-    void canSaveToFile() throws IOException {
+    void canSaveVitalsToFile() throws IOException {
         // Given: A person
         final Person mom = Human.createPerson("Barbara Hidalgo-Toledo:1959-01-01:mom@mommy.net");
         // And: Some Vitals for the person
