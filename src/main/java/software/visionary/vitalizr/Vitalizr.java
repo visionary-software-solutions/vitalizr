@@ -13,15 +13,9 @@ import software.visionary.vitalizr.notifications.VitalNotification;
 import software.visionary.vitalizr.notifications.VitalReminder;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
-import software.visionary.vitalizr.serialization.GZipFiles;
-import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
-import software.visionary.vitalizr.weight.MetricWeight;
-import software.visionary.vitalizr.weight.MetricWeightSerializationProxy;
 import software.visionary.vitalizr.weight.Weight;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -217,24 +211,13 @@ public final class Vitalizr {
     }
 
     public static void loadVitalsFromFile(final File data) {
-        try {
-            final List<String> entries = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-            // TODO: For other vitals besides MetricWeight
-            final List<Vital> stored = MetricWeightSerializationProxy.getMetricWeightStream(entries)
-                    .collect(Collectors.toList());
-            stored.forEach(VITALS::save);
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
+        VitalSerializationStrategy.deserialize(data).forEach(VITALS::save);
     }
 
     public static void saveVitalsToFile(final File data) {
-        VITALS.accept(v -> {
-            // TODO: Add support for other Vitals
-            if (v instanceof MetricWeight) {
-                new WriteObjectAsGZip<>(MetricWeightSerializationProxy.fromMetricWeight((MetricWeight) v), data.toPath()).run();
-            }
-        });
+        final Collection<Vital> toWrite = new ArrayList<>();
+        VITALS.accept(toWrite::add);
+        VitalSerializationStrategy.serialize(toWrite, data);
     }
 
     public static void storeBodyMassIndexFor(final BodyMassIndex bodyMassIndex) {
