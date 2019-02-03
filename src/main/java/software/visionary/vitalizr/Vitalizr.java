@@ -4,6 +4,7 @@ import org.threeten.extra.Interval;
 import software.visionary.vitalizr.api.*;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
+import software.visionary.vitalizr.bodyFat.BodyFatPercentage;
 import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
 import software.visionary.vitalizr.bodyTemperature.BodyTemperature;
 import software.visionary.vitalizr.bodyWater.BodyWaterPercentage;
@@ -258,5 +259,17 @@ public final class Vitalizr {
 
     public static Collection<BodyWaterPercentage> getBodyWaterPercentagesInInterval(final Person person, final Interval interval) {
         return getVitalsInInterval(person, interval, BodyWaterPercentage.class);
+    }
+
+    public static void storeBodyFatPercentageFor(final BodyFatPercentage toStore) {
+        storeVital(toStore);
+    }
+
+    public static Collection<BodyFatPercentage> getBodyFatPercentagesFor(final Person person) {
+        return getVitalFor(person, BodyFatPercentage.class);
+    }
+
+    public static Collection<BodyFatPercentage> getBodyFatPercentagesInInterval(final Person person, final Interval interval) {
+        return getVitalsInInterval(person, interval, BodyFatPercentage.class);
     }
 }
