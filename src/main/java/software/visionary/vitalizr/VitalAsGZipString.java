@@ -2,6 +2,8 @@ package software.visionary.vitalizr;
 
 import software.visionary.vitalizr.api.Vital;
 import software.visionary.vitalizr.api.VitalSerializationStrategy;
+import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
+import software.visionary.vitalizr.bodyMassIndex.BodyMassIndexSerializationProxy;
 import software.visionary.vitalizr.serialization.GZipFiles;
 import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
 import software.visionary.vitalizr.weight.MetricWeight;
@@ -13,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 enum VitalAsGZipString implements VitalSerializationStrategy<File> {
     INSTANCE;
@@ -28,8 +31,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
     }
 
     private static List<Vital> convert(final List<String> entries) {
-        // TODO: For other vitals besides MetricWeight
-        return MetricWeightSerializationProxy.getMetricWeightStream(entries)
+        // TODO: For other vitals
+        return Stream.concat(MetricWeightSerializationProxy.stream(entries), BodyMassIndexSerializationProxy.stream(entries))
                 .collect(Collectors.toList());
     }
 
@@ -42,6 +45,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
         // TODO: Add support for other Vitals
         if (v instanceof MetricWeight) {
             new WriteObjectAsGZip<>(MetricWeightSerializationProxy.fromMetricWeight((MetricWeight) v), data.toPath()).run();
+        } else if (v instanceof BodyMassIndex) {
+            new WriteObjectAsGZip<>(BodyMassIndexSerializationProxy.fromBodyMassIndex((BodyMassIndex) v), data.toPath()).run();
         }
     }
 }

@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
+import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
+import software.visionary.vitalizr.bodyMassIndex.BodyMassIndexSerializationProxy;
+import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
 import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
 import software.visionary.vitalizr.weight.MetricWeight;
 import software.visionary.vitalizr.weight.MetricWeightSerializationProxy;
@@ -25,14 +28,14 @@ class LoadFromVitalsFileIntegrationTest {
         // Given: A file containing some vitals for a person
         final Person mom = Human.createPerson("Barbara Hidalgo-Toledo:1959-01-01:mom@mommy.net");
         final MetricWeight toStore = MetricWeight.inKilograms(100, Instant.now(), mom);
-        final MetricWeight toStore2 = MetricWeight.inKilograms(102, Instant.now().plus(-2, ChronoUnit.DAYS), mom);
+        final BodyMassIndex toStore2 = new QueteletIndex(Instant.now().plus(-2, ChronoUnit.DAYS), 33.1, mom);
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_vitals")).toFile();
         data.deleteOnExit();
         final MetricWeightSerializationProxy serialized = MetricWeightSerializationProxy.fromMetricWeight(toStore);
-        final MetricWeightSerializationProxy serialized2 = MetricWeightSerializationProxy.fromMetricWeight(toStore2);
+        final BodyMassIndexSerializationProxy serialized2 = BodyMassIndexSerializationProxy.fromBodyMassIndex(toStore2);
         final WriteObjectAsGZip<MetricWeightSerializationProxy> writer = new WriteObjectAsGZip<>(serialized, data.toPath());
         writer.run();
-        final WriteObjectAsGZip<MetricWeightSerializationProxy> writer2 = new WriteObjectAsGZip<>(serialized2, data.toPath());
+        final WriteObjectAsGZip<BodyMassIndexSerializationProxy> writer2 = new WriteObjectAsGZip<>(serialized2, data.toPath());
         writer2.run();
         // When: I call loadVitalsFromFile
         Vitalizr.loadVitalsFromFile(data);
@@ -40,7 +43,8 @@ class LoadFromVitalsFileIntegrationTest {
         final Collection<Weight> stored = Vitalizr.getWeightsFor(mom);
         // Then: The vitals should be returned
         assertTrue(stored.contains(toStore));
-        assertTrue(stored.contains(toStore2));
+        final Collection<BodyMassIndex> alsoStored = Vitalizr.getBodyMassIndicesFor(mom);
+        assertTrue(alsoStored.contains(toStore2));
         data.delete();
     }
 }

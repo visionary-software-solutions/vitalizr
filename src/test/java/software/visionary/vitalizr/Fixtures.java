@@ -14,6 +14,7 @@ import software.visionary.vitalizr.bloodSugar.BloodSugar;
 import software.visionary.vitalizr.bloodSugar.MilligramsPerDecilitre;
 import software.visionary.vitalizr.bodyFat.BodyFatPercentage;
 import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
+import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
 import software.visionary.vitalizr.bodyTemperature.BodyTemperature;
 import software.visionary.vitalizr.bodyTemperature.ImperialTemperature;
 import software.visionary.vitalizr.bodyWater.BodyWaterPercentage;
@@ -246,22 +247,7 @@ public class Fixtures {
     }
 
     public static BodyMassIndex bmiAt(final double v, final Instant instant, final Person person) {
-        return new BodyMassIndex() {
-            @Override
-            public Lifeform belongsTo() {
-                return person;
-            }
-
-            @Override
-            public Number getQuantity() {
-                return v;
-            }
-
-            @Override
-            public Instant observedAt() {
-                return instant;
-            }
-        };
+        return new QueteletIndex(instant, v, person);
     }
 
     public static BodyWaterPercentage bodyWaterPercentageAt(final double v, final Instant i, final Person p) {
