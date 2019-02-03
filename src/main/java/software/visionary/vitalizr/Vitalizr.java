@@ -41,6 +41,7 @@ public final class Vitalizr {
             SAVED.forEach(visitor);
         }
     };
+    private static final VitalSerializationStrategy<File> SERIALIZER = VitalAsGZipString.INSTANCE;
 
     private Vitalizr() {
     }
@@ -211,13 +212,13 @@ public final class Vitalizr {
     }
 
     public static void loadVitalsFromFile(final File data) {
-        VitalSerializationStrategy.deserialize(data).forEach(VITALS::save);
+        SERIALIZER.deserialize(data).forEach(VITALS::save);
     }
 
     public static void saveVitalsToFile(final File data) {
         final Collection<Vital> toWrite = new ArrayList<>();
         VITALS.accept(toWrite::add);
-        VitalSerializationStrategy.serialize(toWrite, data);
+        SERIALIZER.serialize(toWrite, data);
     }
 
     public static void storeBodyMassIndexFor(final BodyMassIndex bodyMassIndex) {
