@@ -1,9 +1,13 @@
 package software.visionary.vitalizr.features;
 
 import org.junit.jupiter.api.Test;
+import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
+import software.visionary.vitalizr.bloodPressure.BloodPressure;
+import software.visionary.vitalizr.bloodPressure.CombinedBloodPressureSerializationProxy;
+import software.visionary.vitalizr.bloodPressure.Combined;
 import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
 import software.visionary.vitalizr.bodyMassIndex.BodyMassIndexSerializationProxy;
 import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
@@ -31,17 +35,13 @@ class SaveVitalsToFileIntegrationTest {
         // Given: A person
         final Person mom = Human.createPerson("Barbara Hidalgo-Toledo:1959-01-01:mom@mommy.net");
         // And: Some Vitals for the person
-        final Collection<MetricWeight> stored = new ArrayList<>(3);
-        stored.add(MetricWeight.inKilograms(100, Instant.now(), mom));
-        stored.add(MetricWeight.inKilograms(101, Instant.now().plus(-1, ChronoUnit.DAYS), mom));
-        stored.add(MetricWeight.inKilograms(105, Instant.now().plus(-2, ChronoUnit.DAYS), mom));
-        final Collection<BodyMassIndex> alsoStored = new ArrayList<>(3);
-        alsoStored.add(new QueteletIndex(Instant.now(), 39.9, mom));
-        alsoStored.add(new QueteletIndex(Instant.now().plus(-1, ChronoUnit.DAYS), 40.1, mom));
-        alsoStored.add(new QueteletIndex(Instant.now().plus(-2, ChronoUnit.DAYS), 40.2, mom));
+        final Collection<MetricWeight> stored = weights(mom);
+        final Collection<BodyMassIndex> alsoStored = bmis(mom);
+        final Collection<BloodPressure> thirdStored = bloodPressures(mom);
         // And: Vitalizr has stored those vitals
         stored.forEach(Vitalizr::storeWeightFor);
         alsoStored.forEach(Vitalizr::storeBodyMassIndexFor);
+        thirdStored.forEach(Vitalizr::storeBloodPressureFor);
         // And: A File to write the data to
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_vitals")).toFile();
         data.deleteOnExit();
@@ -53,6 +53,32 @@ class SaveVitalsToFileIntegrationTest {
         assertTrue(foundWeights.containsAll(stored));
         final List<BodyMassIndex> foundBMIs = BodyMassIndexSerializationProxy.stream(written).collect(Collectors.toList());
         assertTrue(foundBMIs.containsAll(alsoStored));
+        final List<BloodPressure> foundBPs = CombinedBloodPressureSerializationProxy.stream(written).collect(Collectors.toList());
+        assertTrue(foundBPs.containsAll(thirdStored));
         data.delete();
+    }
+
+    private static Collection<BloodPressure> bloodPressures(final Person person) {
+        final Collection<BloodPressure> stored = new ArrayList<>(3);
+        stored.add(Combined.systolicAndDiastolicBloodPressure(Fixtures.observationAtMidnightNDaysAgo(14), 151, 71, person));
+        stored.add(Combined.systolicAndDiastolicBloodPressure(Fixtures.observationAtMidnightNDaysAgo(3), 139, 68, person));
+        stored.add(Combined.systolicAndDiastolicBloodPressure(Fixtures.observationAtMidnightNDaysAgo(2), 145, 71, person));
+        return stored;
+    }
+
+    private static Collection<MetricWeight> weights(final Person mom) {
+        final Collection<MetricWeight> stored = new ArrayList<>(3);
+        stored.add(MetricWeight.inKilograms(100, Instant.now(), mom));
+        stored.add(MetricWeight.inKilograms(101, Instant.now().plus(-1, ChronoUnit.DAYS), mom));
+        stored.add(MetricWeight.inKilograms(105, Instant.now().plus(-2, ChronoUnit.DAYS), mom));
+        return stored;
+    }
+
+    private static Collection<BodyMassIndex> bmis(final Person mom) {
+        final Collection<BodyMassIndex> alsoStored = new ArrayList<>(3);
+        alsoStored.add(new QueteletIndex(Instant.now(), 39.9, mom));
+        alsoStored.add(new QueteletIndex(Instant.now().plus(-1, ChronoUnit.DAYS), 40.1, mom));
+        alsoStored.add(new QueteletIndex(Instant.now().plus(-2, ChronoUnit.DAYS), 40.2, mom));
+        return alsoStored;
     }
 }

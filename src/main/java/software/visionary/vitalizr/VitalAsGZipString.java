@@ -2,6 +2,8 @@ package software.visionary.vitalizr;
 
 import software.visionary.vitalizr.api.Vital;
 import software.visionary.vitalizr.api.VitalSerializationStrategy;
+import software.visionary.vitalizr.bloodPressure.Combined;
+import software.visionary.vitalizr.bloodPressure.CombinedBloodPressureSerializationProxy;
 import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
 import software.visionary.vitalizr.bodyMassIndex.BodyMassIndexSerializationProxy;
 import software.visionary.vitalizr.serialization.GZipFiles;
@@ -32,7 +34,11 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
 
     private static List<Vital> convert(final List<String> entries) {
         // TODO: For other vitals
-        return Stream.concat(MetricWeightSerializationProxy.stream(entries), BodyMassIndexSerializationProxy.stream(entries))
+        return Stream.of(
+                MetricWeightSerializationProxy.stream(entries),
+                BodyMassIndexSerializationProxy.stream(entries),
+                CombinedBloodPressureSerializationProxy.stream(entries))
+                .flatMap(s -> s)
                 .collect(Collectors.toList());
     }
 
@@ -47,6 +53,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
             new WriteObjectAsGZip<>(MetricWeightSerializationProxy.fromMetricWeight((MetricWeight) v), data.toPath()).run();
         } else if (v instanceof BodyMassIndex) {
             new WriteObjectAsGZip<>(BodyMassIndexSerializationProxy.fromBodyMassIndex((BodyMassIndex) v), data.toPath()).run();
+        } else if (v instanceof Combined) {
+            new WriteObjectAsGZip<>(CombinedBloodPressureSerializationProxy.fromBloodPressure((Combined) v), data.toPath()).run();
         }
     }
 }

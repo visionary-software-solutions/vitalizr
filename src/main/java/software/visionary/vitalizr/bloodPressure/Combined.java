@@ -1,5 +1,6 @@
 package software.visionary.vitalizr.bloodPressure;
 
+import software.visionary.vitalizr.Fraction;
 import software.visionary.vitalizr.NaturalNumber;
 import software.visionary.vitalizr.api.Lifeform;
 
@@ -14,6 +15,9 @@ public final class Combined implements BloodPressure {
     public Combined(final Systolic top, final Diastolic bottom) {
         systolic = Objects.requireNonNull(top);
         diastolic = Objects.requireNonNull(bottom);
+        if (!systolic.belongsTo().equals(diastolic.belongsTo())) {
+            throw new IllegalArgumentException("Cannot combine blood pressures from two different lifeforms");
+        }
     }
 
     public static Combined systolicAndDiastolicBloodPressure(final Instant observedAt, final int systolic, final int diastolic, final Lifeform measured) {
@@ -22,7 +26,7 @@ public final class Combined implements BloodPressure {
 
     @Override
     public Number getQuantity() {
-        return systolic.getQuantity().doubleValue() / diastolic.getQuantity().doubleValue();
+        return new Fraction(systolic.getQuantity(), diastolic.getQuantity());
     }
 
     @Override

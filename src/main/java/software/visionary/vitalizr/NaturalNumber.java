@@ -57,7 +57,6 @@ public final class NaturalNumber extends Number implements Comparable<NaturalNum
 
     @Override
     public int hashCode() {
-
         return Objects.hash(number);
     }
 }
