@@ -7,6 +7,9 @@ import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodPressure.Combined;
 import software.visionary.vitalizr.bloodPressure.CombinedBloodPressureSerializationProxy;
+import software.visionary.vitalizr.bloodSugar.BloodSugar;
+import software.visionary.vitalizr.bloodSugar.BloodSugarSerializationProxy;
+import software.visionary.vitalizr.bloodSugar.WholeBloodGlucose;
 import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
 import software.visionary.vitalizr.bodyMassIndex.BodyMassIndexSerializationProxy;
 import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
@@ -33,17 +36,21 @@ class LoadFromVitalsFileIntegrationTest {
         final MetricWeight toStore = MetricWeight.inKilograms(100, Instant.now(), mom);
         final BodyMassIndex toStore2 = new QueteletIndex(Instant.now().plus(-2, ChronoUnit.DAYS), 33.1, mom);
         final Combined toStore3 = Combined.systolicAndDiastolicBloodPressure(Instant.now().plus(-2, ChronoUnit.DAYS), 138, 89, mom);
-        final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_vitals")).toFile();
+        final BloodSugar toStore4 = new WholeBloodGlucose(Instant.now().plus(-2, ChronoUnit.DAYS), 225, mom);
+        final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_load_vitals")).toFile();
         data.deleteOnExit();
         final MetricWeightSerializationProxy serialized = MetricWeightSerializationProxy.fromMetricWeight(toStore);
         final BodyMassIndexSerializationProxy serialized2 = BodyMassIndexSerializationProxy.fromBodyMassIndex(toStore2);
         final CombinedBloodPressureSerializationProxy serialized3 = CombinedBloodPressureSerializationProxy.fromBloodPressure(toStore3);
+        final BloodSugarSerializationProxy serialized4 = BloodSugarSerializationProxy.fromBloodSugar(toStore4);
         final WriteObjectAsGZip<MetricWeightSerializationProxy> writer = new WriteObjectAsGZip<>(serialized, data.toPath());
         writer.run();
         final WriteObjectAsGZip<BodyMassIndexSerializationProxy> writer2 = new WriteObjectAsGZip<>(serialized2, data.toPath());
         writer2.run();
         final WriteObjectAsGZip<CombinedBloodPressureSerializationProxy> writer3 = new WriteObjectAsGZip<>(serialized3, data.toPath());
         writer3.run();
+        final WriteObjectAsGZip<BloodSugarSerializationProxy> writer4 = new WriteObjectAsGZip<>(serialized4, data.toPath());
+        writer4.run();
         // When: I call loadVitalsFromFile
         Vitalizr.loadVitalsFromFile(data);
         // And: I query for vitals I know are in that file
@@ -54,6 +61,8 @@ class LoadFromVitalsFileIntegrationTest {
         assertTrue(alsoStored.contains(toStore2));
         final Collection<BloodPressure> storedAsWell = Vitalizr.getBloodPressuresFor(mom);
         assertTrue(storedAsWell.contains(toStore3));
+        final Collection<BloodSugar> storedToo = Vitalizr.getBloodSugarsFor(mom);
+        assertTrue(storedToo.contains(toStore4));
         data.delete();
     }
 }

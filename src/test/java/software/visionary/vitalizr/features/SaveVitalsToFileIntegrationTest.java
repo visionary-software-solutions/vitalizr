@@ -8,6 +8,9 @@ import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodPressure.CombinedBloodPressureSerializationProxy;
 import software.visionary.vitalizr.bloodPressure.Combined;
+import software.visionary.vitalizr.bloodSugar.BloodSugar;
+import software.visionary.vitalizr.bloodSugar.BloodSugarSerializationProxy;
+import software.visionary.vitalizr.bloodSugar.WholeBloodGlucose;
 import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
 import software.visionary.vitalizr.bodyMassIndex.BodyMassIndexSerializationProxy;
 import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
@@ -38,12 +41,14 @@ class SaveVitalsToFileIntegrationTest {
         final Collection<MetricWeight> stored = weights(mom);
         final Collection<BodyMassIndex> alsoStored = bmis(mom);
         final Collection<BloodPressure> thirdStored = bloodPressures(mom);
+        final Collection<BloodSugar> fourthStored = bloodSugars(mom);
         // And: Vitalizr has stored those vitals
         stored.forEach(Vitalizr::storeWeightFor);
         alsoStored.forEach(Vitalizr::storeBodyMassIndexFor);
         thirdStored.forEach(Vitalizr::storeBloodPressureFor);
+        fourthStored.forEach(Vitalizr::storeBloodSugarFor);
         // And: A File to write the data to
-        final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_vitals")).toFile();
+        final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_save_vitals")).toFile();
         data.deleteOnExit();
         // When: I call saveVitalsToFile
         Vitalizr.saveVitalsToFile(data);
@@ -55,7 +60,17 @@ class SaveVitalsToFileIntegrationTest {
         assertTrue(foundBMIs.containsAll(alsoStored));
         final List<BloodPressure> foundBPs = CombinedBloodPressureSerializationProxy.stream(written).collect(Collectors.toList());
         assertTrue(foundBPs.containsAll(thirdStored));
+        final List<BloodSugar> foundBloodSugars = BloodSugarSerializationProxy.stream(written).collect(Collectors.toList());
+        assertTrue(foundBloodSugars.containsAll(fourthStored));
         data.delete();
+    }
+
+    private static Collection<BloodSugar> bloodSugars(final Person person) {
+        final Collection<BloodSugar> alsoStored = new ArrayList<>(3);
+        alsoStored.add(new WholeBloodGlucose(Instant.now(), 240, person));
+        alsoStored.add(new WholeBloodGlucose(Instant.now().plus(-1, ChronoUnit.DAYS), 137, person));
+        alsoStored.add(new WholeBloodGlucose(Instant.now().plus(-2, ChronoUnit.DAYS), 199, person));
+        return alsoStored;
     }
 
     private static Collection<BloodPressure> bloodPressures(final Person person) {
