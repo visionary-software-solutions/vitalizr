@@ -6,17 +6,17 @@ import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
-import software.visionary.vitalizr.bloodPressure.CombinedBloodPressureSerializationProxy;
 import software.visionary.vitalizr.bloodPressure.Combined;
+import software.visionary.vitalizr.bloodPressure.StringCombinedBloodPressureConverter;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
-import software.visionary.vitalizr.bloodSugar.BloodSugarSerializationProxy;
+import software.visionary.vitalizr.bloodSugar.StringWholeBloodGlucoseConverter;
 import software.visionary.vitalizr.bloodSugar.WholeBloodGlucose;
 import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
-import software.visionary.vitalizr.bodyMassIndex.BodyMassIndexSerializationProxy;
 import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
+import software.visionary.vitalizr.bodyMassIndex.StringQuetletIndexConverter;
 import software.visionary.vitalizr.serialization.GZipFiles;
 import software.visionary.vitalizr.weight.MetricWeight;
-import software.visionary.vitalizr.weight.MetricWeightSerializationProxy;
+import software.visionary.vitalizr.weight.StringMetricWeightConverter;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,13 +54,13 @@ class SaveVitalsToFileIntegrationTest {
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<MetricWeight> foundWeights = MetricWeightSerializationProxy.stream(written).collect(Collectors.toList());
+        final List<MetricWeight> foundWeights = StringMetricWeightConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
         assertTrue(foundWeights.containsAll(stored));
-        final List<BodyMassIndex> foundBMIs = BodyMassIndexSerializationProxy.stream(written).collect(Collectors.toList());
+        final List<BodyMassIndex> foundBMIs = StringQuetletIndexConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
         assertTrue(foundBMIs.containsAll(alsoStored));
-        final List<BloodPressure> foundBPs = CombinedBloodPressureSerializationProxy.stream(written).collect(Collectors.toList());
+        final List<BloodPressure> foundBPs = StringCombinedBloodPressureConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
         assertTrue(foundBPs.containsAll(thirdStored));
-        final List<BloodSugar> foundBloodSugars = BloodSugarSerializationProxy.stream(written).collect(Collectors.toList());
+        final List<BloodSugar> foundBloodSugars = StringWholeBloodGlucoseConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
         assertTrue(foundBloodSugars.containsAll(fourthStored));
         data.delete();
     }

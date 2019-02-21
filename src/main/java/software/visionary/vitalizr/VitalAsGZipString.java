@@ -3,16 +3,19 @@ package software.visionary.vitalizr;
 import software.visionary.vitalizr.api.Vital;
 import software.visionary.vitalizr.api.VitalSerializationStrategy;
 import software.visionary.vitalizr.bloodPressure.Combined;
-import software.visionary.vitalizr.bloodPressure.CombinedBloodPressureSerializationProxy;
-import software.visionary.vitalizr.bloodSugar.BloodSugar;
-import software.visionary.vitalizr.bloodSugar.BloodSugarSerializationProxy;
+import software.visionary.vitalizr.bloodPressure.CombinedBloodPressureConverter;
+import software.visionary.vitalizr.bloodPressure.StringCombinedBloodPressureConverter;
+import software.visionary.vitalizr.bloodSugar.StringWholeBloodGlucoseConverter;
 import software.visionary.vitalizr.bloodSugar.WholeBloodGlucose;
-import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
-import software.visionary.vitalizr.bodyMassIndex.BodyMassIndexSerializationProxy;
+import software.visionary.vitalizr.bloodSugar.WholeBloodGlucoseConverter;
+import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
+import software.visionary.vitalizr.bodyMassIndex.QuetletIndexConverter;
+import software.visionary.vitalizr.bodyMassIndex.StringQuetletIndexConverter;
 import software.visionary.vitalizr.serialization.GZipFiles;
 import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
 import software.visionary.vitalizr.weight.MetricWeight;
-import software.visionary.vitalizr.weight.MetricWeightSerializationProxy;
+import software.visionary.vitalizr.weight.MetricWeightConverter;
+import software.visionary.vitalizr.weight.StringMetricWeightConverter;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,10 +41,10 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
     private static List<Vital> convert(final List<String> entries) {
         // TODO: For other vitals
         return Stream.of(
-                MetricWeightSerializationProxy.stream(entries),
-                BodyMassIndexSerializationProxy.stream(entries),
-                CombinedBloodPressureSerializationProxy.stream(entries),
-                BloodSugarSerializationProxy.stream(entries))
+                StringMetricWeightConverter.INSTANCE.to(entries.stream()),
+                StringQuetletIndexConverter.INSTANCE.to(entries.stream()),
+                StringCombinedBloodPressureConverter.INSTANCE.to(entries.stream()),
+                StringWholeBloodGlucoseConverter.INSTANCE.to(entries.stream()))
                 .flatMap(s -> s)
                 .collect(Collectors.toList());
     }
@@ -54,13 +57,13 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
     private static void writeTo(final File data, final Vital v) {
         // TODO: Add support for other Vitals
         if (v instanceof MetricWeight) {
-            new WriteObjectAsGZip<>(MetricWeightSerializationProxy.fromMetricWeight((MetricWeight) v), data.toPath()).run();
-        } else if (v instanceof BodyMassIndex) {
-            new WriteObjectAsGZip<>(BodyMassIndexSerializationProxy.fromBodyMassIndex((BodyMassIndex) v), data.toPath()).run();
+            new WriteObjectAsGZip<>(MetricWeightConverter.INSTANCE.to((MetricWeight) v), data.toPath()).run();
+        } else if (v instanceof QueteletIndex) {
+            new WriteObjectAsGZip<>(QuetletIndexConverter.INSTANCE.to((QueteletIndex) v), data.toPath()).run();
         } else if (v instanceof Combined) {
-            new WriteObjectAsGZip<>(CombinedBloodPressureSerializationProxy.fromBloodPressure((Combined) v), data.toPath()).run();
+            new WriteObjectAsGZip<>(CombinedBloodPressureConverter.INSTANCE.to((Combined) v), data.toPath()).run();
         } else if (v instanceof WholeBloodGlucose) {
-            new WriteObjectAsGZip<>(BloodSugarSerializationProxy.fromBloodSugar((BloodSugar) v), data.toPath()).run();
+            new WriteObjectAsGZip<>(WholeBloodGlucoseConverter.INSTANCE.to((WholeBloodGlucose) v), data.toPath()).run();
         }
     }
 }
