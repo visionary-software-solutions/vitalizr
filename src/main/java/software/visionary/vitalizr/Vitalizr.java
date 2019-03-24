@@ -20,27 +20,13 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public final class Vitalizr {
     private static final VitalRepository VITALS = new InMemoryVitalRepository();
     private static final TrustedContactRepository CONTACTS = new InMemoryTrustedContactRepository();
-    private static final Repository<Reminder> REMINDERS = new Repository<>() {
-        private final List<Reminder> SAVED = new CopyOnWriteArrayList<>();
-
-        @Override
-        public void save(final Reminder toSave) {
-            SAVED.add(toSave);
-        }
-
-        @Override
-        public void accept(final Consumer<Reminder> visitor) {
-            SAVED.forEach(visitor);
-        }
-    };
+    private static final Repository<Reminder> REMINDERS = new InMemoryReminderRepository();
     private static final VitalSerializationStrategy<File> SERIALIZER = VitalAsGZipString.INSTANCE;
 
     private Vitalizr() {
