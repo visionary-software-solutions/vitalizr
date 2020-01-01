@@ -19,16 +19,16 @@ class WeightQueryIntegrationTest {
         // Given: A person to retrieve weight for
         final Person mom = Fixtures.person();
         // And: that person measured their weight 2 weeks ago
-        final Weight first = MetricWeight.inKilograms(235, Fixtures.observationAtMidnightNDaysAgo(14), mom);
+        final Weight first = MetricWeight.inKilograms(107, Fixtures.observationAtMidnightNDaysAgo(14), mom);
         Vitalizr.storeWeightFor(first);
         // And: that person measured their weight 3 days ago
-        final Weight second = MetricWeight.inKilograms(231, Fixtures.observationAtMidnightNDaysAgo(3), mom);
+        final Weight second = MetricWeight.inKilograms(105, Fixtures.observationAtMidnightNDaysAgo(3), mom);
         Vitalizr.storeWeightFor(second);
         // And: that person measured their weight 2 days ago
-        final Weight third = MetricWeight.inKilograms(229, Fixtures.observationAtMidnightNDaysAgo(2), mom);
+        final Weight third = MetricWeight.inKilograms(103, Fixtures.observationAtMidnightNDaysAgo(2), mom);
         Vitalizr.storeWeightFor(third);
         // And: that person measured their weight 1 days ago
-        final Weight fourth = MetricWeight.inKilograms(230, Fixtures.observationAtMidnightNDaysAgo(1), mom);
+        final Weight fourth = MetricWeight.inKilograms(104, Fixtures.observationAtMidnightNDaysAgo(1), mom);
         Vitalizr.storeWeightFor(fourth);
         // And: A time range to query for
         final Interval oneWeekAgoToNow = Fixtures.oneWeekAgoToNow();

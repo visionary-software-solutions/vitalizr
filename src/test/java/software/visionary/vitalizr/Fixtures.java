@@ -37,55 +37,15 @@ public class Fixtures {
     }
 
     private static Person createPerson(final Name name, final Birthdate birthdate, final EmailAddress emailAddress) {
-        return new Person() {
-            @Override
-            public Name getName() {
-                return name;
-            }
-
-            @Override
-            public Birthdate getBirthdate() {
-                return birthdate;
-            }
-
-            @Override
-            public EmailAddress getEmailAddress() {
-                return emailAddress;
-            }
-        };
+        return Human.createPerson(String.format("%s:%s:%s", name, birthdate, emailAddress));
     }
 
     private static EmailAddress getEmailAddress(final Name userName, final Name topLevelDomain) {
-        return new EmailAddress() {
-            @Override
-            public Name getName() {
-                return userName;
-            }
-
-            @Override
-            public Name getDomain() {
-                return topLevelDomain;
-            }
-        };
+        return PersonalEmail.createFrom(String.format("%s@%s", userName, topLevelDomain));
     }
 
     private static Birthdate getBirthdate(final Year year, final MonthDay monthDay) {
-        return new Birthdate() {
-            @Override
-            public Year getYear() {
-                return year;
-            }
-
-            @Override
-            public Month getMonth() {
-                return monthDay.getMonth();
-            }
-
-            @Override
-            public MonthDay getDay() {
-                return monthDay;
-            }
-        };
+        return Birthday.createFrom(String.format("%s-%s-%s", year, monthDay.getMonth().getValue(), monthDay.getDayOfMonth()));
     }
 
     public static Instant observationAtMidnightNDaysAgo(final int n) {
