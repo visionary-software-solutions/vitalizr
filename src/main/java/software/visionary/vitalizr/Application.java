@@ -5,37 +5,19 @@ import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.weight.MetricWeight;
 import software.visionary.vitalizr.weight.Weight;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.net.UnknownHostException;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Scanner;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
- * The entry point of the application.
- * Starts an endpoint and busy beavers.
+ * A CLI for demonstration.
  */
 public final class Application {
     private Application() {
     }
 
-    public static void main(final String[] args) throws UnknownHostException {
-        final Integer numberOfThreads = (args.length > 0) ? Integer.parseInt(args[0]) : Runtime.getRuntime().availableProcessors() * 2;
-        System.out.printf("The number of threads is %d%n", numberOfThreads);
-        final NaturalNumber port = new NaturalNumber((args.length > 0) ? Integer.parseInt(args[1]) : 13337);
-        System.out.printf("The port is %s%n", port);
-        final SocketAddress socketAddress = new InetSocketAddress(InetAddress.getLocalHost(), port.intValue());
-        final Endpoint endpoint = new SingleThreadedSocketListener(socketAddress, Executors.newFixedThreadPool(port.intValue()));
-        endpoint.start();
-        Runtime.getRuntime().addShutdownHook(new Thread(endpoint::stop));
-        busyWait();
-    }
-
-    private static void busyWait() {
+    public static void main(final String[] args) {
         printMenu();
         final Scanner input = new Scanner(System.in);
         while (true) {
@@ -53,7 +35,7 @@ public final class Application {
                 case "Q":
                     System.exit(1);
                 default:
-                    throw new UnsupportedOperationException("Please select from valid options");
+                    System.out.println("Please select from valid options");
             }
         }
     }
@@ -107,5 +89,4 @@ public final class Application {
             people.forEach(Application::display);
         }
     }
-
 }

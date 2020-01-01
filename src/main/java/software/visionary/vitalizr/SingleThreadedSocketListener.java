@@ -1,40 +1,52 @@
 package software.visionary.vitalizr;
 
 import java.io.IOException;
-import java.net.*;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.Objects;
 
-import java.util.concurrent.ExecutorService;
-
 final class SingleThreadedSocketListener implements Endpoint {
-    private final ExecutorService workers;
     private final SocketAddress address;
+    private final ExecutableFactory<?> factory;
 
-    SingleThreadedSocketListener(final SocketAddress socks, final ExecutorService workers) {
+    SingleThreadedSocketListener(final SocketAddress socks, final ExecutableFactory<?> factory) {
         this.address = Objects.requireNonNull(socks);
-        this.workers = Objects.requireNonNull(workers);
+        this.factory = Objects.requireNonNull(factory);
     }
 
     @Override
     public void start() {
         try (final ServerSocket server = new ServerSocket()) {
             server.bind(address);
-            workers.submit(() -> waitForConnections(server));
+            waitForConnections(server);
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     private void waitForConnections(final ServerSocket server) {
-        try (final Socket connection = server.accept()) {
-            workers.submit(() -> new SocketConnection(connection));
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
+        while (true) {
+            try (final Socket connection = server.accept()) {
+                while (connection.isConnected() && !connection.isClosed()) {
+                    try (final InputStream received = connection.getInputStream();
+                         final OutputStream sent = connection.getOutputStream()) {
+                        factory.create(received, sent).run();
+                    } catch (final IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            } catch (final IOException e) {
+                throw new RuntimeException(e);
+            }
+            Thread.onSpinWait();
         }
     }
 
     @Override
     public void stop() {
-        workers.shutdown();
+
     }
 }
