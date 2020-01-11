@@ -16,6 +16,10 @@ import software.visionary.vitalizr.pulse.Pulse;
 import software.visionary.vitalizr.weight.Weight;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,8 +32,19 @@ public final class Vitalizr {
     private static final TrustedContactRepository CONTACTS = new InMemoryTrustedContactRepository();
     private static final Repository<Reminder> REMINDERS = new InMemoryReminderRepository();
     private static final VitalSerializationStrategy<File> SERIALIZER = VitalAsGZipString.INSTANCE;
+    private static final Path HOME =  Paths.get(new File("").getAbsolutePath(), ".vitalizr");
 
-    private Vitalizr() {
+    static {
+        if (!HOME.toFile().exists())
+            try {
+                Files.createDirectory(HOME);
+            } catch (final IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    public static Path getHomeDirectory() {
+        return HOME;
     }
 
     public static void storeWeightFor(final Weight toStore) {
@@ -241,5 +256,11 @@ public final class Vitalizr {
 
     public static Collection<BodyFatPercentage> getBodyFatPercentagesInInterval(final Person person, final Interval interval) {
         return getVitalsInInterval(person, interval, BodyFatPercentage.class);
+    }
+
+    static void loadAll() throws IOException {
+        if (HOME.toFile().exists() && HOME.toFile().isDirectory()) {
+            Files.list(HOME).forEach(vitals -> loadVitalsFromFile(vitals.toFile()));
+        }
     }
 }

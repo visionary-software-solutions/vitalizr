@@ -2,6 +2,7 @@ package software.visionary.vitalizr;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Objects;
 
 public abstract class Executable implements Runnable {
@@ -11,6 +12,12 @@ public abstract class Executable implements Runnable {
     public Executable(final InputStream received, final OutputStream sent) {
         this.received = Objects.requireNonNull(received);
         this.sent = Objects.requireNonNull(sent);
+    }
+
+    protected final void writeToOutput(final String s) {
+        try (final PrintStream writer = new PrintStream(sent)){
+            writer.println(s);
+        }
     }
 
     @Override
