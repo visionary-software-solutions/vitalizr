@@ -7,12 +7,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.Objects;
+import java.util.function.BiFunction;
 
 final class SingleThreadedSocketListener implements Endpoint {
     private final SocketAddress address;
-    private final ExecutableFactory<?> factory;
+    private final BiFunction<InputStream, OutputStream, Executable> factory;
 
-    SingleThreadedSocketListener(final SocketAddress socks, final ExecutableFactory<?> factory) {
+    SingleThreadedSocketListener(final SocketAddress socks, final BiFunction<InputStream, OutputStream, Executable> factory) {
         this.address = Objects.requireNonNull(socks);
         this.factory = Objects.requireNonNull(factory);
     }
@@ -33,7 +34,7 @@ final class SingleThreadedSocketListener implements Endpoint {
                 while (connection.isConnected() && !connection.isClosed()) {
                     try (final InputStream received = connection.getInputStream();
                          final OutputStream sent = connection.getOutputStream()) {
-                        factory.create(received, sent).run();
+                        factory.apply(received, sent).run();
                     } catch (final IOException e) {
                         throw new RuntimeException(e);
                     }

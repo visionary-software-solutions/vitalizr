@@ -1,5 +1,7 @@
 package software.visionary.vitalizr;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -14,7 +16,7 @@ public final class AddWeightToPerson {
         final NaturalNumber port = getPort(args);
         System.out.printf("The port is %s%n", port);
         final SocketAddress socketAddress = new InetSocketAddress(InetAddress.getLocalHost(), port.intValue());
-        final Endpoint endpoint = new SingleThreadedSocketListener(socketAddress, new AddWeightToPersonFactory());
+        final Endpoint endpoint = new SingleThreadedSocketListener(socketAddress, (AddWeightToPersonRequest::new));
         endpoint.start();
         Runtime.getRuntime().addShutdownHook(new Thread(endpoint::stop));
     }
