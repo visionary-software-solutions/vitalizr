@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 
+@Meeseeks(port = 13337)
 public final class ListPeopleRequest extends Executable {
     public ListPeopleRequest(final InputStream received, final OutputStream sent) {
         super(received, sent);

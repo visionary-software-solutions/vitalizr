@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Scanner;
 
+@Meeseeks(port = 13338)
 public class AddWeightToPersonRequest extends Executable {
     public AddWeightToPersonRequest(final InputStream received, final OutputStream sent) {
         super(received, sent);
