@@ -14,7 +14,7 @@ public final class AddWeightToPerson {
         final NaturalNumber port = getPort(args);
         System.out.printf("The port is %s%n", port);
         final SocketAddress socketAddress = new InetSocketAddress(InetAddress.getLocalHost(), port.intValue());
-        final Endpoint endpoint = new SingleThreadedSocketListener(socketAddress, (AddWeightToPersonRequest::new));
+        final Endpoint endpoint = new SingleThreadedSocketListener(socketAddress, new AddWeightToPersonRequest());
         endpoint.start();
         Runtime.getRuntime().addShutdownHook(new Thread(endpoint::stop));
     }

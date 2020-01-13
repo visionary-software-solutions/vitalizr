@@ -14,7 +14,7 @@ public final class ListPeople {
         final NaturalNumber port = getPort(args);
         System.out.printf("The port is %s%n", port);
         final SocketAddress socketAddress = new InetSocketAddress(InetAddress.getLocalHost(), port.intValue());
-        final Endpoint endpoint = new SingleThreadedSocketListener(socketAddress, (ListPeopleRequest::new));
+        final Endpoint endpoint = new SingleThreadedSocketListener(socketAddress, new ListPeopleRequest());
         endpoint.start();
         Runtime.getRuntime().addShutdownHook(new Thread(endpoint::stop));
     }

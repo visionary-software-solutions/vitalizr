@@ -3,27 +3,21 @@ package software.visionary.vitalizr;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.weight.MetricWeight;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Scanner;
+import java.util.function.BiConsumer;
 
 @Meeseeks(port = 13338)
-public class AddWeightToPersonRequest extends Executable {
-    public AddWeightToPersonRequest(final InputStream received, final OutputStream sent) {
-        super(received, sent);
-    }
-
+public class AddWeightToPersonRequest implements BiConsumer<InputStream, OutputStream> {
     @Override
-    protected void execute(final InputStream received, final OutputStream sent) {
+    public void accept(final InputStream received, final OutputStream sent) {
         try {
             Vitalizr.loadAll();
         } catch (IOException e) {
-            writeToOutput(e.getMessage());
+            writeToOutput(e.getMessage(), sent);
             closeConnection(sent);
             return;
         }
@@ -38,19 +32,29 @@ public class AddWeightToPersonRequest extends Executable {
             try {
                 saveFile.createNewFile();
             } catch (final IOException e) {
-                writeToOutput(e.getMessage());
+                writeToOutput(e.getMessage(), sent);
             }
         }
         Vitalizr.saveVitalsToFile(saveFile);
-        writeToOutput(String.format(" Weight %s stored in %s", store, saveFile.getAbsolutePath()));
+        writeToOutput(String.format(" Weight %s stored in %s", store, saveFile.getAbsolutePath()), sent);
         closeConnection(sent);
+    }
+
+    private void writeToOutput(final String message, final OutputStream sent) {
+        try (final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(sent))){
+            writer.write(message);
+            writer.newLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private void closeConnection(final OutputStream sent) {
         try {
             sent.close();
         } catch (IOException e) {
-            writeToOutput(e.getMessage());
+            writeToOutput(e.getMessage(), sent);
         }
     }
 
