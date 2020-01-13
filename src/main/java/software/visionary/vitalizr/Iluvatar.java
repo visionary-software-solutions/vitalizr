@@ -12,7 +12,6 @@ import java.util.function.BiConsumer;
 public enum Iluvatar {
     INSTANCE;
     public static void main(final String[] args) throws UnknownHostException {
-        System.out.println("first " + args[0] + " second " + args[1]);
         final NaturalNumber port = getPort(args[0]);
         final SocketAddress socketAddress = new InetSocketAddress(InetAddress.getLocalHost(), port.intValue());
         final Endpoint endpoint = new SingleThreadedSocketListener(socketAddress, getConsumer(args[1]));

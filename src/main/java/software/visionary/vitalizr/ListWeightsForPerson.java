@@ -1,14 +1,14 @@
 package software.visionary.vitalizr;
 
 import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.weight.MetricWeight;
+import software.visionary.vitalizr.weight.Weight;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.time.Instant;
+import java.util.Collection;
 import java.util.Scanner;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 public class ListWeightsForPerson implements BiConsumer<InputStream, OutputStream> {
     @Override
@@ -20,22 +20,10 @@ public class ListWeightsForPerson implements BiConsumer<InputStream, OutputStrea
             closeConnection(sent);
             return;
         }
-        final String[] tokens = getInput(received);
-        System.out.println("tokens are " + tokens);
-        final Person person = Human.createPerson(tokens[0]);
-        final MetricWeight store = MetricWeight.inKilograms(Integer.valueOf(tokens[1]), Instant.now(), person);
-        Vitalizr.storeWeightFor(store);
-        final Path toSave = Vitalizr.getHomeDirectory();
-        final File saveFile = new File(toSave.toAbsolutePath().toString() + File.separator + "vitals" + Instant.now().toEpochMilli());
-        if (!saveFile.exists()) {
-            try {
-                saveFile.createNewFile();
-            } catch (final IOException e) {
-                writeToOutput(e.getMessage(), sent);
-            }
-        }
-        Vitalizr.saveVitalsToFile(saveFile);
-        writeToOutput(String.format(" Weight %s stored in %s", store, saveFile.getAbsolutePath()), sent);
+        final String input = getInput(received);
+        final Person person = Human.createPerson(input);
+        final Collection<Weight> weights = Vitalizr.getWeightsFor(person);
+        writeToOutput(weights.stream().map(Object::toString).collect(Collectors.joining(",")), sent);
         closeConnection(sent);
     }
 
@@ -46,7 +34,6 @@ public class ListWeightsForPerson implements BiConsumer<InputStream, OutputStrea
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private void closeConnection(final OutputStream sent) {
@@ -57,13 +44,11 @@ public class ListWeightsForPerson implements BiConsumer<InputStream, OutputStrea
         }
     }
 
-    private static String[] getInput(final InputStream received) {
-        final String delimiter = "&";
+    private static String getInput(final InputStream received) {
         String text;
         try (Scanner scanner = new Scanner(received, StandardCharsets.UTF_8.name())) {
             text = scanner.next();
         }
-        System.out.println("text is " + text);
-        return text.split(delimiter);
+        return text;
     }
 }

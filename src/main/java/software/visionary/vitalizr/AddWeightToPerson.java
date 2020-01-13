@@ -21,7 +21,6 @@ public class AddWeightToPerson implements BiConsumer<InputStream, OutputStream> 
             return;
         }
         final String[] tokens = getInput(received);
-        System.out.println("tokens are " + tokens);
         final Person person = Human.createPerson(tokens[0]);
         final MetricWeight store = MetricWeight.inKilograms(Integer.valueOf(tokens[1]), Instant.now(), person);
         Vitalizr.storeWeightFor(store);
@@ -63,7 +62,6 @@ public class AddWeightToPerson implements BiConsumer<InputStream, OutputStream> 
         try (Scanner scanner = new Scanner(received, StandardCharsets.UTF_8.name())) {
             text = scanner.next();
         }
-        System.out.println("text is " + text);
         return text.split(delimiter);
     }
 }
