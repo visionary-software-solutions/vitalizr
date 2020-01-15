@@ -10,8 +10,8 @@ public class Client {
             listPeople();
         } else if(args.length == 1) {
             getWeightsForPerson(args[0]);
-        } else {
-            addWeightToPerson(args);
+        } else if(args.length == 2){
+            addWeightToPerson(args[0], args[1]);
         }
     }
 
@@ -39,11 +39,11 @@ public class Client {
         }
     }
 
-    private static void addWeightToPerson(final String[] args) {
+    private static void addWeightToPerson(final String weight, final String person) {
         try (final Socket sock = new Socket(InetAddress.getLocalHost(), 13338);
              final BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
              final BufferedWriter out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()))) {
-            final String toSend = args[0];
+            final String toSend = String.format("%s%s", weight, person);
             System.out.println("Sending command" + toSend);
             out.write(toSend);
             out.newLine();
