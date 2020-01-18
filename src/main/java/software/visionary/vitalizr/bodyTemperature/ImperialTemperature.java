@@ -36,4 +36,19 @@ public final class ImperialTemperature implements BodyTemperature {
     public Unit getUnit() {
         return Fahrenheit.INSTANCE;
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final ImperialTemperature that = (ImperialTemperature) o;
+        return lifeform.equals(that.lifeform) &&
+                getQuantity().equals(that.getQuantity()) &&
+                observedAt.equals(that.observedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lifeform, getQuantity(), observedAt);
+    }
 }

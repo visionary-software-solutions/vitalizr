@@ -14,6 +14,9 @@ import software.visionary.vitalizr.bodyFat.StringBioelectricalImpedanceConverter
 import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
 import software.visionary.vitalizr.bodyMassIndex.QuetletIndexConverter;
 import software.visionary.vitalizr.bodyMassIndex.StringQuetletIndexConverter;
+import software.visionary.vitalizr.bodyTemperature.ImperialTemperature;
+import software.visionary.vitalizr.bodyTemperature.ImperialTemperatureConverter;
+import software.visionary.vitalizr.bodyTemperature.StringImperialTemperatureConverter;
 import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturation;
 import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturationConverter;
 import software.visionary.vitalizr.oxygen.StringPeripheralOxygenSaturationConverter;
@@ -52,7 +55,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
                 StringCombinedBloodPressureConverter.INSTANCE.to(entries.stream()),
                 StringWholeBloodGlucoseConverter.INSTANCE.to(entries.stream()),
                 StringPeripheralOxygenSaturationConverter.INSTANCE.to(entries.stream()),
-                StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream())
+                StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream()),
+                StringImperialTemperatureConverter.INSTANCE.to(entries.stream())
                 ).flatMap(s -> s)
                 .collect(Collectors.toList());
     }
@@ -76,6 +80,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
             new WriteObjectAsGZip<>(PeripheralOxygenSaturationConverter.INSTANCE.to((PeripheralOxygenSaturation) v), data.toPath()).run();
         } else if (v instanceof BioelectricalImpedance) {
             new WriteObjectAsGZip<>(BioelectricalImpedanceConverter.INSTANCE.to((BioelectricalImpedance) v), data.toPath()).run();
+        } else if (v instanceof ImperialTemperature) {
+            new WriteObjectAsGZip<>(ImperialTemperatureConverter.INSTANCE.to((ImperialTemperature) v), data.toPath()).run();
         }
     }
 }
