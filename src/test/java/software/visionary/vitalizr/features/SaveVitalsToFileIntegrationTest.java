@@ -38,12 +38,10 @@ class SaveVitalsToFileIntegrationTest {
         // Given: A person
         final Person mom = Human.createPerson("Barbara Hidalgo-Toledo:1959-01-01:mom@mommy.net");
         // And: Some Vitals for the person
-        final Collection<MetricWeight> stored = weights(mom);
         final Collection<BodyMassIndex> alsoStored = bmis(mom);
         final Collection<BloodPressure> thirdStored = bloodPressures(mom);
         final Collection<BloodSugar> fourthStored = bloodSugars(mom);
         // And: Vitalizr has stored those vitals
-        stored.forEach(Vitalizr::storeWeightFor);
         alsoStored.forEach(Vitalizr::storeBodyMassIndexFor);
         thirdStored.forEach(Vitalizr::storeBloodPressureFor);
         fourthStored.forEach(Vitalizr::storeBloodSugarFor);
@@ -55,7 +53,6 @@ class SaveVitalsToFileIntegrationTest {
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
         final List<MetricWeight> foundWeights = StringMetricWeightConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
-        assertTrue(foundWeights.containsAll(stored));
         final List<BodyMassIndex> foundBMIs = StringQuetletIndexConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
         assertTrue(foundBMIs.containsAll(alsoStored));
         final List<BloodPressure> foundBPs = StringCombinedBloodPressureConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
@@ -78,14 +75,6 @@ class SaveVitalsToFileIntegrationTest {
         stored.add(Combined.systolicAndDiastolicBloodPressure(Fixtures.observationAtMidnightNDaysAgo(14), 151, 71, person));
         stored.add(Combined.systolicAndDiastolicBloodPressure(Fixtures.observationAtMidnightNDaysAgo(3), 139, 68, person));
         stored.add(Combined.systolicAndDiastolicBloodPressure(Fixtures.observationAtMidnightNDaysAgo(2), 145, 71, person));
-        return stored;
-    }
-
-    private static Collection<MetricWeight> weights(final Person mom) {
-        final Collection<MetricWeight> stored = new ArrayList<>(3);
-        stored.add(MetricWeight.inKilograms(100, Instant.now(), mom));
-        stored.add(MetricWeight.inKilograms(101, Instant.now().plus(-1, ChronoUnit.DAYS), mom));
-        stored.add(MetricWeight.inKilograms(105, Instant.now().plus(-2, ChronoUnit.DAYS), mom));
         return stored;
     }
 

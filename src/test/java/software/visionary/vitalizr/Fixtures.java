@@ -1,15 +1,7 @@
 package software.visionary.vitalizr;
 
 import org.threeten.extra.Interval;
-import software.visionary.vitalizr.api.Birthdate;
-import software.visionary.vitalizr.api.Caregiver;
-import software.visionary.vitalizr.api.EmailAddress;
-import software.visionary.vitalizr.api.Family;
-import software.visionary.vitalizr.api.Lifeform;
-import software.visionary.vitalizr.api.MedicalProvider;
-import software.visionary.vitalizr.api.Name;
-import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.api.Unit;
+import software.visionary.vitalizr.api.*;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
 import software.visionary.vitalizr.bloodSugar.MilligramsPerDecilitre;
 import software.visionary.vitalizr.bodyFat.BodyFatPercentage;
@@ -21,17 +13,13 @@ import software.visionary.vitalizr.bodyWater.BodyWaterPercentage;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.MonthDay;
-import java.time.Year;
-import java.time.ZoneOffset;
+import java.time.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Fixtures {
 
     public static Person person() {
-        return createPerson(new Name("Barbara Hidalgo-Toledo"),
+        return createPerson(new Name(createRandomName()),
                 getBirthdate(Year.parse("1959"), MonthDay.of(Month.JANUARY, 9)),
                 getEmailAddress(new Name("mommy"), new Name("mom.net")));
     }
@@ -246,5 +234,38 @@ public class Fixtures {
                 return i;
             }
         };
+    }
+
+    public static Person createRandomPerson() {
+        final String name = createRandomName();
+        final String birthday = createRandomBirthday();
+        final String email = createRandomEmail();
+        final String input = String.format("%s:%s:%s", name, birthday, email);
+        return Human.createPerson(input);
+    }
+
+    private static String createRandomEmail() {
+        return String.format("%s@%s.%s", createRandomAlphabeticString(), createRandomAlphabeticString(), createRandomAlphabeticString());
+    }
+
+    private static String createRandomBirthday() {
+        return String.format("%04d-%02d-%02d", createRandomNumberBetween(1900, 2020), createRandomNumberBetween(1,12), createRandomNumberBetween(1, 31));
+    }
+
+    private static int createRandomNumberBetween(final int start, final int end) {
+        return ThreadLocalRandom.current().nextInt(start, end);
+    }
+
+    private static String createRandomName() {
+        return String.format("%s %s", createRandomAlphabeticString(), createRandomAlphabeticString());
+    }
+
+    private static String createRandomAlphabeticString() {
+        final int length = ThreadLocalRandom.current().nextInt(10);
+        return String.valueOf(createRandomAlphabeticCharacter()).repeat(Math.max(0, length));
+    }
+
+    private static char createRandomAlphabeticCharacter() {
+        return (char) (ThreadLocalRandom.current().nextInt(26) + 'a');
     }
 }
