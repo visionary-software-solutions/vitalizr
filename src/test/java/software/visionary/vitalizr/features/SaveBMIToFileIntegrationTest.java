@@ -4,14 +4,10 @@ import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.bloodPressure.BloodPressure;
-import software.visionary.vitalizr.bloodPressure.StringCombinedBloodPressureConverter;
 import software.visionary.vitalizr.bodyMassIndex.BodyMassIndex;
 import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
 import software.visionary.vitalizr.bodyMassIndex.StringQuetletIndexConverter;
 import software.visionary.vitalizr.serialization.GZipFiles;
-import software.visionary.vitalizr.weight.MetricWeight;
-import software.visionary.vitalizr.weight.StringMetricWeightConverter;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,10 +39,8 @@ class SaveBMIToFileIntegrationTest {
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<MetricWeight> foundWeights = StringMetricWeightConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
         final List<BodyMassIndex> foundBMIs = StringQuetletIndexConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
         assertTrue(foundBMIs.containsAll(alsoStored));
-        final List<BloodPressure> foundBPs = StringCombinedBloodPressureConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
         data.delete();
     }
 

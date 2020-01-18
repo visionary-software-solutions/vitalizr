@@ -9,7 +9,6 @@ import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
 import software.visionary.vitalizr.bodyMassIndex.QuetletIndexConverter;
 import software.visionary.vitalizr.bodyMassIndex.QuetletIndexSerializationProxy;
 import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
-import software.visionary.vitalizr.weight.Weight;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +34,6 @@ class LoadBMIsFromFileIntegrationTest {
         // When: I call loadVitalsFromFile
         Vitalizr.loadVitalsFromFile(data);
         // And: I query for vitals I know are in that file
-        final Collection<Weight> stored = Vitalizr.getWeightsFor(mom);
         // Then: The vitals should be returned
         final Collection<BodyMassIndex> alsoStored = Vitalizr.getBodyMassIndicesFor(mom);
         assertTrue(alsoStored.contains(toStore2));
