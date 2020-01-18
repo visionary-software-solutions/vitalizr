@@ -11,6 +11,9 @@ import software.visionary.vitalizr.bloodSugar.WholeBloodGlucoseConverter;
 import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
 import software.visionary.vitalizr.bodyMassIndex.QuetletIndexConverter;
 import software.visionary.vitalizr.bodyMassIndex.StringQuetletIndexConverter;
+import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturation;
+import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturationConverter;
+import software.visionary.vitalizr.oxygen.StringPeripheralOxygenSaturationConverter;
 import software.visionary.vitalizr.serialization.GZipFiles;
 import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
 import software.visionary.vitalizr.weight.MetricWeight;
@@ -44,7 +47,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
                 StringMetricWeightConverter.INSTANCE.to(entries.stream()),
                 StringQuetletIndexConverter.INSTANCE.to(entries.stream()),
                 StringCombinedBloodPressureConverter.INSTANCE.to(entries.stream()),
-                StringWholeBloodGlucoseConverter.INSTANCE.to(entries.stream()))
+                StringWholeBloodGlucoseConverter.INSTANCE.to(entries.stream()),
+                StringPeripheralOxygenSaturationConverter.INSTANCE.to(entries.stream()))
                 .flatMap(s -> s)
                 .collect(Collectors.toList());
     }
@@ -64,6 +68,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
             new WriteObjectAsGZip<>(CombinedBloodPressureConverter.INSTANCE.to((Combined) v), data.toPath()).run();
         } else if (v instanceof WholeBloodGlucose) {
             new WriteObjectAsGZip<>(WholeBloodGlucoseConverter.INSTANCE.to((WholeBloodGlucose) v), data.toPath()).run();
+        } else if (v instanceof PeripheralOxygenSaturation) {
+            new WriteObjectAsGZip<>(PeripheralOxygenSaturationConverter.INSTANCE.to((PeripheralOxygenSaturation) v), data.toPath()).run();
         }
     }
 }

@@ -262,7 +262,11 @@ public class Fixtures {
 
     private static String createRandomAlphabeticString() {
         final int length = ThreadLocalRandom.current().nextInt(10);
-        return String.valueOf(createRandomAlphabeticCharacter()).repeat(Math.max(0, length));
+        final StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            builder.append(createRandomAlphabeticCharacter());
+        }
+        return builder.toString();
     }
 
     private static char createRandomAlphabeticCharacter() {
