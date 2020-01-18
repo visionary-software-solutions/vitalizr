@@ -8,6 +8,9 @@ import software.visionary.vitalizr.bloodPressure.StringCombinedBloodPressureConv
 import software.visionary.vitalizr.bloodSugar.StringWholeBloodGlucoseConverter;
 import software.visionary.vitalizr.bloodSugar.WholeBloodGlucose;
 import software.visionary.vitalizr.bloodSugar.WholeBloodGlucoseConverter;
+import software.visionary.vitalizr.bodyFat.BioelectricalImpedance;
+import software.visionary.vitalizr.bodyFat.BioelectricalImpedanceConverter;
+import software.visionary.vitalizr.bodyFat.StringBioelectricalImpedanceConverter;
 import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
 import software.visionary.vitalizr.bodyMassIndex.QuetletIndexConverter;
 import software.visionary.vitalizr.bodyMassIndex.StringQuetletIndexConverter;
@@ -48,8 +51,9 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
                 StringQuetletIndexConverter.INSTANCE.to(entries.stream()),
                 StringCombinedBloodPressureConverter.INSTANCE.to(entries.stream()),
                 StringWholeBloodGlucoseConverter.INSTANCE.to(entries.stream()),
-                StringPeripheralOxygenSaturationConverter.INSTANCE.to(entries.stream()))
-                .flatMap(s -> s)
+                StringPeripheralOxygenSaturationConverter.INSTANCE.to(entries.stream()),
+                StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream())
+                ).flatMap(s -> s)
                 .collect(Collectors.toList());
     }
 
@@ -70,6 +74,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
             new WriteObjectAsGZip<>(WholeBloodGlucoseConverter.INSTANCE.to((WholeBloodGlucose) v), data.toPath()).run();
         } else if (v instanceof PeripheralOxygenSaturation) {
             new WriteObjectAsGZip<>(PeripheralOxygenSaturationConverter.INSTANCE.to((PeripheralOxygenSaturation) v), data.toPath()).run();
+        } else if (v instanceof BioelectricalImpedance) {
+            new WriteObjectAsGZip<>(BioelectricalImpedanceConverter.INSTANCE.to((BioelectricalImpedance) v), data.toPath()).run();
         }
     }
 }
