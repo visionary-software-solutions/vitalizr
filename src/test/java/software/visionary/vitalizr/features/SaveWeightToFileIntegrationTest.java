@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SaveWeightToFileIntegrationTest {
     @Test
-    void canSaveVitalsToFile() throws IOException {
+    void canSaveWeightsToFile() throws IOException {
         // Given: A person
         final Person person = Fixtures.createRandomPerson();
         // And: Some Weights for the person
