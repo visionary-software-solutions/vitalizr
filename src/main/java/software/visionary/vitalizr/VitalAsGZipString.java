@@ -56,7 +56,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
                 StringWholeBloodGlucoseConverter.INSTANCE.to(entries.stream()),
                 StringPeripheralOxygenSaturationConverter.INSTANCE.to(entries.stream()),
                 StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream()),
-                StringImperialTemperatureConverter.INSTANCE.to(entries.stream())
+                StringImperialTemperatureConverter.INSTANCE.to(entries.stream()),
+                software.visionary.vitalizr.bodyWater.StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream())
                 ).flatMap(s -> s)
                 .collect(Collectors.toList());
     }
@@ -82,6 +83,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
             new WriteObjectAsGZip<>(BioelectricalImpedanceConverter.INSTANCE.to((BioelectricalImpedance) v), data.toPath()).run();
         } else if (v instanceof ImperialTemperature) {
             new WriteObjectAsGZip<>(ImperialTemperatureConverter.INSTANCE.to((ImperialTemperature) v), data.toPath()).run();
+        } else if (v instanceof software.visionary.vitalizr.bodyWater.BioelectricalImpedance) {
+            new WriteObjectAsGZip<>(software.visionary.vitalizr.bodyWater.BioelectricalImpedanceConverter.INSTANCE.to((software.visionary.vitalizr.bodyWater.BioelectricalImpedance) v), data.toPath()).run();
         }
     }
 }
