@@ -19,7 +19,7 @@ import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class LoadFromWeightsFileIntegrationTest {
+class LoadWeightsFromFileIntegrationTest {
     @Test
     void canLoadWeightsFromFile() throws IOException {
         // Given: A file containing some vitals for a person
