@@ -1,14 +1,10 @@
-package software.visionary.vitalizr.features;
+package software.visionary.vitalizr.bodyTemperature;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.bodyTemperature.BodyTemperature;
-import software.visionary.vitalizr.bodyTemperature.ImperialTemperature;
-import software.visionary.vitalizr.bodyTemperature.MetricTemperature;
-import software.visionary.vitalizr.bodyTemperature.StringImperialTemperatureConverter;
 import software.visionary.vitalizr.serialization.GZipFiles;
 
 import java.io.File;
@@ -44,7 +40,7 @@ class SaveBodyTemperaturesToFileIntegrationTest {
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<BodyTemperature> found = StringImperialTemperatureConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
+        final List<BodyTemperature> found = ImperialTemperature.deserialize(written.stream()).collect(Collectors.toList());
         assertTrue(found.containsAll(stored));
         data.delete();
     }

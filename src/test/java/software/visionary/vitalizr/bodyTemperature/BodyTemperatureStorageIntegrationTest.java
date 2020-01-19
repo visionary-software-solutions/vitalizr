@@ -1,12 +1,10 @@
-package software.visionary.vitalizr.features;
+package software.visionary.vitalizr.bodyTemperature;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.bodyTemperature.BodyTemperature;
-import software.visionary.vitalizr.bodyTemperature.MetricTemperature;
 
 import java.time.Instant;
 import java.util.Collection;
