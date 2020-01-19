@@ -25,9 +25,7 @@ import software.visionary.vitalizr.pulse.HeartrateMonitorConverter;
 import software.visionary.vitalizr.pulse.StringHeartrateMonitorConverter;
 import software.visionary.vitalizr.serialization.GZipFiles;
 import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
-import software.visionary.vitalizr.weight.MetricWeight;
-import software.visionary.vitalizr.weight.MetricWeightConverter;
-import software.visionary.vitalizr.weight.StringMetricWeightConverter;
+import software.visionary.vitalizr.weight.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +52,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
         // TODO: Refactor to CHAIN OF RESPONSIBILITY and ServiceLoader
         return Stream.of(
                 StringMetricWeightConverter.INSTANCE.to(entries.stream()),
+                StringImperialWeightConverter.INSTANCE.to(entries.stream()),
                 StringQuetletIndexConverter.INSTANCE.to(entries.stream()),
                 StringCombinedBloodPressureConverter.INSTANCE.to(entries.stream()),
                 StringWholeBloodGlucoseConverter.INSTANCE.to(entries.stream()),
@@ -75,6 +74,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
         // TODO: Refactor to CHAIN OF RESPONSIBILITY and ServiceLoader
         if (v instanceof MetricWeight) {
             new WriteObjectAsGZip<>(MetricWeightConverter.INSTANCE.to((MetricWeight) v), data.toPath()).run();
+        } else if (v instanceof ImperialWeight) {
+            new WriteObjectAsGZip<>(ImperialWeightConverter.INSTANCE.to((ImperialWeight) v), data.toPath()).run();
         } else if (v instanceof QueteletIndex) {
             new WriteObjectAsGZip<>(QuetletIndexConverter.INSTANCE.to((QueteletIndex) v), data.toPath()).run();
         } else if (v instanceof Combined) {
