@@ -18,7 +18,7 @@ public class AddWeightToPerson implements BiConsumer<InputStream, OutputStream> 
             Vitalizr.loadAll();
             final String[] tokens = scanner.next().split("&");
             final Person person = Human.createPerson(tokens[0]);
-            final MetricWeight store = MetricWeight.inKilograms(Integer.valueOf(tokens[1]), Instant.now(), person);
+            final MetricWeight store = new MetricWeight(Instant.now(), Integer.valueOf(tokens[1]), person);
             Vitalizr.storeWeightFor(store);
             final Path toSave = Vitalizr.getHomeDirectory();
             final File saveFile = new File(toSave.toAbsolutePath().toString() + File.separator + "vitals" + Instant.now().toEpochMilli());

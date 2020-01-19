@@ -31,7 +31,7 @@ class WeightStorageIntegrationTest {
     private static Stream<Weight> canStoreWeight() {
         return Stream.of(
                 new ImperialWeight(Instant.now(), 203.8, PERSON),
-                MetricWeight.inKilograms(100, Instant.now(), PERSON)
+                new MetricWeight(Instant.now(), 100.1, PERSON)
         );
     }
 }

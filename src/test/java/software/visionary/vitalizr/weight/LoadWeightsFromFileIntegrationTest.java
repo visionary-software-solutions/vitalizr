@@ -42,7 +42,7 @@ class LoadWeightsFromFileIntegrationTest {
 
     private static Stream<Arguments> canLoadWeightsFromFile() {
         final ImperialWeight imperialWeight = new ImperialWeight(Instant.now(), 203.8, PERSON);
-        final MetricWeight metricWeight = MetricWeight.inKilograms(100, Instant.now(), PERSON);
+        final MetricWeight metricWeight = new MetricWeight(Instant.now(), 100.0, PERSON);
         return Stream.of(
                 Arguments.of(imperialWeight, imperialWeight.asSerializationProxy()),
                 Arguments.of(metricWeight, metricWeight.asSerializationProxy())

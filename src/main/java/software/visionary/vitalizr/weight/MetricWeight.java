@@ -1,9 +1,6 @@
 package software.visionary.vitalizr.weight;
 
-import software.visionary.vitalizr.AbstractVital;
-import software.visionary.vitalizr.Human;
-import software.visionary.vitalizr.LifeformSerializationProxy;
-import software.visionary.vitalizr.NaturalNumber;
+import software.visionary.vitalizr.*;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Unit;
 
@@ -14,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public final class MetricWeight extends AbstractVital implements Weight {
+public final class MetricWeight extends SerializableVital implements Weight {
     public MetricWeight(final Instant observed, final Number number, final Lifeform lifeform) {
         super(observed, number, lifeform);
     }
@@ -24,37 +21,25 @@ public final class MetricWeight extends AbstractVital implements Weight {
         return Gram.INSTANCE;
     }
 
-
-    public static MetricWeight inKilograms(final Number kilos, final Instant observedAt, final Lifeform lifeform) {
-        return new MetricWeight(observedAt, new NaturalNumber(kilos.intValue() * 1000), lifeform);
-    }
-
     public static Stream<MetricWeight> deserialize(final Stream<String> toConvert) {
         return toConvert.map(MetricWeightSerializationProxy::parse)
                 .flatMap(List::stream)
-                .map(toConvert1 -> inKilograms(toConvert1.getObservedValue(), toConvert1.getObservationTimestamp(), Human.createPerson(toConvert1.getPerson())));
+                .map(MetricWeightSerializationProxy::toVital);
     }
 
     public MetricWeightSerializationProxy asSerializationProxy() {
         return new MetricWeightSerializationProxy(observedAt(),
-                (byte) (getQuantity().doubleValue() / 1000),
+                getQuantity().doubleValue(),
                 getUnit().getSymbol(),
                 new LifeformSerializationProxy(belongsTo()).toString());
     }
 
-    private static final class MetricWeightSerializationProxy {
+    private static final class MetricWeightSerializationProxy extends DecimalVital {
         private static final String FIELD_DELIMITER = "💩";
         private static final String RECORD_DELIMITER = "🤯";
-        private final Instant observationTimestamp;
-        private final byte observedValue;
-        private final String observedUnit;
-        private final String person;
 
-        private MetricWeightSerializationProxy(final Instant time, final byte value, final String unit, final String life) {
-            observationTimestamp = time;
-            observedValue = value;
-            observedUnit = unit;
-            person = life;
+        protected MetricWeightSerializationProxy(final Instant time, final double value, final String unit, final String life) {
+            super(time, value, unit, life);
         }
 
         private static List<MetricWeightSerializationProxy> parse(final String entry) {
@@ -64,7 +49,7 @@ public final class MetricWeight extends AbstractVital implements Weight {
             final Matcher matcher = sought.matcher(entry);
             while (matcher.find()) {
                 final Instant time = Instant.parse(matcher.group("time"));
-                final byte value = Byte.parseByte(matcher.group("number"));
+                final double value = Double.parseDouble(matcher.group("number"));
                 final String unit = matcher.group("unit");
                 final String person = matcher.group("person");
                 final MetricWeightSerializationProxy toAdd = new MetricWeightSerializationProxy(time, value, unit, person);
@@ -74,29 +59,18 @@ public final class MetricWeight extends AbstractVital implements Weight {
         }
 
         @Override
-        public String toString() {
-            return String.format("%s%s%s%d%s%s%s%s%s",
-                    RECORD_DELIMITER,
-                    getObservationTimestamp(),
-                    FIELD_DELIMITER,
-                    getObservedValue(),
-                    FIELD_DELIMITER,
-                    observedUnit,
-                    FIELD_DELIMITER,
-                    getPerson(),
-                    RECORD_DELIMITER);
+        protected MetricWeight toVital() {
+            return new MetricWeight(getObservationTimestamp(), getObservedValue(), Human.createPerson(getPerson()));
         }
 
-        private Instant getObservationTimestamp() {
-            return observationTimestamp;
+        @Override
+        protected String getFieldDelimiter() {
+            return FIELD_DELIMITER;
         }
 
-        private byte getObservedValue() {
-            return observedValue;
-        }
-
-        private String getPerson() {
-            return person;
+        @Override
+        protected String getRecordDelimiter() {
+            return RECORD_DELIMITER;
         }
     }
 }

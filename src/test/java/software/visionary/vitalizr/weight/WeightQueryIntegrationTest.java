@@ -58,10 +58,10 @@ class WeightQueryIntegrationTest {
                         new ImperialWeight(Fixtures.observationAtMidnightNDaysAgo(1), 203.8, PERSON)
                 ),
                 Arrays.asList(
-                        MetricWeight.inKilograms(107, Fixtures.observationAtMidnightNDaysAgo(14), PERSON),
-                        MetricWeight.inKilograms(105, Fixtures.observationAtMidnightNDaysAgo(3), PERSON),
-                        MetricWeight.inKilograms(103, Fixtures.observationAtMidnightNDaysAgo(2), PERSON),
-                        MetricWeight.inKilograms(104, Fixtures.observationAtMidnightNDaysAgo(1), PERSON)
+                        new MetricWeight(Fixtures.observationAtMidnightNDaysAgo(14), 107, PERSON),
+                        new MetricWeight(Fixtures.observationAtMidnightNDaysAgo(3), 105, PERSON),
+                        new MetricWeight(Fixtures.observationAtMidnightNDaysAgo(2), 103, PERSON),
+                        new MetricWeight(Fixtures.observationAtMidnightNDaysAgo(1), 104, PERSON)
                 )
         );
     }

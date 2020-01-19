@@ -48,9 +48,9 @@ class SaveWeightToFileIntegrationTest {
 
     private static Stream<Collection<Weight>> canSaveWeightsToFile() {
         final Collection<Weight> stored = new ArrayList<>(3);
-        stored.add(MetricWeight.inKilograms(100, Instant.now(), PERSON));
-        stored.add(MetricWeight.inKilograms(101, Instant.now().plus(-1, ChronoUnit.DAYS), PERSON));
-        stored.add(MetricWeight.inKilograms(105, Instant.now().plus(-2, ChronoUnit.DAYS), PERSON));
+        stored.add(new MetricWeight(Instant.now(), 100.1, PERSON));
+        stored.add(new MetricWeight(Instant.now().plus(-1, ChronoUnit.DAYS), 101.2, PERSON));
+        stored.add(new MetricWeight(Instant.now().plus(-2, ChronoUnit.DAYS), 105.0, PERSON));
         final Collection<Weight> alsoStored = new ArrayList<>(3);
         alsoStored.add(new ImperialWeight(Instant.now(), 200.0, PERSON));
         alsoStored.add(new ImperialWeight(Instant.now().plus(-1, ChronoUnit.DAYS), 205.0, PERSON));
