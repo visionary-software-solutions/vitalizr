@@ -20,6 +20,9 @@ import software.visionary.vitalizr.bodyTemperature.StringImperialTemperatureConv
 import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturation;
 import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturationConverter;
 import software.visionary.vitalizr.oxygen.StringPeripheralOxygenSaturationConverter;
+import software.visionary.vitalizr.pulse.HeartrateMonitor;
+import software.visionary.vitalizr.pulse.HeartrateMonitorConverter;
+import software.visionary.vitalizr.pulse.StringHeartrateMonitorConverter;
 import software.visionary.vitalizr.serialization.GZipFiles;
 import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
 import software.visionary.vitalizr.weight.MetricWeight;
@@ -48,7 +51,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
     }
 
     private static List<Vital> convert(final List<String> entries) {
-        // TODO: For other vitals
+        // TODO: Refactor to CHAIN OF RESPONSIBILITY and ServiceLoader
         return Stream.of(
                 StringMetricWeightConverter.INSTANCE.to(entries.stream()),
                 StringQuetletIndexConverter.INSTANCE.to(entries.stream()),
@@ -57,7 +60,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
                 StringPeripheralOxygenSaturationConverter.INSTANCE.to(entries.stream()),
                 StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream()),
                 StringImperialTemperatureConverter.INSTANCE.to(entries.stream()),
-                software.visionary.vitalizr.bodyWater.StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream())
+                software.visionary.vitalizr.bodyWater.StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream()),
+                StringHeartrateMonitorConverter.INSTANCE.to(entries.stream())
                 ).flatMap(s -> s)
                 .collect(Collectors.toList());
     }
@@ -68,7 +72,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
     }
 
     private static void writeTo(final File data, final Vital v) {
-        // TODO: Add support for other Vitals
+        // TODO: Refactor to CHAIN OF RESPONSIBILITY and ServiceLoader
         if (v instanceof MetricWeight) {
             new WriteObjectAsGZip<>(MetricWeightConverter.INSTANCE.to((MetricWeight) v), data.toPath()).run();
         } else if (v instanceof QueteletIndex) {
@@ -85,6 +89,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
             new WriteObjectAsGZip<>(ImperialTemperatureConverter.INSTANCE.to((ImperialTemperature) v), data.toPath()).run();
         } else if (v instanceof software.visionary.vitalizr.bodyWater.BioelectricalImpedance) {
             new WriteObjectAsGZip<>(software.visionary.vitalizr.bodyWater.BioelectricalImpedanceConverter.INSTANCE.to((software.visionary.vitalizr.bodyWater.BioelectricalImpedance) v), data.toPath()).run();
+        } else if (v instanceof HeartrateMonitor) {
+            new WriteObjectAsGZip<>(HeartrateMonitorConverter.INSTANCE.to((HeartrateMonitor) v), data.toPath()).run();
         }
     }
 }
