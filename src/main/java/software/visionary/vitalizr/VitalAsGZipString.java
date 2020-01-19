@@ -14,9 +14,7 @@ import software.visionary.vitalizr.bodyFat.StringBioelectricalImpedanceConverter
 import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
 import software.visionary.vitalizr.bodyMassIndex.QuetletIndexConverter;
 import software.visionary.vitalizr.bodyMassIndex.StringQuetletIndexConverter;
-import software.visionary.vitalizr.bodyTemperature.ImperialTemperature;
-import software.visionary.vitalizr.bodyTemperature.ImperialTemperatureConverter;
-import software.visionary.vitalizr.bodyTemperature.StringImperialTemperatureConverter;
+import software.visionary.vitalizr.bodyTemperature.*;
 import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturation;
 import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturationConverter;
 import software.visionary.vitalizr.oxygen.StringPeripheralOxygenSaturationConverter;
@@ -59,6 +57,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
                 StringPeripheralOxygenSaturationConverter.INSTANCE.to(entries.stream()),
                 StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream()),
                 StringImperialTemperatureConverter.INSTANCE.to(entries.stream()),
+                StringMetricTemperatureConverter.INSTANCE.to(entries.stream()),
                 software.visionary.vitalizr.bodyWater.StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream()),
                 StringHeartrateMonitorConverter.INSTANCE.to(entries.stream())
                 ).flatMap(s -> s)
@@ -88,6 +87,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
             new WriteObjectAsGZip<>(BioelectricalImpedanceConverter.INSTANCE.to((BioelectricalImpedance) v), data.toPath()).run();
         } else if (v instanceof ImperialTemperature) {
             new WriteObjectAsGZip<>(ImperialTemperatureConverter.INSTANCE.to((ImperialTemperature) v), data.toPath()).run();
+        } else if (v instanceof MetricTemperature) {
+            new WriteObjectAsGZip<>(MetricTemperatureConverter.INSTANCE.to((MetricTemperature) v), data.toPath()).run();
         } else if (v instanceof software.visionary.vitalizr.bodyWater.BioelectricalImpedance) {
             new WriteObjectAsGZip<>(software.visionary.vitalizr.bodyWater.BioelectricalImpedanceConverter.INSTANCE.to((software.visionary.vitalizr.bodyWater.BioelectricalImpedance) v), data.toPath()).run();
         } else if (v instanceof HeartrateMonitor) {

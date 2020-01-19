@@ -42,4 +42,4 @@ point in time.</p>
 point in time.</p>
 <p>As a patient, because I want to review my health, I want to be retrieve my body fat percentage for a time range.</p>
 <p>As a user, because I'm from a backwards place that uses the Imperial System, I want to be able to enter my weight in pounds.</p>
-
+<p>As a user, because I'm from the civilized world which uses the Imperial System, I want to be able to enter my temperature in celsius.</p>
