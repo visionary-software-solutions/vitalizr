@@ -6,8 +6,6 @@ import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodPressure.Combined;
-import software.visionary.vitalizr.bloodPressure.CombinedBloodPressureConverter;
-import software.visionary.vitalizr.bloodPressure.CombinedBloodPressureSerializationProxy;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
 import software.visionary.vitalizr.bloodSugar.WholeBloodGlucose;
 import software.visionary.vitalizr.bloodSugar.WholeBloodGlucoseConverter;
@@ -34,11 +32,11 @@ class LoadFromVitalsFileIntegrationTest {
         final BloodSugar toStore4 = new WholeBloodGlucose(Instant.now().plus(-2, ChronoUnit.DAYS), 225, mom);
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_load_vitals")).toFile();
         data.deleteOnExit();
-        final CombinedBloodPressureSerializationProxy serialized3 = CombinedBloodPressureConverter.INSTANCE.to(toStore3);
-        final WholeBloodGlucoseSerializationProxy serialized4 = WholeBloodGlucoseConverter.INSTANCE.to((WholeBloodGlucose) toStore4);
-        final WriteObjectAsGZip<CombinedBloodPressureSerializationProxy> writer3 = new WriteObjectAsGZip<>(serialized3, data.toPath());
+        final Object serialized3 = toStore3.toSerializationProxy();
+        final Object serialized4 = WholeBloodGlucoseConverter.INSTANCE.to((WholeBloodGlucose) toStore4);
+        final WriteObjectAsGZip<Object> writer3 = new WriteObjectAsGZip<>(serialized3, data.toPath());
         writer3.run();
-        final WriteObjectAsGZip<WholeBloodGlucoseSerializationProxy> writer4 = new WriteObjectAsGZip<>(serialized4, data.toPath());
+        final WriteObjectAsGZip<Object> writer4 = new WriteObjectAsGZip<>(serialized4, data.toPath());
         writer4.run();
         // When: I call loadVitalsFromFile
         Vitalizr.loadVitalsFromFile(data);

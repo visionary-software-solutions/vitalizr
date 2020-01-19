@@ -3,8 +3,6 @@ package software.visionary.vitalizr;
 import software.visionary.vitalizr.api.Vital;
 import software.visionary.vitalizr.api.VitalSerializationStrategy;
 import software.visionary.vitalizr.bloodPressure.Combined;
-import software.visionary.vitalizr.bloodPressure.CombinedBloodPressureConverter;
-import software.visionary.vitalizr.bloodPressure.StringCombinedBloodPressureConverter;
 import software.visionary.vitalizr.bloodSugar.StringWholeBloodGlucoseConverter;
 import software.visionary.vitalizr.bloodSugar.WholeBloodGlucose;
 import software.visionary.vitalizr.bloodSugar.WholeBloodGlucoseConverter;
@@ -50,7 +48,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
                 StringMetricWeightConverter.INSTANCE.to(entries.stream()),
                 StringImperialWeightConverter.INSTANCE.to(entries.stream()),
                 StringQuetletIndexConverter.INSTANCE.to(entries.stream()),
-                StringCombinedBloodPressureConverter.INSTANCE.to(entries.stream()),
+                Combined.fromSerialized(entries.stream()),
                 StringWholeBloodGlucoseConverter.INSTANCE.to(entries.stream()),
                 PeripheralOxygenSaturation.fromSerialized(entries.stream()),
                 StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream()),
@@ -76,7 +74,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
         } else if (v instanceof QueteletIndex) {
             new WriteObjectAsGZip<>(QuetletIndexConverter.INSTANCE.to((QueteletIndex) v), data.toPath()).run();
         } else if (v instanceof Combined) {
-            new WriteObjectAsGZip<>(CombinedBloodPressureConverter.INSTANCE.to((Combined) v), data.toPath()).run();
+            new WriteObjectAsGZip<>(((Combined) v).toSerializationProxy(), data.toPath()).run();
         } else if (v instanceof WholeBloodGlucose) {
             new WriteObjectAsGZip<>(WholeBloodGlucoseConverter.INSTANCE.to((WholeBloodGlucose) v), data.toPath()).run();
         } else if (v instanceof PeripheralOxygenSaturation) {

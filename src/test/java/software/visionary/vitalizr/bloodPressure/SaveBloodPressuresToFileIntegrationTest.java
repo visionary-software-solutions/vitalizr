@@ -1,12 +1,9 @@
-package software.visionary.vitalizr.features;
+package software.visionary.vitalizr.bloodPressure;
 
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.bloodPressure.BloodPressure;
-import software.visionary.vitalizr.bloodPressure.Combined;
-import software.visionary.vitalizr.bloodPressure.StringCombinedBloodPressureConverter;
 import software.visionary.vitalizr.serialization.GZipFiles;
 
 import java.io.File;
@@ -37,7 +34,7 @@ class SaveBloodPressuresToFileIntegrationTest {
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<BloodPressure> foundBPs = StringCombinedBloodPressureConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
+        final List<BloodPressure> foundBPs = Combined.fromSerialized(written.stream()).collect(Collectors.toList());
         assertTrue(foundBPs.containsAll(thirdStored));
         data.delete();
     }

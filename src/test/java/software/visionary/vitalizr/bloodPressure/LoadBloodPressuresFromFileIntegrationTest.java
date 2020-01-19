@@ -1,13 +1,9 @@
-package software.visionary.vitalizr.features;
+package software.visionary.vitalizr.bloodPressure;
 
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.bloodPressure.BloodPressure;
-import software.visionary.vitalizr.bloodPressure.Combined;
-import software.visionary.vitalizr.bloodPressure.CombinedBloodPressureConverter;
-import software.visionary.vitalizr.bloodPressure.CombinedBloodPressureSerializationProxy;
 import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
 
 import java.io.File;
@@ -28,8 +24,8 @@ class LoadBloodPressuresFromFileIntegrationTest {
         final Combined toStore3 = Combined.systolicAndDiastolicBloodPressure(Instant.now().plus(-2, ChronoUnit.DAYS), 138, 89, mom);
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_load_vitals")).toFile();
         data.deleteOnExit();
-        final CombinedBloodPressureSerializationProxy serialized3 = CombinedBloodPressureConverter.INSTANCE.to(toStore3);
-        final WriteObjectAsGZip<CombinedBloodPressureSerializationProxy> writer3 = new WriteObjectAsGZip<>(serialized3, data.toPath());
+        final Object serialized3 = toStore3.toSerializationProxy();
+        final WriteObjectAsGZip<Object> writer3 = new WriteObjectAsGZip<>(serialized3, data.toPath());
         writer3.run();
         // When: I call loadVitalsFromFile
         Vitalizr.loadVitalsFromFile(data);

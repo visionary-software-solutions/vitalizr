@@ -7,7 +7,6 @@ import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodPressure.Combined;
-import software.visionary.vitalizr.bloodPressure.StringCombinedBloodPressureConverter;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
 import software.visionary.vitalizr.bloodSugar.StringWholeBloodGlucoseConverter;
 import software.visionary.vitalizr.bloodSugar.WholeBloodGlucose;
@@ -45,7 +44,7 @@ class SaveVitalsToFileIntegrationTest {
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<BloodPressure> foundBPs = StringCombinedBloodPressureConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
+        final List<BloodPressure> foundBPs = Combined.fromSerialized(written.stream()).collect(Collectors.toList());
         assertTrue(foundBPs.containsAll(thirdStored));
         final List<BloodSugar> foundBloodSugars = StringWholeBloodGlucoseConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
         assertTrue(foundBloodSugars.containsAll(fourthStored));
