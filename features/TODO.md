@@ -29,5 +29,5 @@ of medians, I want to be able to simply calculate summary statistics.</p>
 to use it to improve someone's health.</p>
 
 <h2>User Stories</h2>
-<p>As a user, because I'm from a backwards place that uses the Imperial System, I want to be able to enter my weight in pounds.</p>
+<p>As a user, because I'm from the civilized world which uses the Imperial System, I want to be able to enter my temperature in celsius.</p>
 

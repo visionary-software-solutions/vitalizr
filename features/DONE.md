@@ -41,4 +41,5 @@ point in time.</p>
 <p>As a patient, because I want to proactively monitor my health, I want to be able to store my body fat percentage at a particular
 point in time.</p>
 <p>As a patient, because I want to review my health, I want to be retrieve my body fat percentage for a time range.</p>
+<p>As a user, because I'm from a backwards place that uses the Imperial System, I want to be able to enter my weight in pounds.</p>
 
