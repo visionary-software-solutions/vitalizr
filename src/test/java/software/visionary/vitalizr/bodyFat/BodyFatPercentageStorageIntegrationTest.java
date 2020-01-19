@@ -1,17 +1,16 @@
-package software.visionary.vitalizr.features;
+package software.visionary.vitalizr.bodyFat;
 
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.bodyFat.BodyFatPercentage;
 
 import java.time.Instant;
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class BodyFatStorageIntegrationTest {
+class BodyFatPercentageStorageIntegrationTest {
     @Test
     void canStoreBodyFat() {
         // Given: A person to store Body water for

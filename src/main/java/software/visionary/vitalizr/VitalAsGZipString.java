@@ -5,8 +5,6 @@ import software.visionary.vitalizr.api.VitalSerializationStrategy;
 import software.visionary.vitalizr.bloodPressure.Combined;
 import software.visionary.vitalizr.bloodSugar.WholeBloodGlucose;
 import software.visionary.vitalizr.bodyFat.BioelectricalImpedance;
-import software.visionary.vitalizr.bodyFat.BioelectricalImpedanceConverter;
-import software.visionary.vitalizr.bodyFat.StringBioelectricalImpedanceConverter;
 import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
 import software.visionary.vitalizr.bodyMassIndex.QuetletIndexConverter;
 import software.visionary.vitalizr.bodyMassIndex.StringQuetletIndexConverter;
@@ -49,7 +47,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
                 Combined.fromSerialized(entries.stream()),
                 WholeBloodGlucose.deserialize(entries.stream()),
                 PeripheralOxygenSaturation.fromSerialized(entries.stream()),
-                StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream()),
+                BioelectricalImpedance.deserialize(entries.stream()),
                 StringImperialTemperatureConverter.INSTANCE.to(entries.stream()),
                 StringMetricTemperatureConverter.INSTANCE.to(entries.stream()),
                 software.visionary.vitalizr.bodyWater.StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream()),
@@ -78,7 +76,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
         } else if (v instanceof PeripheralOxygenSaturation) {
             new WriteObjectAsGZip<>(((PeripheralOxygenSaturation) v).asSerializationProxy(), data.toPath()).run();
         } else if (v instanceof BioelectricalImpedance) {
-            new WriteObjectAsGZip<>(BioelectricalImpedanceConverter.INSTANCE.to((BioelectricalImpedance) v), data.toPath()).run();
+            new WriteObjectAsGZip<>(((BioelectricalImpedance) v).asSerializationProxy(), data.toPath()).run();
         } else if (v instanceof ImperialTemperature) {
             new WriteObjectAsGZip<>(ImperialTemperatureConverter.INSTANCE.to((ImperialTemperature) v), data.toPath()).run();
         } else if (v instanceof MetricTemperature) {
