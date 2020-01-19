@@ -8,7 +8,6 @@ import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodPressure.Combined;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
-import software.visionary.vitalizr.bloodSugar.StringWholeBloodGlucoseConverter;
 import software.visionary.vitalizr.bloodSugar.WholeBloodGlucose;
 import software.visionary.vitalizr.serialization.GZipFiles;
 
@@ -46,7 +45,7 @@ class SaveVitalsToFileIntegrationTest {
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
         final List<BloodPressure> foundBPs = Combined.fromSerialized(written.stream()).collect(Collectors.toList());
         assertTrue(foundBPs.containsAll(thirdStored));
-        final List<BloodSugar> foundBloodSugars = StringWholeBloodGlucoseConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
+        final List<BloodSugar> foundBloodSugars = WholeBloodGlucose.deserialize(written.stream()).collect(Collectors.toList());
         assertTrue(foundBloodSugars.containsAll(fourthStored));
         data.delete();
     }

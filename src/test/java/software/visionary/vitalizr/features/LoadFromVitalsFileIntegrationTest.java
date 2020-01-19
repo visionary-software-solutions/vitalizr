@@ -8,8 +8,6 @@ import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodPressure.Combined;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
 import software.visionary.vitalizr.bloodSugar.WholeBloodGlucose;
-import software.visionary.vitalizr.bloodSugar.WholeBloodGlucoseConverter;
-import software.visionary.vitalizr.bloodSugar.WholeBloodGlucoseSerializationProxy;
 import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
 import software.visionary.vitalizr.weight.Weight;
 
@@ -33,7 +31,7 @@ class LoadFromVitalsFileIntegrationTest {
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_load_vitals")).toFile();
         data.deleteOnExit();
         final Object serialized3 = toStore3.toSerializationProxy();
-        final Object serialized4 = WholeBloodGlucoseConverter.INSTANCE.to((WholeBloodGlucose) toStore4);
+        final Object serialized4 = ((WholeBloodGlucose) toStore4).asSerializationProxy();
         final WriteObjectAsGZip<Object> writer3 = new WriteObjectAsGZip<>(serialized3, data.toPath());
         writer3.run();
         final WriteObjectAsGZip<Object> writer4 = new WriteObjectAsGZip<>(serialized4, data.toPath());

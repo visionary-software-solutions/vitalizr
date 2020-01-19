@@ -1,10 +1,9 @@
-package software.visionary.vitalizr.features;
+package software.visionary.vitalizr.bloodSugar;
 
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.bloodSugar.BloodSugar;
 
 import java.time.Instant;
 import java.util.Collection;

@@ -3,9 +3,7 @@ package software.visionary.vitalizr;
 import software.visionary.vitalizr.api.Vital;
 import software.visionary.vitalizr.api.VitalSerializationStrategy;
 import software.visionary.vitalizr.bloodPressure.Combined;
-import software.visionary.vitalizr.bloodSugar.StringWholeBloodGlucoseConverter;
 import software.visionary.vitalizr.bloodSugar.WholeBloodGlucose;
-import software.visionary.vitalizr.bloodSugar.WholeBloodGlucoseConverter;
 import software.visionary.vitalizr.bodyFat.BioelectricalImpedance;
 import software.visionary.vitalizr.bodyFat.BioelectricalImpedanceConverter;
 import software.visionary.vitalizr.bodyFat.StringBioelectricalImpedanceConverter;
@@ -49,7 +47,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
                 StringImperialWeightConverter.INSTANCE.to(entries.stream()),
                 StringQuetletIndexConverter.INSTANCE.to(entries.stream()),
                 Combined.fromSerialized(entries.stream()),
-                StringWholeBloodGlucoseConverter.INSTANCE.to(entries.stream()),
+                WholeBloodGlucose.deserialize(entries.stream()),
                 PeripheralOxygenSaturation.fromSerialized(entries.stream()),
                 StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream()),
                 StringImperialTemperatureConverter.INSTANCE.to(entries.stream()),
@@ -76,7 +74,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
         } else if (v instanceof Combined) {
             new WriteObjectAsGZip<>(((Combined) v).toSerializationProxy(), data.toPath()).run();
         } else if (v instanceof WholeBloodGlucose) {
-            new WriteObjectAsGZip<>(WholeBloodGlucoseConverter.INSTANCE.to((WholeBloodGlucose) v), data.toPath()).run();
+            new WriteObjectAsGZip<>(((WholeBloodGlucose) v).asSerializationProxy(), data.toPath()).run();
         } else if (v instanceof PeripheralOxygenSaturation) {
             new WriteObjectAsGZip<>(((PeripheralOxygenSaturation) v).asSerializationProxy(), data.toPath()).run();
         } else if (v instanceof BioelectricalImpedance) {
