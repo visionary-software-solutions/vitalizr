@@ -5,6 +5,7 @@ import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.LifeformSerializationProxy;
 import software.visionary.vitalizr.NaturalNumber;
 import software.visionary.vitalizr.api.Lifeform;
+import software.visionary.vitalizr.api.Unit;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -77,6 +78,11 @@ public final class Combined implements BloodPressure {
     @Override
     public Lifeform belongsTo() {
         return systolic.belongsTo();
+    }
+
+    @Override
+    public Unit getUnit() {
+        return MillimetersOfMercury.INSTANCE;
     }
 
     private static final class CombinedBloodPressureSerializationProxy {

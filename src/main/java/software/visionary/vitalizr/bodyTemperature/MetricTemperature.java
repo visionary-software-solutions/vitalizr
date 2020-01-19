@@ -1,5 +1,6 @@
 package software.visionary.vitalizr.bodyTemperature;
 
+import software.visionary.vitalizr.AbstractVital;
 import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.LifeformSerializationProxy;
 import software.visionary.vitalizr.api.Lifeform;
@@ -8,26 +9,19 @@ import software.visionary.vitalizr.api.Unit;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public final class MetricTemperature implements BodyTemperature {
-    private final Lifeform lifeform;
-    private final Number quantity;
-    private final Instant observedAt;
-
-    public MetricTemperature(final Lifeform lifeform, final Number quantity, final Instant observedAt) {
-        this.lifeform = Objects.requireNonNull(lifeform);
-        this.quantity = Objects.requireNonNull(quantity);
-        this.observedAt = Objects.requireNonNull(observedAt);
+public final class MetricTemperature extends AbstractVital implements BodyTemperature {
+    public MetricTemperature(final Instant observed, final Number number, final Lifeform lifeform) {
+        super(observed, number, lifeform);
     }
 
     public static Stream<MetricTemperature> deserialize(final Stream<String> toConvert) {
         return toConvert.map(MetricTemperatureSerializationProxy::parse)
                 .flatMap(List::stream)
-                .map(toConvert1 -> new MetricTemperature(Human.createPerson(toConvert1.getPerson()), toConvert1.getObservedValue(), toConvert1.getObservationTimestamp()));
+                .map(toConvert1 -> new MetricTemperature(toConvert1.getObservationTimestamp(), toConvert1.getObservedValue(), Human.createPerson(toConvert1.getPerson())));
     }
 
     public MetricTemperatureSerializationProxy asSerializationProxy() {
@@ -38,38 +32,8 @@ public final class MetricTemperature implements BodyTemperature {
     }
 
     @Override
-    public Lifeform belongsTo() {
-        return lifeform;
-    }
-
-    @Override
-    public Number getQuantity() {
-        return quantity;
-    }
-
-    @Override
-    public Instant observedAt() {
-        return observedAt;
-    }
-
-    @Override
     public Unit getUnit() {
         return Celsius.INSTANCE;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final MetricTemperature that = (MetricTemperature) o;
-        return lifeform.equals(that.lifeform) &&
-                getQuantity().equals(that.getQuantity()) &&
-                observedAt.equals(that.observedAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(lifeform, getQuantity(), observedAt);
     }
 
     private static final class MetricTemperatureSerializationProxy {

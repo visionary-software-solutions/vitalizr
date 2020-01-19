@@ -1,5 +1,6 @@
 package software.visionary.vitalizr.bodyTemperature;
 
+import software.visionary.vitalizr.AbstractVital;
 import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.LifeformSerializationProxy;
 import software.visionary.vitalizr.api.Lifeform;
@@ -8,26 +9,19 @@ import software.visionary.vitalizr.api.Unit;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public final class ImperialTemperature implements BodyTemperature {
-    private final Lifeform lifeform;
-    private final Number quantity;
-    private final Instant observedAt;
-
-    public ImperialTemperature(final Lifeform lifeform, final Number quantity, final Instant observedAt) {
-        this.lifeform = Objects.requireNonNull(lifeform);
-        this.quantity = Objects.requireNonNull(quantity);
-        this.observedAt = Objects.requireNonNull(observedAt);
+public final class ImperialTemperature extends AbstractVital implements BodyTemperature {
+    public ImperialTemperature(final Instant observed, final Number number, final Lifeform lifeform) {
+        super(observed, number, lifeform);
     }
 
     public static Stream<ImperialTemperature> deserialize(final Stream<String> toConvert) {
         return toConvert.map(ImperialTemperatureSerializationProxy::parse)
                 .flatMap(List::stream)
-                .map(toConvert1 -> new ImperialTemperature(Human.createPerson(toConvert1.getPerson()), toConvert1.getObservedValue(), toConvert1.getObservationTimestamp()));
+                .map(toConvert1 -> new ImperialTemperature(toConvert1.getObservationTimestamp(), toConvert1.getObservedValue(), Human.createPerson(toConvert1.getPerson())));
     }
 
     public ImperialTemperatureSerializationProxy asSerializationProxy() {
@@ -38,38 +32,8 @@ public final class ImperialTemperature implements BodyTemperature {
     }
 
     @Override
-    public Lifeform belongsTo() {
-        return lifeform;
-    }
-
-    @Override
-    public Number getQuantity() {
-        return quantity;
-    }
-
-    @Override
-    public Instant observedAt() {
-        return observedAt;
-    }
-
-    @Override
     public Unit getUnit() {
         return Fahrenheit.INSTANCE;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final ImperialTemperature that = (ImperialTemperature) o;
-        return lifeform.equals(that.lifeform) &&
-                getQuantity().equals(that.getQuantity()) &&
-                observedAt.equals(that.observedAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(lifeform, getQuantity(), observedAt);
     }
 
     private static final class ImperialTemperatureSerializationProxy {

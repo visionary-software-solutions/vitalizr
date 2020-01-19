@@ -1,28 +1,29 @@
 package software.visionary.vitalizr.weight;
 
+import software.visionary.vitalizr.AbstractVital;
 import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.LifeformSerializationProxy;
 import software.visionary.vitalizr.NaturalNumber;
 import software.visionary.vitalizr.api.Lifeform;
+import software.visionary.vitalizr.api.Unit;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public final class MetricWeight implements Weight {
-    private final Instant observed;
-    private final NaturalNumber number;
-    private final Lifeform owner;
-
-    private MetricWeight(final Instant observed, final NaturalNumber number, final Lifeform lifeform) {
-        this.observed = Objects.requireNonNull(observed);
-        this.number = Objects.requireNonNull(number);
-        this.owner = Objects.requireNonNull(lifeform);
+public final class MetricWeight extends AbstractVital implements Weight {
+    public MetricWeight(final Instant observed, final Number number, final Lifeform lifeform) {
+        super(observed, number, lifeform);
     }
+
+    @Override
+    public Unit getUnit() {
+        return Gram.INSTANCE;
+    }
+
 
     public static MetricWeight inKilograms(final Number kilos, final Instant observedAt, final Lifeform lifeform) {
         return new MetricWeight(observedAt, new NaturalNumber(kilos.intValue() * 1000), lifeform);
@@ -39,41 +40,6 @@ public final class MetricWeight implements Weight {
                 (byte) (getQuantity().doubleValue() / 1000),
                 getUnit().getSymbol(),
                 new LifeformSerializationProxy(belongsTo()).toString());
-    }
-
-    @Override
-    public Number getQuantity() {
-        return number;
-    }
-
-    @Override
-    public Instant observedAt() {
-        return observed;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        final MetricWeight weight = (MetricWeight) o;
-        return Objects.equals(observed, weight.observed) &&
-                Objects.equals(number, weight.number) &&
-                Objects.equals(getUnit(), weight.getUnit()) &&
-                Objects.equals(belongsTo(), weight.belongsTo());
-    }
-    
-    @Override
-    public Lifeform belongsTo() {
-        return owner;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(observed, number, getUnit(), belongsTo());
     }
 
     private static final class MetricWeightSerializationProxy {

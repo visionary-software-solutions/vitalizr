@@ -31,7 +31,7 @@ class BodyTemperatureStorageIntegrationTest {
     private static Stream<BodyTemperature> canStoreBodyTemperature() {
         return Stream.of(
                 Fixtures.temperatureAt(97.9, Instant.now(), PERSON),
-                new MetricTemperature(PERSON, 36.61, Instant.now())
+                new MetricTemperature(Instant.now(), 36.61, PERSON)
                 );
     }
 }

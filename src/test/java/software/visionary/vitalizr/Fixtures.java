@@ -47,6 +47,11 @@ public class Fixtures {
     public static Pulse pulseAt(final int pulse, final Instant now, final Lifeform lifeform) {
         return new Pulse() {
             @Override
+            public Unit getUnit() {
+                return Unit.NONE.INSTANCE;
+            }
+
+            @Override
             public Lifeform belongsTo() {
                 return lifeform;
             }
@@ -65,6 +70,11 @@ public class Fixtures {
 
     public static BloodOxygen oxygenAt(final int o2, final Instant instant, final Lifeform lifeform) {
         return new BloodOxygen() {
+            @Override
+            public Unit getUnit() {
+                return Unit.NONE.INSTANCE;
+            }
+
             @Override
             public Lifeform belongsTo() {
                 return lifeform;
@@ -107,7 +117,7 @@ public class Fixtures {
     }
 
     public static BodyTemperature temperatureAt(final double v, final Instant instant, final Person person) {
-        return new ImperialTemperature(person, v, instant);
+        return new ImperialTemperature(instant, v, person);
     }
 
     public static Family family(final Person person) {
@@ -201,6 +211,11 @@ public class Fixtures {
     public static BodyWaterPercentage bodyWaterPercentageAt(final double v, final Instant i, final Person p) {
         return new BodyWaterPercentage() {
             @Override
+            public Unit getUnit() {
+                return Unit.NONE.INSTANCE;
+            }
+
+            @Override
             public Lifeform belongsTo() {
                 return p;
             }
@@ -219,6 +234,11 @@ public class Fixtures {
 
     public static BodyFatPercentage bodyFatPercentageAt(final double v, final Instant i, final Person person) {
         return new BodyFatPercentage() {
+            @Override
+            public Unit getUnit() {
+                return Unit.NONE.INSTANCE;
+            }
+
             @Override
             public Lifeform belongsTo() {
                 return person;

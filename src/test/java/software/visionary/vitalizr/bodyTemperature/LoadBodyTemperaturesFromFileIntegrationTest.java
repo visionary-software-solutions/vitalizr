@@ -23,7 +23,7 @@ class LoadBodyTemperaturesFromFileIntegrationTest {
     @Test
     void canLoadImperialBodyTemperaturesFromFile() throws IOException {
         // Given: A file containing some vitals for a person
-        final BodyTemperature toStore2 = new ImperialTemperature(PERSON, 98.7, Instant.now().plus(-2, ChronoUnit.DAYS));
+        final BodyTemperature toStore2 = new ImperialTemperature(Instant.now().plus(-2, ChronoUnit.DAYS), 98.7, PERSON);
         final Object serialized2 = ((ImperialTemperature) toStore2).asSerializationProxy();
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), PERSON.getEmailAddress().toString() + "_load_vitals")).toFile();
         data.deleteOnExit();
@@ -41,7 +41,7 @@ class LoadBodyTemperaturesFromFileIntegrationTest {
     @Test
     void canMetricImperialBodyTemperaturesFromFile() throws IOException {
         // Given: A file containing some vitals for a person
-        final BodyTemperature toStore2 = new MetricTemperature(PERSON, 36.1, Instant.now().plus(-2, ChronoUnit.DAYS));
+        final BodyTemperature toStore2 = new MetricTemperature(Instant.now().plus(-2, ChronoUnit.DAYS), 36.1, PERSON);
         final Object serialized2 = ((MetricTemperature) toStore2).asSerializationProxy();
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), PERSON.getEmailAddress().toString() + "_load_vitals")).toFile();
         data.deleteOnExit();

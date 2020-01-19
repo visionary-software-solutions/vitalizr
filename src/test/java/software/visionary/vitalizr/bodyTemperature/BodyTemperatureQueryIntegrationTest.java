@@ -58,10 +58,10 @@ class BodyTemperatureQueryIntegrationTest {
                         Fixtures.temperatureAt(97.9, Fixtures.observationAtMidnightNDaysAgo(1), PERSON)
                 ),
                 Arrays.asList(
-                        new MetricTemperature(PERSON, 98, Fixtures.observationAtMidnightNDaysAgo(14)),
-                        new MetricTemperature(PERSON, 101.3, Fixtures.observationAtMidnightNDaysAgo(3)),
-                        new MetricTemperature(PERSON, 99.2, Fixtures.observationAtMidnightNDaysAgo(2)),
-                        new MetricTemperature(PERSON, 97.9, Fixtures.observationAtMidnightNDaysAgo(1))
+                        new MetricTemperature(Fixtures.observationAtMidnightNDaysAgo(14), 98, PERSON),
+                        new MetricTemperature(Fixtures.observationAtMidnightNDaysAgo(3), 101.3, PERSON),
+                        new MetricTemperature(Fixtures.observationAtMidnightNDaysAgo(2), 99.2, PERSON),
+                        new MetricTemperature(Fixtures.observationAtMidnightNDaysAgo(1), 97.9, PERSON)
                 )
         );
     }

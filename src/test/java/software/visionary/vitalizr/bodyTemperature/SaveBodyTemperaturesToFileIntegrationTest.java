@@ -47,13 +47,13 @@ class SaveBodyTemperaturesToFileIntegrationTest {
 
     private static Stream<Collection<BodyTemperature>> canSaveBodyTemperaturesToFile() {
         final Collection<BodyTemperature> stored = new ArrayList<>(3);
-        stored.add(new MetricTemperature(PERSON, 36.1, Instant.now()));
-        stored.add(new MetricTemperature(PERSON, 36.3, Instant.now().plus(-1, ChronoUnit.DAYS)));
-        stored.add(new MetricTemperature(PERSON, 37, Instant.now().plus(-2, ChronoUnit.DAYS)));
+        stored.add(new MetricTemperature(Instant.now(), 36.1, PERSON));
+        stored.add(new MetricTemperature(Instant.now().plus(-1, ChronoUnit.DAYS), 36.3, PERSON));
+        stored.add(new MetricTemperature(Instant.now().plus(-2, ChronoUnit.DAYS), 37, PERSON));
         final Collection<BodyTemperature> alsoStored = new ArrayList<>(3);
-        alsoStored.add(new ImperialTemperature(PERSON, 97.9, Instant.now()));
-        alsoStored.add(new ImperialTemperature(PERSON, 98.2, Instant.now().plus(-1, ChronoUnit.DAYS)));
-        alsoStored.add(new ImperialTemperature(PERSON, 98.0, Instant.now().plus(-2, ChronoUnit.DAYS)));
+        alsoStored.add(new ImperialTemperature(Instant.now(), 97.9, PERSON));
+        alsoStored.add(new ImperialTemperature(Instant.now().plus(-1, ChronoUnit.DAYS), 98.2, PERSON));
+        alsoStored.add(new ImperialTemperature(Instant.now().plus(-2, ChronoUnit.DAYS), 98.0, PERSON));
         return Stream.of(alsoStored);
     }
 }

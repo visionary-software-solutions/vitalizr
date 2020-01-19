@@ -1,5 +1,6 @@
 package software.visionary.vitalizr.weight;
 
+import software.visionary.vitalizr.AbstractVital;
 import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.LifeformSerializationProxy;
 import software.visionary.vitalizr.api.Lifeform;
@@ -8,20 +9,19 @@ import software.visionary.vitalizr.api.Unit;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public final class ImperialWeight implements Weight {
-    private final Instant observed;
-    private final Number number;
-    private final Lifeform owner;
+public final class ImperialWeight extends AbstractVital implements Weight {
 
     public ImperialWeight(final Instant observed, final Number number, final Lifeform lifeform) {
-        this.observed = Objects.requireNonNull(observed);
-        this.number = Objects.requireNonNull(number);
-        this.owner = Objects.requireNonNull(lifeform);
+        super(observed, number, lifeform);
+    }
+
+    @Override
+    public Unit getUnit() {
+        return Pound.INSTANCE;
     }
 
     public static Stream<ImperialWeight> deserialize(final Stream<String> toConvert) {
@@ -35,46 +35,6 @@ public final class ImperialWeight implements Weight {
                 getQuantity().doubleValue(),
                 getUnit().getSymbol(),
                 new LifeformSerializationProxy(belongsTo()).toString());
-    }
-
-    @Override
-    public Unit getUnit() {
-        return Pound.INSTANCE;
-    }
-
-    @Override
-    public Number getQuantity() {
-        return number;
-    }
-
-    @Override
-    public Instant observedAt() {
-        return observed;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        final ImperialWeight weight = (ImperialWeight) o;
-        return Objects.equals(observed, weight.observed) &&
-                Objects.equals(number, weight.number) &&
-                Objects.equals(getUnit(), weight.getUnit()) &&
-                Objects.equals(belongsTo(), weight.belongsTo());
-    }
-    
-    @Override
-    public Lifeform belongsTo() {
-        return owner;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(observed, number, getUnit(), belongsTo());
     }
 
     private static final class ImperialWeightSerializationProxy {
