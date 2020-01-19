@@ -1,6 +1,7 @@
 package software.visionary.vitalizr.weight;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
@@ -17,35 +18,43 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SaveWeightToFileIntegrationTest {
-    @Test
-    void canSaveWeightsToFile() throws IOException {
+
+    public static final Person PERSON = Fixtures.createRandomPerson();
+
+    @ParameterizedTest
+    @MethodSource
+    void canSaveWeightsToFile(final Collection<Weight> stored) throws IOException {
         // Given: A person
-        final Person person = Fixtures.createRandomPerson();
         // And: Some Weights for the person
-        final Collection<MetricWeight> stored = weights(person);
         // And: Vitalizr has stored those vitals
         stored.forEach(Vitalizr::storeWeightFor);
         // And: A File to write the data to
-        final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), person.getEmailAddress().toString() + "_save_vitals")).toFile();
+        final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), PERSON.getEmailAddress().toString() + "_save_vitals")).toFile();
         data.deleteOnExit();
         // When: I call saveVitalsToFile
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<MetricWeight> foundWeights = MetricWeight.deserialize(written.stream()).collect(Collectors.toList());
+        final List<Weight> foundWeights =
+                Stream.concat(MetricWeight.deserialize(written.stream()), ImperialWeight.deserialize(written.stream())).collect(Collectors.toList());
         assertTrue(foundWeights.containsAll(stored));
         data.delete();
     }
 
-    private static Collection<MetricWeight> weights(final Person mom) {
-        final Collection<MetricWeight> stored = new ArrayList<>(3);
-        stored.add(MetricWeight.inKilograms(100, Instant.now(), mom));
-        stored.add(MetricWeight.inKilograms(101, Instant.now().plus(-1, ChronoUnit.DAYS), mom));
-        stored.add(MetricWeight.inKilograms(105, Instant.now().plus(-2, ChronoUnit.DAYS), mom));
-        return stored;
+    private static Stream<Collection<Weight>> canSaveWeightsToFile() {
+        final Collection<Weight> stored = new ArrayList<>(3);
+        stored.add(MetricWeight.inKilograms(100, Instant.now(), PERSON));
+        stored.add(MetricWeight.inKilograms(101, Instant.now().plus(-1, ChronoUnit.DAYS), PERSON));
+        stored.add(MetricWeight.inKilograms(105, Instant.now().plus(-2, ChronoUnit.DAYS), PERSON));
+        final Collection<Weight> alsoStored = new ArrayList<>(3);
+        alsoStored.add(new ImperialWeight(Instant.now(), 200.0, PERSON));
+        alsoStored.add(new ImperialWeight(Instant.now().plus(-1, ChronoUnit.DAYS), 205.0, PERSON));
+        alsoStored.add(new ImperialWeight(Instant.now().plus(-2, ChronoUnit.DAYS), 218.3, PERSON));
+        return Stream.of(stored, alsoStored);
     }
 }
