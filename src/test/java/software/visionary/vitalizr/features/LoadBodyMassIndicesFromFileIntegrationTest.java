@@ -20,7 +20,7 @@ import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class LoadBMIsFromFileIntegrationTest {
+class LoadBodyMassIndicesFromFileIntegrationTest {
     @Test
     void canLoadBMIsFromFile() throws IOException {
         // Given: A file containing some vitals for a person

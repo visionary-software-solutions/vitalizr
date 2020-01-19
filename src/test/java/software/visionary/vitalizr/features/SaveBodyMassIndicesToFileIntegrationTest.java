@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SaveBMIToFileIntegrationTest {
+class SaveBodyMassIndicesToFileIntegrationTest {
     @Test
     void canSaveBMIsToFile() throws IOException {
         // Given: A person
