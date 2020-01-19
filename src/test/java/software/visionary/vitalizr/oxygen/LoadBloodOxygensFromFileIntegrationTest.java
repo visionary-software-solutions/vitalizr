@@ -24,7 +24,7 @@ class LoadBloodOxygensFromFileIntegrationTest {
         final PeripheralOxygenSaturation toStore3 = new PeripheralOxygenSaturation(Instant.now().plus(-2, ChronoUnit.DAYS), 96, mom);
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_load_vitals")).toFile();
         data.deleteOnExit();
-        final Object serialized3 = PeripheralOxygenSaturation.asSerializationProxy(toStore3);
+        final Object serialized3 = toStore3.asSerializationProxy();
         final WriteObjectAsGZip<Object> writer3 = new WriteObjectAsGZip<>(serialized3, data.toPath());
         writer3.run();
         // When: I call loadVitalsFromFile

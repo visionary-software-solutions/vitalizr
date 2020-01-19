@@ -78,7 +78,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
         } else if (v instanceof WholeBloodGlucose) {
             new WriteObjectAsGZip<>(WholeBloodGlucoseConverter.INSTANCE.to((WholeBloodGlucose) v), data.toPath()).run();
         } else if (v instanceof PeripheralOxygenSaturation) {
-            new WriteObjectAsGZip<>(PeripheralOxygenSaturation.asSerializationProxy((PeripheralOxygenSaturation) v), data.toPath()).run();
+            new WriteObjectAsGZip<>(((PeripheralOxygenSaturation) v).asSerializationProxy(), data.toPath()).run();
         } else if (v instanceof BioelectricalImpedance) {
             new WriteObjectAsGZip<>(BioelectricalImpedanceConverter.INSTANCE.to((BioelectricalImpedance) v), data.toPath()).run();
         } else if (v instanceof ImperialTemperature) {

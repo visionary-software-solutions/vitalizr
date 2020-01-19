@@ -23,17 +23,17 @@ public final class PeripheralOxygenSaturation implements BloodOxygen {
         this.owner = owner;
     }
 
-    public static PeripheralOxygenSaturationSerializationProxy asSerializationProxy(final PeripheralOxygenSaturation toConvert) {
-        return new PeripheralOxygenSaturationSerializationProxy(toConvert.observedAt(),
-                toConvert.getQuantity().intValue(),
-                toConvert.getUnit().getSymbol(),
-                new LifeformSerializationProxy(toConvert.belongsTo()).toString());
-    }
-
     public static Stream<PeripheralOxygenSaturation> fromSerialized(final Stream<String> toConvert) {
         return toConvert.map(PeripheralOxygenSaturationSerializationProxy::parse)
                 .flatMap(List::stream)
                 .map(toConvert1 -> new PeripheralOxygenSaturation(toConvert1.getObservationTimestamp(), toConvert1.getObservedValue(), Human.createPerson(toConvert1.getPerson())));
+    }
+
+    public PeripheralOxygenSaturationSerializationProxy asSerializationProxy() {
+        return new PeripheralOxygenSaturationSerializationProxy(observedAt(),
+                getQuantity().intValue(),
+                getUnit().getSymbol(),
+                new LifeformSerializationProxy(belongsTo()).toString());
     }
 
     @Override
