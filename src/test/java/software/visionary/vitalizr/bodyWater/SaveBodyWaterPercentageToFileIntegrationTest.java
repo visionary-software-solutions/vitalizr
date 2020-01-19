@@ -1,13 +1,10 @@
-package software.visionary.vitalizr.features;
+package software.visionary.vitalizr.bodyWater;
 
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 
-import software.visionary.vitalizr.bodyWater.BioelectricalImpedance;
-import software.visionary.vitalizr.bodyWater.StringBioelectricalImpedanceConverter;
-import software.visionary.vitalizr.bodyWater.BodyWaterPercentage;
 import software.visionary.vitalizr.serialization.GZipFiles;
 
 import java.io.File;
@@ -40,7 +37,7 @@ class SaveBodyWaterPercentageToFileIntegrationTest {
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<BodyWaterPercentage> found = StringBioelectricalImpedanceConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
+        final List<BodyWaterPercentage> found = BioelectricalImpedance.deserialize(written.stream()).collect(Collectors.toList());
         assertTrue(found.containsAll(alsoStored));
         data.delete();
     }
