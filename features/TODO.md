@@ -29,17 +29,5 @@ of medians, I want to be able to simply calculate summary statistics.</p>
 to use it to improve someone's health.</p>
 
 <h2>User Stories</h2>
-<p>As a patient, because I want to be able to compare my Vitals over time, I want to be able to see a line graph for a
-time range.</p>
-<p>As a patient, because even reminders are easy to forget to check, I want reminders to automatically push to check my vitals</p>
-<p>As a human being, because all of this work is tedious and mechanical, I would like a configurable automatic system to periodically
-record my vitals</p>
-<p>As a patient, because I value my privacy, I want my information to be encrypted and viewable only by me and trusted contacts</p>
-<p>As someone who cares about fitness, I because I want to optimize my regimen, I want to be able to review my vitals</p>
-<p>As a software engineer, because I want to use Vitals in my third-party app integrations, I want an API I can use to
-retrieve Vitals</p>
-<p>As a human being, because I value my privacy, I want to be able to authenticate as a Principal by presenting my Credentials</p>
-<p>As a human being, because I value my privacy, I want access to my information to be allowed only to authorized Principals</p>
-<p>As a software engineer, for legal idemnification, I want actions by Principals in the system to be audited.</p>
-
+<p>As a user, because I'm from a backwards place that uses the Imperial System, I want to be able to enter my weight in pounds.</p>
 
