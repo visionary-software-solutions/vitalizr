@@ -16,8 +16,6 @@ import software.visionary.vitalizr.bodyMassIndex.QuetletIndexConverter;
 import software.visionary.vitalizr.bodyMassIndex.StringQuetletIndexConverter;
 import software.visionary.vitalizr.bodyTemperature.*;
 import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturation;
-import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturationConverter;
-import software.visionary.vitalizr.oxygen.StringPeripheralOxygenSaturationConverter;
 import software.visionary.vitalizr.pulse.HeartrateMonitor;
 import software.visionary.vitalizr.pulse.HeartrateMonitorConverter;
 import software.visionary.vitalizr.pulse.StringHeartrateMonitorConverter;
@@ -54,7 +52,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
                 StringQuetletIndexConverter.INSTANCE.to(entries.stream()),
                 StringCombinedBloodPressureConverter.INSTANCE.to(entries.stream()),
                 StringWholeBloodGlucoseConverter.INSTANCE.to(entries.stream()),
-                StringPeripheralOxygenSaturationConverter.INSTANCE.to(entries.stream()),
+                PeripheralOxygenSaturation.fromSerialized(entries.stream()),
                 StringBioelectricalImpedanceConverter.INSTANCE.to(entries.stream()),
                 StringImperialTemperatureConverter.INSTANCE.to(entries.stream()),
                 StringMetricTemperatureConverter.INSTANCE.to(entries.stream()),
@@ -82,7 +80,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
         } else if (v instanceof WholeBloodGlucose) {
             new WriteObjectAsGZip<>(WholeBloodGlucoseConverter.INSTANCE.to((WholeBloodGlucose) v), data.toPath()).run();
         } else if (v instanceof PeripheralOxygenSaturation) {
-            new WriteObjectAsGZip<>(PeripheralOxygenSaturationConverter.INSTANCE.to((PeripheralOxygenSaturation) v), data.toPath()).run();
+            new WriteObjectAsGZip<>(PeripheralOxygenSaturation.asSerializationProxy((PeripheralOxygenSaturation) v), data.toPath()).run();
         } else if (v instanceof BioelectricalImpedance) {
             new WriteObjectAsGZip<>(BioelectricalImpedanceConverter.INSTANCE.to((BioelectricalImpedance) v), data.toPath()).run();
         } else if (v instanceof ImperialTemperature) {

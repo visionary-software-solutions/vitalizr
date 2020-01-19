@@ -1,12 +1,9 @@
-package software.visionary.vitalizr.features;
+package software.visionary.vitalizr.oxygen;
 
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.oxygen.BloodOxygen;
-import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturation;
-import software.visionary.vitalizr.oxygen.StringPeripheralOxygenSaturationConverter;
 import software.visionary.vitalizr.serialization.GZipFiles;
 
 import java.io.File;
@@ -39,7 +36,7 @@ class SaveBloodOxygenToFileIntegrationTest {
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<BloodOxygen> foundOxys = StringPeripheralOxygenSaturationConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
+        final List<BloodOxygen> foundOxys = PeripheralOxygenSaturation.fromSerialized(written.stream()).collect(Collectors.toList());
         assertTrue(foundOxys.containsAll(alsoStored));
         data.delete();
     }

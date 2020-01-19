@@ -1,13 +1,9 @@
-package software.visionary.vitalizr.features;
+package software.visionary.vitalizr.oxygen;
 
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.oxygen.BloodOxygen;
-import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturation;
-import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturationConverter;
-import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturationSerializationProxy;
 import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
 
 import java.io.File;
@@ -28,8 +24,8 @@ class LoadBloodOxygensFromFileIntegrationTest {
         final PeripheralOxygenSaturation toStore3 = new PeripheralOxygenSaturation(Instant.now().plus(-2, ChronoUnit.DAYS), 96, mom);
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_load_vitals")).toFile();
         data.deleteOnExit();
-        final PeripheralOxygenSaturationSerializationProxy serialized3 = PeripheralOxygenSaturationConverter.INSTANCE.to(toStore3);
-        final WriteObjectAsGZip<PeripheralOxygenSaturationSerializationProxy> writer3 = new WriteObjectAsGZip<>(serialized3, data.toPath());
+        final Object serialized3 = PeripheralOxygenSaturation.asSerializationProxy(toStore3);
+        final WriteObjectAsGZip<Object> writer3 = new WriteObjectAsGZip<>(serialized3, data.toPath());
         writer3.run();
         // When: I call loadVitalsFromFile
         Vitalizr.loadVitalsFromFile(data);
