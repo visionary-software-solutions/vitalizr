@@ -9,8 +9,6 @@ import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
 import software.visionary.vitalizr.bodyTemperature.*;
 import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturation;
 import software.visionary.vitalizr.pulse.HeartrateMonitor;
-import software.visionary.vitalizr.pulse.HeartrateMonitorConverter;
-import software.visionary.vitalizr.pulse.StringHeartrateMonitorConverter;
 import software.visionary.vitalizr.serialization.GZipFiles;
 import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
 import software.visionary.vitalizr.weight.*;
@@ -49,7 +47,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
                 ImperialTemperature.deserialize(entries.stream()),
                 MetricTemperature.deserialize(entries.stream()),
                 software.visionary.vitalizr.bodyWater.BioelectricalImpedance.deserialize(entries.stream()),
-                StringHeartrateMonitorConverter.INSTANCE.to(entries.stream())
+                HeartrateMonitor.deserialize(entries.stream())
                 ).flatMap(s -> s)
                 .collect(Collectors.toList());
     }
@@ -82,7 +80,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
         } else if (v instanceof software.visionary.vitalizr.bodyWater.BioelectricalImpedance) {
             new WriteObjectAsGZip<>(((software.visionary.vitalizr.bodyWater.BioelectricalImpedance) v).asSerializationProxy(), data.toPath()).run();
         } else if (v instanceof HeartrateMonitor) {
-            new WriteObjectAsGZip<>(HeartrateMonitorConverter.INSTANCE.to((HeartrateMonitor) v), data.toPath()).run();
+            new WriteObjectAsGZip<>(((HeartrateMonitor) v).asSerializationProxy(), data.toPath()).run();
         }
     }
 }
