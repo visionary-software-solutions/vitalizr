@@ -1,12 +1,10 @@
-package software.visionary.vitalizr.features;
+package software.visionary.vitalizr.weight;
 
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.serialization.GZipFiles;
-import software.visionary.vitalizr.weight.ImperialWeight;
-import software.visionary.vitalizr.weight.StringImperialWeightConverter;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +36,7 @@ class SaveImperialWeightToFileIntegrationTest {
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<ImperialWeight> foundWeights = StringImperialWeightConverter.INSTANCE.to(written.stream()).collect(Collectors.toList());
+        final List<ImperialWeight> foundWeights = ImperialWeight.deserialize(written.stream()).collect(Collectors.toList());
         assertTrue(foundWeights.containsAll(stored));
         data.delete();
     }

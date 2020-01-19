@@ -1,11 +1,10 @@
-package software.visionary.vitalizr.features;
+package software.visionary.vitalizr.weight;
 
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
-import software.visionary.vitalizr.weight.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,8 +23,8 @@ class LoadImperialWeightsFromFileIntegrationTest {
         final ImperialWeight toStore = new ImperialWeight(Instant.now(), 200.0, mom);
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_load_vitals")).toFile();
         data.deleteOnExit();
-        final ImperialWeightSerializationProxy serialized = ImperialWeightConverter.INSTANCE.to(toStore);
-        final WriteObjectAsGZip<ImperialWeightSerializationProxy> writer = new WriteObjectAsGZip<>(serialized, data.toPath());
+        final Object serialized = toStore.asSerializationProxy();
+        final WriteObjectAsGZip<Object> writer = new WriteObjectAsGZip<>(serialized, data.toPath());
         writer.run();
         // When: I call loadVitalsFromFile
         Vitalizr.loadVitalsFromFile(data);

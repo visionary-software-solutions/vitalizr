@@ -37,8 +37,8 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
     private static List<Vital> convert(final List<String> entries) {
         // TODO: Refactor to CHAIN OF RESPONSIBILITY and ServiceLoader
         return Stream.of(
-                StringMetricWeightConverter.INSTANCE.to(entries.stream()),
-                StringImperialWeightConverter.INSTANCE.to(entries.stream()),
+                MetricWeight.deserialize(entries.stream()),
+                ImperialWeight.deserialize(entries.stream()),
                 QueteletIndex.deserialize(entries.stream()),
                 Combined.fromSerialized(entries.stream()),
                 WholeBloodGlucose.deserialize(entries.stream()),
@@ -60,9 +60,9 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
     private static void writeTo(final File data, final Vital v) {
         // TODO: Refactor to CHAIN OF RESPONSIBILITY and ServiceLoader
         if (v instanceof MetricWeight) {
-            new WriteObjectAsGZip<>(MetricWeightConverter.INSTANCE.to((MetricWeight) v), data.toPath()).run();
+            new WriteObjectAsGZip<>(((MetricWeight) v).asSerializationProxy(), data.toPath()).run();
         } else if (v instanceof ImperialWeight) {
-            new WriteObjectAsGZip<>(ImperialWeightConverter.INSTANCE.to((ImperialWeight) v), data.toPath()).run();
+            new WriteObjectAsGZip<>(((ImperialWeight) v).asSerializationProxy(), data.toPath()).run();
         } else if (v instanceof QueteletIndex) {
             new WriteObjectAsGZip<>(((QueteletIndex) v).asSerializationProxy(), data.toPath()).run();
         } else if (v instanceof Combined) {
