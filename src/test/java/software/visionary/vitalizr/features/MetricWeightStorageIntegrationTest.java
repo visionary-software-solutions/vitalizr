@@ -12,7 +12,7 @@ import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class WeightStorageIntegrationTest {
+class MetricWeightStorageIntegrationTest {
     @Test
     void canStoreWeight() {
         // Given: A person to store weight for

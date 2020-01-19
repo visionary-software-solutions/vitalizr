@@ -13,7 +13,7 @@ import java.util.Collection;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class WeightQueryIntegrationTest {
+class MetricWeightQueryIntegrationTest {
     @Test
     void canQueryWeightForTimeRange() {
         // Given: A person to retrieve weight for
