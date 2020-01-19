@@ -30,7 +30,7 @@ public final class Combined implements BloodPressure {
         return new Combined(new Systolic(observedAt, new NaturalNumber(systolic), measured), new Diastolic(observedAt, new NaturalNumber(diastolic), measured));
     }
 
-    public static Stream<Combined> fromSerialized(final Stream<String> toConvert) {
+    public static Stream<Combined> deserialize(final Stream<String> toConvert) {
         return toConvert.map(CombinedBloodPressureSerializationProxy::parse)
                 .flatMap(List::stream)
                 .map(toConvert1 -> systolicAndDiastolicBloodPressure(toConvert1.getObservationTimestamp(),

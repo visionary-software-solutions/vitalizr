@@ -34,7 +34,7 @@ class SaveBloodPressuresToFileIntegrationTest {
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<BloodPressure> foundBPs = Combined.fromSerialized(written.stream()).collect(Collectors.toList());
+        final List<BloodPressure> foundBPs = Combined.deserialize(written.stream()).collect(Collectors.toList());
         assertTrue(foundBPs.containsAll(thirdStored));
         data.delete();
     }

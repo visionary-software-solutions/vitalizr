@@ -40,7 +40,7 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
                 MetricWeight.deserialize(entries.stream()),
                 ImperialWeight.deserialize(entries.stream()),
                 QueteletIndex.deserialize(entries.stream()),
-                Combined.fromSerialized(entries.stream()),
+                Combined.deserialize(entries.stream()),
                 WholeBloodGlucose.deserialize(entries.stream()),
                 PeripheralOxygenSaturation.fromSerialized(entries.stream()),
                 BioelectricalImpedance.deserialize(entries.stream()),
