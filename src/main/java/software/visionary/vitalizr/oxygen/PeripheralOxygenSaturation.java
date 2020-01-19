@@ -1,8 +1,8 @@
 package software.visionary.vitalizr.oxygen;
 
-import software.visionary.vitalizr.AbstractVital;
 import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.LifeformSerializationProxy;
+import software.visionary.vitalizr.SerializableVital;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Unit;
 
@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public final class PeripheralOxygenSaturation extends AbstractVital implements BloodOxygen {
+public final class PeripheralOxygenSaturation extends SerializableVital implements BloodOxygen {
     public PeripheralOxygenSaturation(final Instant observed, final Number number, final Lifeform lifeform) {
         super(observed, number, lifeform);
     }
@@ -21,7 +21,7 @@ public final class PeripheralOxygenSaturation extends AbstractVital implements B
     public static Stream<PeripheralOxygenSaturation> fromSerialized(final Stream<String> toConvert) {
         return toConvert.map(PeripheralOxygenSaturationSerializationProxy::parse)
                 .flatMap(List::stream)
-                .map(toConvert1 -> new PeripheralOxygenSaturation(toConvert1.getObservationTimestamp(), toConvert1.getObservedValue(), Human.createPerson(toConvert1.getPerson())));
+                .map(PeripheralOxygenSaturationSerializationProxy::toVital);
     }
 
     public PeripheralOxygenSaturationSerializationProxy asSerializationProxy() {
@@ -36,19 +36,12 @@ public final class PeripheralOxygenSaturation extends AbstractVital implements B
         return OxygenSaturation.INSTANCE;
     }
 
-    private static final class PeripheralOxygenSaturationSerializationProxy {
+    private static final class PeripheralOxygenSaturationSerializationProxy extends IntegralVital  {
         private static final String FIELD_DELIMITER = "\uD83E\uDD71";
         private static final String RECORD_DELIMITER = "\uD83E\uDDA8";
-        private final Instant observationTimestamp;
-        private final int observedValue;
-        private final String observedUnit;
-        private final String person;
 
         private PeripheralOxygenSaturationSerializationProxy(final Instant time, final int value, final String unit, final String life) {
-            observationTimestamp = time;
-            observedValue = value;
-            observedUnit = unit;
-            person = life;
+            super(time, value, unit, life);
         }
 
         private static List<PeripheralOxygenSaturationSerializationProxy> parse(final String entry) {
@@ -68,29 +61,18 @@ public final class PeripheralOxygenSaturation extends AbstractVital implements B
         }
 
         @Override
-        public String toString() {
-            return String.format("%s%s%s%d%s%s%s%s%s",
-                    RECORD_DELIMITER,
-                    getObservationTimestamp(),
-                    FIELD_DELIMITER,
-                    getObservedValue(),
-                    FIELD_DELIMITER,
-                    observedUnit,
-                    FIELD_DELIMITER,
-                    getPerson(),
-                    RECORD_DELIMITER);
+        public PeripheralOxygenSaturation toVital() {
+            return new PeripheralOxygenSaturation(getObservationTimestamp(), getObservedValue(), Human.createPerson(getPerson()));
         }
 
-        private Instant getObservationTimestamp() {
-            return observationTimestamp;
+        @Override
+        protected String getFieldDelimiter() {
+            return FIELD_DELIMITER;
         }
 
-        private int getObservedValue() {
-            return observedValue;
-        }
-
-        private String getPerson() {
-            return person;
+        @Override
+        protected String getRecordDelimiter() {
+            return RECORD_DELIMITER;
         }
     }
 }

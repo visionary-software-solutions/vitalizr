@@ -1,20 +1,19 @@
 package software.visionary.vitalizr.bloodSugar;
 
-import software.visionary.vitalizr.AbstractVital;
 import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.LifeformSerializationProxy;
+import software.visionary.vitalizr.SerializableVital;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Unit;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public final class WholeBloodGlucose extends AbstractVital implements BloodSugar {
+public final class WholeBloodGlucose extends SerializableVital implements BloodSugar {
     public WholeBloodGlucose(final Instant observed, final Number number, final Lifeform lifeform) {
         super(observed, number, lifeform);
     }
@@ -22,7 +21,7 @@ public final class WholeBloodGlucose extends AbstractVital implements BloodSugar
     public static Stream<WholeBloodGlucose> deserialize(final Stream<String> toConvert) {
         return toConvert.map(WholeBloodGlucoseSerializationProxy::parse)
                 .flatMap(List::stream)
-                .map(toConvert1 -> new WholeBloodGlucose(toConvert1.getObservationTimestamp(), toConvert1.getObservedValue(), Human.createPerson(toConvert1.getPerson())));
+                .map(WholeBloodGlucoseSerializationProxy::toVital);
     }
 
     public WholeBloodGlucoseSerializationProxy asSerializationProxy() {
@@ -37,19 +36,12 @@ public final class WholeBloodGlucose extends AbstractVital implements BloodSugar
         return Millimolar.INSTANCE;
     }
 
-    private static final class WholeBloodGlucoseSerializationProxy {
+    private static final class WholeBloodGlucoseSerializationProxy extends IntegralVital {
         private static final String FIELD_DELIMITER = "\uD83C\uDF70";
         private static final String RECORD_DELIMITER = "\uD83E\uDD22";
-        private final Instant observationTimestamp;
-        private final int observedValue;
-        private final String observedUnit;
-        private final String person;
 
         private WholeBloodGlucoseSerializationProxy(final Instant time, final int value, final String unit, final String life) {
-            observationTimestamp = time;
-            observedValue = value;
-            observedUnit = unit;
-            person = life;
+            super(time, value, unit, life);
         }
 
         private static List<WholeBloodGlucoseSerializationProxy> parse(final String entry) {
@@ -68,30 +60,19 @@ public final class WholeBloodGlucose extends AbstractVital implements BloodSugar
             return discovered;
         }
 
-        private Instant getObservationTimestamp() {
-            return observationTimestamp;
-        }
-
-        private int getObservedValue() {
-            return observedValue;
-        }
-
-        private String getPerson() {
-            return person;
+        @Override
+        public WholeBloodGlucose toVital() {
+            return new WholeBloodGlucose(getObservationTimestamp(), getObservedValue(), Human.createPerson(getPerson()));
         }
 
         @Override
-        public String toString() {
-            return String.format("%s%s%s%d%s%s%s%s%s",
-                    RECORD_DELIMITER,
-                    observationTimestamp,
-                    FIELD_DELIMITER,
-                    observedValue,
-                    FIELD_DELIMITER,
-                    observedUnit,
-                    FIELD_DELIMITER,
-                    person,
-                    RECORD_DELIMITER);
+        protected String getFieldDelimiter() {
+            return FIELD_DELIMITER;
+        }
+
+        @Override
+        protected String getRecordDelimiter() {
+            return RECORD_DELIMITER;
         }
     }
 }

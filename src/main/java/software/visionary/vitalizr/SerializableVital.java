@@ -73,9 +73,29 @@ public abstract class SerializableVital extends AbstractVital {
     }
 
     protected abstract static class IntegralVital extends SerializationProxy {
+        private final int observedValue;
 
-        private IntegralVital(final Instant time, final String unit, final String life) {
+        protected IntegralVital(final Instant time, final int value, final String unit, final String life) {
             super(time, unit, life);
+            observedValue = value;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%s%s%s%d%s%s%s%s%s",
+                    getRecordDelimiter(),
+                    getObservationTimestamp(),
+                    getFieldDelimiter(),
+                    getObservedValue(),
+                    getFieldDelimiter(),
+                    getObservedUnit(),
+                    getFieldDelimiter(),
+                    getPerson(),
+                    getRecordDelimiter());
+        }
+
+        protected int getObservedValue() {
+            return observedValue;
         }
     }
 }

@@ -1,8 +1,8 @@
 package software.visionary.vitalizr.pulse;
 
-import software.visionary.vitalizr.AbstractVital;
 import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.LifeformSerializationProxy;
+import software.visionary.vitalizr.SerializableVital;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Unit;
 
@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public final class HeartrateMonitor extends AbstractVital implements Pulse {
+public final class HeartrateMonitor extends SerializableVital implements Pulse {
     public HeartrateMonitor(final Instant observed, final Number number, final Lifeform lifeform) {
         super(observed, number, lifeform);
     }
@@ -21,7 +21,7 @@ public final class HeartrateMonitor extends AbstractVital implements Pulse {
     public static Stream<HeartrateMonitor> deserialize(final Stream<String> toConvert) {
         return toConvert.map(HeartrateMonitorSerializationProxy::parse)
                 .flatMap(List::stream)
-                .map(toConvert1 -> new HeartrateMonitor(toConvert1.getObservationTimestamp(), toConvert1.getObservedValue(), Human.createPerson(toConvert1.getPerson())));
+                .map(HeartrateMonitorSerializationProxy::toVital);
     }
 
     public HeartrateMonitorSerializationProxy asSerializationProxy() {
@@ -36,19 +36,12 @@ public final class HeartrateMonitor extends AbstractVital implements Pulse {
         return HeartbeatsPerMinute.INSTANCE;
     }
 
-    private static final class HeartrateMonitorSerializationProxy {
+    private static final class HeartrateMonitorSerializationProxy extends IntegralVital {
         private static final String FIELD_DELIMITER = "\uD83D\uDC93";
         private static final String RECORD_DELIMITER = "\uD83D\uDC97";
-        private final Instant observationTimestamp;
-        private final int observedValue;
-        private final String observedUnit;
-        private final String person;
 
         private HeartrateMonitorSerializationProxy(final Instant time, final int value, final String unit, final String life) {
-            observationTimestamp = time;
-            observedValue = value;
-            observedUnit = unit;
-            person = life;
+            super(time, value, unit, life);
         }
 
         private static List<HeartrateMonitorSerializationProxy> parse(final String entry) {
@@ -68,29 +61,18 @@ public final class HeartrateMonitor extends AbstractVital implements Pulse {
         }
 
         @Override
-        public String toString() {
-            return String.format("%s%s%s%d%s%s%s%s%s",
-                    RECORD_DELIMITER,
-                    getObservationTimestamp(),
-                    FIELD_DELIMITER,
-                    getObservedValue(),
-                    FIELD_DELIMITER,
-                    observedUnit,
-                    FIELD_DELIMITER,
-                    getPerson(),
-                    RECORD_DELIMITER);
+        public HeartrateMonitor toVital() {
+            return new HeartrateMonitor(getObservationTimestamp(), getObservedValue(), Human.createPerson(getPerson()));
         }
 
-        private Instant getObservationTimestamp() {
-            return observationTimestamp;
+        @Override
+        protected String getFieldDelimiter() {
+            return FIELD_DELIMITER;
         }
 
-        private int getObservedValue() {
-            return observedValue;
-        }
-
-        private String getPerson() {
-            return person;
+        @Override
+        protected String getRecordDelimiter() {
+            return RECORD_DELIMITER;
         }
     }
 }

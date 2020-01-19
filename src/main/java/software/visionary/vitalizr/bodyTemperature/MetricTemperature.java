@@ -1,8 +1,8 @@
 package software.visionary.vitalizr.bodyTemperature;
 
-import software.visionary.vitalizr.AbstractVital;
 import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.LifeformSerializationProxy;
+import software.visionary.vitalizr.SerializableVital;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Unit;
 
@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public final class MetricTemperature extends AbstractVital implements BodyTemperature {
+public final class MetricTemperature extends SerializableVital implements BodyTemperature {
     public MetricTemperature(final Instant observed, final Number number, final Lifeform lifeform) {
         super(observed, number, lifeform);
     }
@@ -21,7 +21,7 @@ public final class MetricTemperature extends AbstractVital implements BodyTemper
     public static Stream<MetricTemperature> deserialize(final Stream<String> toConvert) {
         return toConvert.map(MetricTemperatureSerializationProxy::parse)
                 .flatMap(List::stream)
-                .map(toConvert1 -> new MetricTemperature(toConvert1.getObservationTimestamp(), toConvert1.getObservedValue(), Human.createPerson(toConvert1.getPerson())));
+                .map(MetricTemperatureSerializationProxy::toVital);
     }
 
     public MetricTemperatureSerializationProxy asSerializationProxy() {
@@ -36,19 +36,12 @@ public final class MetricTemperature extends AbstractVital implements BodyTemper
         return Celsius.INSTANCE;
     }
 
-    private static final class MetricTemperatureSerializationProxy {
+    private static final class MetricTemperatureSerializationProxy extends DecimalVital {
         private static final String FIELD_DELIMITER = "\uD83C\uDF21";
         private static final String RECORD_DELIMITER = "\uD83C\uDF27";
-        private final Instant observationTimestamp;
-        private final double observedValue;
-        private final String observedUnit;
-        private final String person;
 
         private MetricTemperatureSerializationProxy(final Instant time, final double value, final String unit, final String life) {
-            observationTimestamp = time;
-            observedValue = value;
-            observedUnit = unit;
-            person = life;
+            super(time, value, unit, life);
         }
 
         private static List<MetricTemperatureSerializationProxy> parse(final String entry) {
@@ -67,30 +60,19 @@ public final class MetricTemperature extends AbstractVital implements BodyTemper
             return discovered;
         }
 
-        private Instant getObservationTimestamp() {
-            return observationTimestamp;
-        }
-
-        private double getObservedValue() {
-            return observedValue;
-        }
-
-        private String getPerson() {
-            return person;
+        @Override
+        public MetricTemperature toVital() {
+            return new MetricTemperature(getObservationTimestamp(), getObservedValue(), Human.createPerson(getPerson()));
         }
 
         @Override
-        public String toString() {
-            return String.format("%s%s%s%f%s%s%s%s%s",
-                    RECORD_DELIMITER,
-                    observationTimestamp,
-                    FIELD_DELIMITER,
-                    observedValue,
-                    FIELD_DELIMITER,
-                    observedUnit,
-                    FIELD_DELIMITER,
-                    person,
-                    RECORD_DELIMITER);
+        protected String getFieldDelimiter() {
+            return FIELD_DELIMITER;
+        }
+
+        @Override
+        protected String getRecordDelimiter() {
+            return RECORD_DELIMITER;
         }
     }
 }

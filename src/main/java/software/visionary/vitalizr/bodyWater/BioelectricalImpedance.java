@@ -1,20 +1,19 @@
 package software.visionary.vitalizr.bodyWater;
 
-import software.visionary.vitalizr.AbstractVital;
 import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.LifeformSerializationProxy;
+import software.visionary.vitalizr.SerializableVital;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Unit;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public final class BioelectricalImpedance extends AbstractVital implements BodyWaterPercentage {
+public final class BioelectricalImpedance extends SerializableVital implements BodyWaterPercentage {
     public BioelectricalImpedance(final Instant observed, final Number number, final Lifeform lifeform) {
         super(observed, number, lifeform);
     }
@@ -22,7 +21,7 @@ public final class BioelectricalImpedance extends AbstractVital implements BodyW
     public static Stream<BioelectricalImpedance> deserialize(final Stream<String> toConvert) {
         return toConvert.map(BioelectricalImpedanceSerializationProxy::parse)
                 .flatMap(List::stream)
-                .map(toConvert1 -> new BioelectricalImpedance(toConvert1.getObservationTimestamp(), toConvert1.getObservedValue(), Human.createPerson(toConvert1.getPerson())));
+                .map(toConvert1 -> toConvert1.toVital());
     }
 
     public BioelectricalImpedanceSerializationProxy asSerializationProxy() {
@@ -37,19 +36,12 @@ public final class BioelectricalImpedance extends AbstractVital implements BodyW
         return Unit.NONE.INSTANCE;
     }
 
-    private static final class BioelectricalImpedanceSerializationProxy {
+    private static final class BioelectricalImpedanceSerializationProxy extends DecimalVital {
         private static final String FIELD_DELIMITER = "\uD83E\uDD3D";
         private static final String RECORD_DELIMITER = "\uD83E\uDD3F";
-        private final Instant observationTimestamp;
-        private final double observedValue;
-        private final String observedUnit;
-        private final String person;
 
         private BioelectricalImpedanceSerializationProxy(final Instant time, final double value, final String unit, final String life) {
-            observationTimestamp = time;
-            observedValue = value;
-            observedUnit = unit;
-            person = life;
+            super(time, value, unit, life);
         }
 
         private static List<BioelectricalImpedanceSerializationProxy> parse(final String entry) {
@@ -69,29 +61,18 @@ public final class BioelectricalImpedance extends AbstractVital implements BodyW
         }
 
         @Override
-        public String toString() {
-            return String.format("%s%s%s%f%s%s%s%s%s",
-                    RECORD_DELIMITER,
-                    getObservationTimestamp(),
-                    FIELD_DELIMITER,
-                    getObservedValue(),
-                    FIELD_DELIMITER,
-                    observedUnit,
-                    FIELD_DELIMITER,
-                    getPerson(),
-                    RECORD_DELIMITER);
+        public BioelectricalImpedance toVital() {
+            return new BioelectricalImpedance(getObservationTimestamp(), getObservedValue(), Human.createPerson(getPerson()));
         }
 
-        private Instant getObservationTimestamp() {
-            return observationTimestamp;
+        @Override
+        protected String getFieldDelimiter() {
+            return FIELD_DELIMITER;
         }
 
-        private double getObservedValue() {
-            return observedValue;
-        }
-
-        private String getPerson() {
-            return person;
+        @Override
+        protected String getRecordDelimiter() {
+            return RECORD_DELIMITER;
         }
     }
 }
