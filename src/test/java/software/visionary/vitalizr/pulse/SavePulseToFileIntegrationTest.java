@@ -36,7 +36,7 @@ class SavePulseToFileIntegrationTest {
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<Pulse> found = HeartrateMonitor.deserialize(written.stream()).collect(Collectors.toList());
+        final List<Pulse> found = HeartrateMonitor.Factory.INSTANCE.create(written.stream()).collect(Collectors.toList());
         assertTrue(found.containsAll(alsoStored));
         data.delete();
     }

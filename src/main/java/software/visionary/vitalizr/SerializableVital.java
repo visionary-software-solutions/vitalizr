@@ -1,30 +1,49 @@
 package software.visionary.vitalizr;
 
 import software.visionary.vitalizr.api.Lifeform;
-import software.visionary.vitalizr.bodyWater.BioelectricalImpedance;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public abstract class SerializableVital extends AbstractVital {
+    public interface AbstractFactory<T extends SerializableVital, U extends SerializationProxy<T>> {
+        default Stream<T> create(Stream<String> strings) {
+            return strings.map(this::doParse)
+                    .flatMap(List::stream)
+                    .map(SerializationProxy::toVital);
+        }
+
+        default List<U> doParse(String string) {
+            final List<U> discovered = new ArrayList<>();
+            final String template = String.format("%s(?<time>.*?)%s(?<number>[0-9.]+)%s(?<unit>.*?)%s(?<person>.*?)%s", getRecordDelimiter(), getFieldDelimiter(), getFieldDelimiter(), getFieldDelimiter(), getRecordDelimiter());
+            final Pattern sought = Pattern.compile(template);
+            final Matcher matcher = sought.matcher(string);
+            while (matcher.find()) {
+                discovered.add(fromMatcher(matcher));
+            }
+            return discovered;
+        }
+
+        String getFieldDelimiter();
+        String getRecordDelimiter();
+        U fromMatcher(final Matcher m);
+    }
     protected SerializableVital(final Instant observed, final Number number, final Lifeform lifeform) {
         super(observed, number, lifeform);
     }
 
-    public abstract SerializationProxy asSerializationProxy();
+    public abstract SerializationProxy<?> asSerializationProxy();
 
-    protected abstract static class SerializationProxy implements Serializable {
+    protected abstract static class SerializationProxy<T extends SerializableVital> implements Serializable {
 
         private final Instant observationTimestamp;
         private final String observedUnit;
         private final String person;
-
-        private SerializationProxy(final Instant time, final String unit, final String life) {
-            observationTimestamp = time;
-            observedUnit = unit;
-            person = life;
-        }
 
         public SerializationProxy(final Matcher matcher) {
             this.observationTimestamp = Instant.parse(matcher.group("time"));
@@ -32,7 +51,7 @@ public abstract class SerializableVital extends AbstractVital {
             this.person = matcher.group("person");
         }
 
-        public SerializationProxy(final SerializableVital vital) {
+        public SerializationProxy(final T vital) {
             this.observationTimestamp = vital.observedAt();
             this.observedUnit = vital.getUnit().getSymbol();
             this.person = new LifeformSerializationProxy(vital.belongsTo()).toString();
@@ -42,7 +61,7 @@ public abstract class SerializableVital extends AbstractVital {
             return observedUnit;
         }
 
-        protected abstract SerializableVital toVital();
+        protected abstract T toVital();
 
         protected abstract String getFieldDelimiter();
 
@@ -57,21 +76,16 @@ public abstract class SerializableVital extends AbstractVital {
         }
     }
 
-    protected abstract static class DecimalVital extends SerializationProxy {
+    protected abstract static class DecimalVital<T extends SerializableVital> extends SerializationProxy<T> {
 
         private final double observedValue;
-
-        protected DecimalVital(final Instant time, final double value, final String unit, final String life) {
-            super(time, unit, life);
-            observedValue = value;
-        }
 
         public DecimalVital(final Matcher matcher) {
             super(matcher);
             this.observedValue = Double.parseDouble(matcher.group("number"));
         }
 
-        public DecimalVital(final SerializableVital vital) {
+        public DecimalVital(final T vital) {
             super(vital);
             this.observedValue = vital.getQuantity().doubleValue();
         }
@@ -96,15 +110,10 @@ public abstract class SerializableVital extends AbstractVital {
 
     }
 
-    protected abstract static class IntegralVital extends SerializationProxy {
+    protected abstract static class IntegralVital<T extends SerializableVital> extends SerializationProxy<T> {
         private final int observedValue;
 
-        protected IntegralVital(final Instant time, final int value, final String unit, final String life) {
-            super(time, unit, life);
-            observedValue = value;
-        }
-
-        public IntegralVital(final SerializableVital vital) {
+        public IntegralVital(final T vital) {
             super(vital);
             this.observedValue = vital.getQuantity().intValue();
         }

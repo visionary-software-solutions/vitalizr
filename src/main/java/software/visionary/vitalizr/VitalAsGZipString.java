@@ -37,17 +37,17 @@ enum VitalAsGZipString implements VitalSerializationStrategy<File> {
     private static List<Vital> convert(final List<String> entries) {
         // TODO: Refactor to CHAIN OF RESPONSIBILITY and ServiceLoader
         return Stream.of(
-                MetricWeight.deserialize(entries.stream()),
-                ImperialWeight.deserialize(entries.stream()),
-                QueteletIndex.deserialize(entries.stream()),
+                MetricWeight.Factory.INSTANCE.create(entries.stream()),
+                ImperialWeight.Factory.INSTANCE.create(entries.stream()),
+                QueteletIndex.Factory.INSTANCE.create(entries.stream()),
                 Combined.deserialize(entries.stream()),
-                WholeBloodGlucose.deserialize(entries.stream()),
-                PeripheralOxygenSaturation.fromSerialized(entries.stream()),
-                BioelectricalImpedance.deserialize(entries.stream()),
-                ImperialTemperature.deserialize(entries.stream()),
-                MetricTemperature.deserialize(entries.stream()),
-                software.visionary.vitalizr.bodyWater.BioelectricalImpedance.deserialize(entries.stream()),
-                HeartrateMonitor.deserialize(entries.stream())
+                WholeBloodGlucose.Factory.INSTANCE.create(entries.stream()),
+                PeripheralOxygenSaturation.Factory.INSTANCE.create(entries.stream()),
+                BioelectricalImpedance.Factory.INSTANCE.create(entries.stream()),
+                ImperialTemperature.Factory.INSTANCE.create(entries.stream()),
+                MetricTemperature.Factory.INSTANCE.create(entries.stream()),
+                software.visionary.vitalizr.bodyWater.BioelectricalImpedance.Factory.INSTANCE.create(entries.stream()),
+                HeartrateMonitor.Factory.INSTANCE.create(entries.stream())
                 ).flatMap(s -> s)
                 .collect(Collectors.toList());
     }

@@ -37,7 +37,7 @@ class SaveBodyWaterPercentageToFileIntegrationTest {
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<BodyWaterPercentage> found = BioelectricalImpedance.deserialize(written.stream()).collect(Collectors.toList());
+        final List<BodyWaterPercentage> found = BioelectricalImpedance.Factory.INSTANCE.create(written.stream()).collect(Collectors.toList());
         assertTrue(found.containsAll(alsoStored));
         data.delete();
     }

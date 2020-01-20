@@ -45,7 +45,7 @@ class SaveVitalsToFileIntegrationTest {
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
         final List<BloodPressure> foundBPs = Combined.deserialize(written.stream()).collect(Collectors.toList());
         assertTrue(foundBPs.containsAll(thirdStored));
-        final List<BloodSugar> foundBloodSugars = WholeBloodGlucose.deserialize(written.stream()).collect(Collectors.toList());
+        final List<BloodSugar> foundBloodSugars = WholeBloodGlucose.Factory.INSTANCE.create(written.stream()).collect(Collectors.toList());
         assertTrue(foundBloodSugars.containsAll(fourthStored));
         data.delete();
     }

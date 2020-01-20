@@ -41,7 +41,7 @@ class SaveWeightToFileIntegrationTest {
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
         final List<Weight> foundWeights =
-                Stream.concat(MetricWeight.deserialize(written.stream()), ImperialWeight.deserialize(written.stream())).collect(Collectors.toList());
+                Stream.concat(MetricWeight.Factory.INSTANCE.create(written.stream()), ImperialWeight.Factory.INSTANCE.create(written.stream())).collect(Collectors.toList());
         assertTrue(foundWeights.containsAll(stored));
         data.delete();
     }

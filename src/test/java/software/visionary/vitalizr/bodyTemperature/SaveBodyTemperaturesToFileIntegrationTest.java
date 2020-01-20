@@ -40,7 +40,7 @@ class SaveBodyTemperaturesToFileIntegrationTest {
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<BodyTemperature> found = ImperialTemperature.deserialize(written.stream()).collect(Collectors.toList());
+        final List<BodyTemperature> found = ImperialTemperature.Factory.INSTANCE.create(written.stream()).collect(Collectors.toList());
         assertTrue(found.containsAll(stored));
         data.delete();
     }

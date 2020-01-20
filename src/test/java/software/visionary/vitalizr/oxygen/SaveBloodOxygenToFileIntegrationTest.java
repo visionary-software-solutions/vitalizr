@@ -36,7 +36,7 @@ class SaveBloodOxygenToFileIntegrationTest {
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<BloodOxygen> foundOxys = PeripheralOxygenSaturation.fromSerialized(written.stream()).collect(Collectors.toList());
+        final List<BloodOxygen> foundOxys = PeripheralOxygenSaturation.Factory.INSTANCE.create(written.stream()).collect(Collectors.toList());
         assertTrue(foundOxys.containsAll(alsoStored));
         data.delete();
     }

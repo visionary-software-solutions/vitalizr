@@ -36,7 +36,7 @@ class SaveBodyMassIndicesToFileIntegrationTest {
         Vitalizr.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
-        final List<BodyMassIndex> foundBMIs = QueteletIndex.deserialize(written.stream()).collect(Collectors.toList());
+        final List<BodyMassIndex> foundBMIs = QueteletIndex.Factory.INSTANCE.create(written.stream()).collect(Collectors.toList());
         assertTrue(foundBMIs.containsAll(alsoStored));
         data.delete();
     }
