@@ -4,14 +4,9 @@ import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.SerializableVital;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Unit;
-import software.visionary.vitalizr.weight.MetricWeight;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 public final class WholeBloodGlucose extends SerializableVital implements BloodSugar {
     public WholeBloodGlucose(final Instant observed, final Number number, final Lifeform lifeform) {
