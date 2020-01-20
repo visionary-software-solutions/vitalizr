@@ -1,7 +1,6 @@
 package software.visionary.vitalizr.oxygen;
 
 import software.visionary.vitalizr.Human;
-import software.visionary.vitalizr.LifeformSerializationProxy;
 import software.visionary.vitalizr.SerializableVital;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Unit;
@@ -25,10 +24,7 @@ public final class PeripheralOxygenSaturation extends SerializableVital implemen
     }
 
     public PeripheralOxygenSaturationSerializationProxy asSerializationProxy() {
-        return new PeripheralOxygenSaturationSerializationProxy(observedAt(),
-                getQuantity().intValue(),
-                getUnit().getSymbol(),
-                new LifeformSerializationProxy(belongsTo()).toString());
+        return new PeripheralOxygenSaturationSerializationProxy(this);
     }
 
     @Override
@@ -40,8 +36,12 @@ public final class PeripheralOxygenSaturation extends SerializableVital implemen
         private static final String FIELD_DELIMITER = "\uD83E\uDD71";
         private static final String RECORD_DELIMITER = "\uD83E\uDDA8";
 
-        private PeripheralOxygenSaturationSerializationProxy(final Instant time, final int value, final String unit, final String life) {
-            super(time, value, unit, life);
+        public PeripheralOxygenSaturationSerializationProxy(final PeripheralOxygenSaturation peripheralOxygenSaturation) {
+            super(peripheralOxygenSaturation);
+        }
+
+        public PeripheralOxygenSaturationSerializationProxy(final Matcher matcher) {
+            super(matcher);
         }
 
         private static List<PeripheralOxygenSaturationSerializationProxy> parse(final String entry) {
@@ -50,12 +50,7 @@ public final class PeripheralOxygenSaturation extends SerializableVital implemen
             final Pattern sought = Pattern.compile(template);
             final Matcher matcher = sought.matcher(entry);
             while (matcher.find()) {
-                final Instant time = Instant.parse(matcher.group("time"));
-                final int value = Integer.parseInt(matcher.group("number"));
-                final String unit = matcher.group("unit");
-                final String person = matcher.group("person");
-                final PeripheralOxygenSaturationSerializationProxy toAdd = new PeripheralOxygenSaturationSerializationProxy(time, value, unit, person);
-                discovered.add(toAdd);
+                discovered.add(new PeripheralOxygenSaturationSerializationProxy(matcher));
             }
             return discovered;
         }

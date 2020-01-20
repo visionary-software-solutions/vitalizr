@@ -1,7 +1,6 @@
 package software.visionary.vitalizr.bodyTemperature;
 
 import software.visionary.vitalizr.Human;
-import software.visionary.vitalizr.LifeformSerializationProxy;
 import software.visionary.vitalizr.SerializableVital;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Unit;
@@ -25,10 +24,7 @@ public final class MetricTemperature extends SerializableVital implements BodyTe
     }
 
     public MetricTemperatureSerializationProxy asSerializationProxy() {
-        return new MetricTemperatureSerializationProxy(observedAt(),
-                getQuantity().doubleValue(),
-                getUnit().getSymbol(),
-                new LifeformSerializationProxy(belongsTo()).toString());
+        return new MetricTemperatureSerializationProxy(this);
     }
 
     @Override
@@ -40,8 +36,12 @@ public final class MetricTemperature extends SerializableVital implements BodyTe
         private static final String FIELD_DELIMITER = "\uD83C\uDF21";
         private static final String RECORD_DELIMITER = "\uD83C\uDF27";
 
-        private MetricTemperatureSerializationProxy(final Instant time, final double value, final String unit, final String life) {
-            super(time, value, unit, life);
+        public MetricTemperatureSerializationProxy(final MetricTemperature metricTemperature) {
+            super(metricTemperature);
+        }
+
+        public MetricTemperatureSerializationProxy(final Matcher matcher) {
+            super(matcher);
         }
 
         private static List<MetricTemperatureSerializationProxy> parse(final String entry) {
@@ -50,12 +50,7 @@ public final class MetricTemperature extends SerializableVital implements BodyTe
             final Pattern sought = Pattern.compile(template);
             final Matcher matcher = sought.matcher(entry);
             while (matcher.find()) {
-                final Instant time = Instant.parse(matcher.group("time"));
-                final double value = Double.parseDouble(matcher.group("number"));
-                final String unit = matcher.group("unit");
-                final String person = matcher.group("person");
-                final MetricTemperatureSerializationProxy toAdd = new MetricTemperatureSerializationProxy(time, value, unit, person);
-                discovered.add(toAdd);
+                discovered.add(new MetricTemperatureSerializationProxy(matcher));
             }
             return discovered;
         }

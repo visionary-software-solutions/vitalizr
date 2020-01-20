@@ -1,7 +1,6 @@
 package software.visionary.vitalizr.bodyWater;
 
 import software.visionary.vitalizr.Human;
-import software.visionary.vitalizr.LifeformSerializationProxy;
 import software.visionary.vitalizr.SerializableVital;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Unit;
@@ -21,14 +20,11 @@ public final class BioelectricalImpedance extends SerializableVital implements B
     public static Stream<BioelectricalImpedance> deserialize(final Stream<String> toConvert) {
         return toConvert.map(BioelectricalImpedanceSerializationProxy::parse)
                 .flatMap(List::stream)
-                .map(toConvert1 -> toConvert1.toVital());
+                .map(BioelectricalImpedanceSerializationProxy::toVital);
     }
 
     public BioelectricalImpedanceSerializationProxy asSerializationProxy() {
-        return new BioelectricalImpedanceSerializationProxy(observedAt(),
-                getQuantity().doubleValue(),
-                getUnit().getSymbol(),
-                new LifeformSerializationProxy(belongsTo()).toString());
+        return new BioelectricalImpedanceSerializationProxy(this);
     }
 
     @Override
@@ -40,8 +36,12 @@ public final class BioelectricalImpedance extends SerializableVital implements B
         private static final String FIELD_DELIMITER = "\uD83E\uDD3D";
         private static final String RECORD_DELIMITER = "\uD83E\uDD3F";
 
-        private BioelectricalImpedanceSerializationProxy(final Instant time, final double value, final String unit, final String life) {
-            super(time, value, unit, life);
+        public BioelectricalImpedanceSerializationProxy(final Matcher matcher) {
+            super(matcher);
+        }
+
+        public BioelectricalImpedanceSerializationProxy(final BioelectricalImpedance bioelectricalImpedance) {
+            super(bioelectricalImpedance);
         }
 
         private static List<BioelectricalImpedanceSerializationProxy> parse(final String entry) {
@@ -50,12 +50,7 @@ public final class BioelectricalImpedance extends SerializableVital implements B
             final Pattern sought = Pattern.compile(template);
             final Matcher matcher = sought.matcher(entry);
             while (matcher.find()) {
-                final Instant time = Instant.parse(matcher.group("time"));
-                final double value = Double.parseDouble(matcher.group("number"));
-                final String unit = matcher.group("unit");
-                final String person = matcher.group("person");
-                final BioelectricalImpedanceSerializationProxy toAdd = new BioelectricalImpedanceSerializationProxy(time, value, unit, person);
-                discovered.add(toAdd);
+                discovered.add(new BioelectricalImpedanceSerializationProxy(matcher));
             }
             return discovered;
         }

@@ -1,8 +1,6 @@
 package software.visionary.vitalizr.bodyTemperature;
 
-import software.visionary.vitalizr.AbstractVital;
 import software.visionary.vitalizr.Human;
-import software.visionary.vitalizr.LifeformSerializationProxy;
 import software.visionary.vitalizr.SerializableVital;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Unit;
@@ -26,10 +24,7 @@ public final class ImperialTemperature extends SerializableVital implements Body
     }
 
     public ImperialTemperatureSerializationProxy asSerializationProxy() {
-        return new ImperialTemperatureSerializationProxy(observedAt(),
-                getQuantity().doubleValue(),
-                getUnit().getSymbol(),
-                new LifeformSerializationProxy(belongsTo()).toString());
+        return new ImperialTemperatureSerializationProxy(this);
     }
 
     @Override
@@ -41,8 +36,12 @@ public final class ImperialTemperature extends SerializableVital implements Body
         private static final String FIELD_DELIMITER = "\uD83E\uDD75";
         private static final String RECORD_DELIMITER = "\uD83E\uDD76";
 
-        private ImperialTemperatureSerializationProxy(final Instant time, final double value, final String unit, final String life) {
-            super(time, value, unit, life);
+        public ImperialTemperatureSerializationProxy(final ImperialTemperature imperialTemperature) {
+            super(imperialTemperature);
+        }
+
+        public ImperialTemperatureSerializationProxy(final Matcher matcher) {
+            super(matcher);
         }
 
         private static List<ImperialTemperatureSerializationProxy> parse(final String entry) {
@@ -51,12 +50,7 @@ public final class ImperialTemperature extends SerializableVital implements Body
             final Pattern sought = Pattern.compile(template);
             final Matcher matcher = sought.matcher(entry);
             while (matcher.find()) {
-                final Instant time = Instant.parse(matcher.group("time"));
-                final double value = Double.parseDouble(matcher.group("number"));
-                final String unit = matcher.group("unit");
-                final String person = matcher.group("person");
-                final ImperialTemperatureSerializationProxy toAdd = new ImperialTemperatureSerializationProxy(time, value, unit, person);
-                discovered.add(toAdd);
+                discovered.add(new ImperialTemperatureSerializationProxy(matcher));
             }
             return discovered;
         }

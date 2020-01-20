@@ -28,18 +28,19 @@ public final class MetricWeight extends SerializableVital implements Weight {
     }
 
     public MetricWeightSerializationProxy asSerializationProxy() {
-        return new MetricWeightSerializationProxy(observedAt(),
-                getQuantity().doubleValue(),
-                getUnit().getSymbol(),
-                new LifeformSerializationProxy(belongsTo()).toString());
+        return new MetricWeightSerializationProxy(this);
     }
 
     private static final class MetricWeightSerializationProxy extends DecimalVital {
         private static final String FIELD_DELIMITER = "💩";
         private static final String RECORD_DELIMITER = "🤯";
 
-        protected MetricWeightSerializationProxy(final Instant time, final double value, final String unit, final String life) {
-            super(time, value, unit, life);
+        public MetricWeightSerializationProxy(final MetricWeight metricWeight) {
+            super(metricWeight);
+        }
+
+        public MetricWeightSerializationProxy(final Matcher matcher) {
+            super(matcher);
         }
 
         private static List<MetricWeightSerializationProxy> parse(final String entry) {
@@ -48,12 +49,7 @@ public final class MetricWeight extends SerializableVital implements Weight {
             final Pattern sought = Pattern.compile(template);
             final Matcher matcher = sought.matcher(entry);
             while (matcher.find()) {
-                final Instant time = Instant.parse(matcher.group("time"));
-                final double value = Double.parseDouble(matcher.group("number"));
-                final String unit = matcher.group("unit");
-                final String person = matcher.group("person");
-                final MetricWeightSerializationProxy toAdd = new MetricWeightSerializationProxy(time, value, unit, person);
-                discovered.add(toAdd);
+                discovered.add(new MetricWeightSerializationProxy(matcher));
             }
             return discovered;
         }

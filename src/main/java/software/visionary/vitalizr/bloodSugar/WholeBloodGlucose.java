@@ -1,7 +1,6 @@
 package software.visionary.vitalizr.bloodSugar;
 
 import software.visionary.vitalizr.Human;
-import software.visionary.vitalizr.LifeformSerializationProxy;
 import software.visionary.vitalizr.SerializableVital;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Unit;
@@ -25,10 +24,7 @@ public final class WholeBloodGlucose extends SerializableVital implements BloodS
     }
 
     public WholeBloodGlucoseSerializationProxy asSerializationProxy() {
-        return new WholeBloodGlucoseSerializationProxy(observedAt(),
-                getQuantity().intValue(),
-                getUnit().getSymbol(),
-                new LifeformSerializationProxy(belongsTo()).toString());
+        return new WholeBloodGlucoseSerializationProxy(this);
     }
 
     @Override
@@ -40,8 +36,12 @@ public final class WholeBloodGlucose extends SerializableVital implements BloodS
         private static final String FIELD_DELIMITER = "\uD83C\uDF70";
         private static final String RECORD_DELIMITER = "\uD83E\uDD22";
 
-        private WholeBloodGlucoseSerializationProxy(final Instant time, final int value, final String unit, final String life) {
-            super(time, value, unit, life);
+        public WholeBloodGlucoseSerializationProxy(final WholeBloodGlucose wholeBloodGlucose) {
+            super(wholeBloodGlucose);
+        }
+
+        public WholeBloodGlucoseSerializationProxy(final Matcher matcher) {
+            super(matcher);
         }
 
         private static List<WholeBloodGlucoseSerializationProxy> parse(final String entry) {
@@ -50,12 +50,7 @@ public final class WholeBloodGlucose extends SerializableVital implements BloodS
             final Pattern sought = Pattern.compile(template);
             final Matcher matcher = sought.matcher(entry);
             while (matcher.find()) {
-                final Instant time = Instant.parse(matcher.group("time"));
-                final int value = Integer.parseInt(matcher.group("number"));
-                final String unit = matcher.group("unit");
-                final String person = matcher.group("person");
-                final WholeBloodGlucoseSerializationProxy toAdd = new WholeBloodGlucoseSerializationProxy(time, value, unit, person);
-                discovered.add(toAdd);
+                discovered.add(new WholeBloodGlucoseSerializationProxy(matcher));
             }
             return discovered;
         }

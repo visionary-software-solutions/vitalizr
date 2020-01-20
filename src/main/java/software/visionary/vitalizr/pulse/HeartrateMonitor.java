@@ -1,7 +1,6 @@
 package software.visionary.vitalizr.pulse;
 
 import software.visionary.vitalizr.Human;
-import software.visionary.vitalizr.LifeformSerializationProxy;
 import software.visionary.vitalizr.SerializableVital;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Unit;
@@ -25,10 +24,7 @@ public final class HeartrateMonitor extends SerializableVital implements Pulse {
     }
 
     public HeartrateMonitorSerializationProxy asSerializationProxy() {
-        return new HeartrateMonitorSerializationProxy(observedAt(),
-                getQuantity().intValue(),
-                getUnit().getSymbol(),
-                new LifeformSerializationProxy(belongsTo()).toString());
+        return new HeartrateMonitorSerializationProxy(this);
     }
 
     @Override
@@ -40,8 +36,12 @@ public final class HeartrateMonitor extends SerializableVital implements Pulse {
         private static final String FIELD_DELIMITER = "\uD83D\uDC93";
         private static final String RECORD_DELIMITER = "\uD83D\uDC97";
 
-        private HeartrateMonitorSerializationProxy(final Instant time, final int value, final String unit, final String life) {
-            super(time, value, unit, life);
+        public HeartrateMonitorSerializationProxy(final HeartrateMonitor heartrateMonitor) {
+            super(heartrateMonitor);
+        }
+
+        public HeartrateMonitorSerializationProxy(final Matcher matcher) {
+            super(matcher);
         }
 
         private static List<HeartrateMonitorSerializationProxy> parse(final String entry) {
@@ -50,12 +50,7 @@ public final class HeartrateMonitor extends SerializableVital implements Pulse {
             final Pattern sought = Pattern.compile(template);
             final Matcher matcher = sought.matcher(entry);
             while (matcher.find()) {
-                final Instant time = Instant.parse(matcher.group("time"));
-                final int value = Integer.parseInt(matcher.group("number"));
-                final String unit = matcher.group("unit");
-                final String person = matcher.group("person");
-                final HeartrateMonitorSerializationProxy toAdd = new HeartrateMonitorSerializationProxy(time, value, unit, person);
-                discovered.add(toAdd);
+                discovered.add(new HeartrateMonitorSerializationProxy(matcher));
             }
             return discovered;
         }
