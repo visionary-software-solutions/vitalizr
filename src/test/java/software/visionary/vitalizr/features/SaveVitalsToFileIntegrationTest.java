@@ -21,6 +21,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,7 +30,7 @@ class SaveVitalsToFileIntegrationTest {
     @Test
     void canSaveVitalsToFile() throws IOException {
         // Given: A person
-        final Person mom = Human.createPerson("Barbara Hidalgo-Toledo:1959-01-01:mom@mommy.net");
+        final Person mom = Human.createPerson(UUID.randomUUID().toString() + ":Barbara Hidalgo-Toledo:1959-01-01:mom@mommy.net");
         // And: Some Vitals for the person
         final Collection<BloodPressure> thirdStored = bloodPressures(mom);
         final Collection<BloodSugar> fourthStored = bloodSugars(mom);

@@ -1,27 +1,29 @@
 package software.visionary.vitalizr;
 
-import software.visionary.vitalizr.api.Birthdate;
-import software.visionary.vitalizr.api.EmailAddress;
-import software.visionary.vitalizr.api.Name;
-import software.visionary.vitalizr.api.Person;
+import software.visionary.vitalizr.api.*;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public final class Human implements Person {
+    private final UUID id;
     private final Name name;
     private final Birthdate birthdate;
     private final EmailAddress email;
+    private final Credentials credentials;
 
-    private Human(final Name name, final Birthdate birthdate, final EmailAddress email) {
+    private Human(final UUID id, final Name name, final Birthdate birthdate, final EmailAddress email) {
+        this.id = Objects.requireNonNull(id);
         this.name = Objects.requireNonNull(name);
         this.birthdate = Objects.requireNonNull(birthdate);
         this.email = Objects.requireNonNull(email);
+        this.credentials = new PasswordCredentials(this, Integer.toBinaryString(Objects.hash(name, birthdate, email)));
     }
 
     public static Person createPerson(final String input) {
         final String delimiter = ":";
         final String[] tokens = input.split(delimiter);
-        return new Human(new Name(tokens[0]), Birthday.createFrom(tokens[1]), PersonalEmail.createFrom(tokens[2]));
+        return new Human(UUID.fromString(tokens[0]), new Name(tokens[1]), Birthday.createFrom(tokens[2]), PersonalEmail.createFrom(tokens[3]));
     }
 
     @Override
@@ -31,21 +33,7 @@ public final class Human implements Person {
 
     @Override
     public String toString() {
-        return String.format("%s:%s:%s", name, birthdate, email);
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        final Human human = (Human) o;
-        return Objects.equals(getName(), human.getName()) &&
-                Objects.equals(getBirthdate(), human.getBirthdate()) &&
-                Objects.equals(email, human.email);
+        return String.format("%s:%s:%s:%s", id, name, birthdate, email);
     }
 
     @Override
@@ -59,7 +47,25 @@ public final class Human implements Person {
     }
 
     @Override
+    public UUID getID() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final Human human = (Human) o;
+        return id.equals(human.id);
+    }
+
+    @Override
     public int hashCode() {
-        return Objects.hash(getName(), getBirthdate(), email);
+        return Objects.hash(id);
+    }
+
+    @Override
+    public Credentials getCredentials() {
+        return credentials;
     }
 }

@@ -14,6 +14,7 @@ import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
 
 import java.time.*;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Fixtures {
@@ -25,7 +26,7 @@ public class Fixtures {
     }
 
     private static Person createPerson(final Name name, final Birthdate birthdate, final EmailAddress emailAddress) {
-        return Human.createPerson(String.format("%s:%s:%s", name, birthdate, emailAddress));
+        return Human.createPerson(String.format("%s:%s:%s:%s", UUID.randomUUID().toString(), name, birthdate, emailAddress));
     }
 
     private static EmailAddress getEmailAddress(final Name userName, final Name topLevelDomain) {
@@ -122,6 +123,16 @@ public class Fixtures {
 
     public static Family family(final Person person) {
         return new Family() {
+            @Override
+            public UUID getID() {
+                return null;
+            }
+
+            @Override
+            public Credentials getCredentials() {
+                return null;
+            }
+
             private final Person whoIs = Fixtures.createPerson(new Name("Nick Vaidyanathan"),
                     Fixtures.getBirthdate(Year.parse("1985"), MonthDay.of(6, 11)),
                     Fixtures.getEmailAddress(new Name("master"), new Name("debater.com")));
@@ -150,6 +161,16 @@ public class Fixtures {
 
     public static MedicalProvider doctor(final Person person) {
         return new MedicalProvider() {
+            @Override
+            public UUID getID() {
+                return null;
+            }
+
+            @Override
+            public Credentials getCredentials() {
+                return null;
+            }
+
             private final Person whoIs = Fixtures.createPerson(new Name("Dr. Anthony Dash"),
                     Fixtures.getBirthdate(Year.parse("1957"), MonthDay.of(7, 13)),
                     Fixtures.getEmailAddress(new Name("doctor"), new Name("good.org")));
@@ -178,6 +199,16 @@ public class Fixtures {
 
     public static Caregiver caregiver(final Person person) {
         return new Caregiver() {
+            @Override
+            public UUID getID() {
+                return null;
+            }
+
+            @Override
+            public Credentials getCredentials() {
+                return null;
+            }
+
             private final Person whoIs = Fixtures.createPerson(new Name("Mandy McCray"),
                     Fixtures.getBirthdate(Year.parse("1978"), MonthDay.of(10, 22)),
                     Fixtures.getEmailAddress(new Name("caregiver"), new Name("care.org")));
@@ -260,7 +291,7 @@ public class Fixtures {
         final String name = createRandomName();
         final String birthday = createRandomBirthday();
         final String email = createRandomEmail();
-        final String input = String.format("%s:%s:%s", name, birthday, email);
+        final String input = String.format("%s:%s:%s:%s", UUID.randomUUID().toString(), name, birthday, email);
         return Human.createPerson(input);
     }
 
