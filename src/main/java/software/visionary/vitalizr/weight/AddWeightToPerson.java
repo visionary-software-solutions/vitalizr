@@ -1,8 +1,10 @@
-package software.visionary.vitalizr;
+package software.visionary.vitalizr.weight;
 
+import software.visionary.vitalizr.AddVitalToPerson;
+import software.visionary.vitalizr.Human;
+import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.api.Vital;
-import software.visionary.vitalizr.weight.MetricWeight;
 
 import java.time.Instant;
 import java.util.Scanner;

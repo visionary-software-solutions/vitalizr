@@ -1,16 +1,19 @@
-package software.visionary.vitalizr;
+package software.visionary.vitalizr.bloodPressure;
 
+import software.visionary.vitalizr.Human;
+import software.visionary.vitalizr.ListVitals;
+import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.api.Vital;
 
 import java.util.Collection;
 import java.util.Scanner;
 
-public final class ListWeightsForPerson extends ListVitals {
+public final class ListBloodPressuresForPerson extends ListVitals {
     @Override
     protected Collection<? extends Vital> getVitals(final Scanner scanner) {
         final String input = scanner.next();
         final Person person = Human.createPerson(input);
-        return Vitalizr.getWeightsFor(person);
+        return Vitalizr.getBloodPressuresFor(person);
     }
 }
