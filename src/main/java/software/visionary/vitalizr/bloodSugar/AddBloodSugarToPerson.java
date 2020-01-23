@@ -8,11 +8,13 @@ import software.visionary.vitalizr.api.Vital;
 
 import java.time.Instant;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public final class AddBloodSugarToPerson extends AddVitalToPerson {
     @Override
     protected Vital saveVital(final Scanner scanner) {
-        final String[] tokens = scanner.next().split("&");
+        final String input = scanner.useDelimiter("\u0004").tokens().collect(Collectors.joining());
+        final String[] tokens = input.split("&");
         final Person person = Human.createPerson(tokens[0]);
         final BloodSugar store = new WholeBloodGlucose(Instant.now(), Integer.parseInt(tokens[1]), person);
         Vitalizr.storeBloodSugarFor(store);
