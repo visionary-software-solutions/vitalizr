@@ -13,27 +13,28 @@ import java.io.InputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Arrays;
 import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class PasswordCredentials implements Credentials {
     private final Authenticatable owner;
-    private final String value;
+    private final byte[] value;
     private final SecretKey key;
 
     public PasswordCredentials(final Authenticatable human, final String password) {
         if (password == null || password.trim().isEmpty()) {
             throw new IllegalArgumentException("Invalid password");
         }
-        this.value = password;
         this.owner = Objects.requireNonNull(human);
-        this.key = asSecretKey();
+        this.key = asSecretKey(password);
+        this.value = this.key.getEncoded();
     }
 
-    private SecretKey asSecretKey() {
+    private SecretKey asSecretKey(final String password) {
         try {
-            final PBEKeySpec pbeKeySpec = new PBEKeySpec(value.toCharArray());
+            final PBEKeySpec pbeKeySpec = new PBEKeySpec(password.toCharArray());
             SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBEWithMD5AndTripleDES");
             return secretKeyFactory.generateSecret(pbeKeySpec);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
@@ -49,7 +50,7 @@ public class PasswordCredentials implements Credentials {
         }
         final PasswordCredentials that = (PasswordCredentials) o;
         return owner.equals(that.owner) &&
-                value.equals(that.value);
+                Arrays.equals(value, that.value);
     }
 
     @Override
@@ -61,8 +62,7 @@ public class PasswordCredentials implements Credentials {
     public byte[] encrypt(final byte[] source) {
         try(final ByteArrayInputStream in = new ByteArrayInputStream(source);
             final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            final byte[] salt = new byte[8];
-            ThreadLocalRandom.current().nextBytes(salt);
+            final byte[] salt = getSalt();
             final PBEParameterSpec pbeParameterSpec = new PBEParameterSpec(salt, 100);
             final Cipher cipher = Cipher.getInstance("PBEWithMD5AndTripleDES");
             cipher.init(Cipher.ENCRYPT_MODE, key, pbeParameterSpec);
@@ -86,6 +86,12 @@ public class PasswordCredentials implements Credentials {
                 | BadPaddingException | IllegalBlockSizeException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public byte[] getSalt() {
+        final byte[] salt = new byte[8];
+        new SecureRandom().nextBytes(salt);
+        return salt;
     }
 
     @Override

@@ -30,6 +30,6 @@ public enum  Randomizr {
         for (int i = 0; i < length; i++) {
             builder.append(random.nextInt(26) + 'a');
         }
-        return builder.toString();
+        return (builder.toString().trim().isEmpty()) ? createRandomPassword() : builder.toString();
     }
 }
