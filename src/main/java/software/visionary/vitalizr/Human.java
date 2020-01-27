@@ -1,6 +1,9 @@
 package software.visionary.vitalizr;
 
-import software.visionary.vitalizr.api.*;
+import software.visionary.vitalizr.api.Birthdate;
+import software.visionary.vitalizr.api.EmailAddress;
+import software.visionary.vitalizr.api.Name;
+import software.visionary.vitalizr.api.Person;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -10,14 +13,12 @@ public final class Human implements Person {
     private final Name name;
     private final Birthdate birthdate;
     private final EmailAddress email;
-    private final Credentials credentials;
 
     private Human(final UUID id, final Name name, final Birthdate birthdate, final EmailAddress email) {
         this.id = Objects.requireNonNull(id);
         this.name = Objects.requireNonNull(name);
         this.birthdate = Objects.requireNonNull(birthdate);
         this.email = Objects.requireNonNull(email);
-        this.credentials = new PasswordCredentials(this, Integer.toBinaryString(Objects.hash(name, birthdate, email)));
     }
 
     public static Person createPerson(final String input) {
@@ -47,11 +48,6 @@ public final class Human implements Person {
     }
 
     @Override
-    public UUID getID() {
-        return id;
-    }
-
-    @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -65,7 +61,7 @@ public final class Human implements Person {
     }
 
     @Override
-    public Credentials getCredentials() {
-        return credentials;
+    public UUID getID() {
+        return id;
     }
 }

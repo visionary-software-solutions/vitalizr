@@ -1,5 +1,5 @@
 package software.visionary.vitalizr.api;
 
-public interface Person extends Lifeform, Authenticatable {
+public interface Person extends Lifeform {
     EmailAddress getEmailAddress();
 }

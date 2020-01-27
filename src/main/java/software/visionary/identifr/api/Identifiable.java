@@ -1,4 +1,4 @@
-package software.visionary.vitalizr.api;
+package software.visionary.identifr.api;
 
 import java.util.UUID;
 

@@ -1,6 +1,7 @@
 package software.visionary.vitalizr;
 
 import org.threeten.extra.Interval;
+import software.visionary.Randomizr;
 import software.visionary.vitalizr.api.*;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
 import software.visionary.vitalizr.bloodSugar.MilligramsPerDecilitre;
@@ -15,7 +16,6 @@ import software.visionary.vitalizr.pulse.Pulse;
 
 import java.time.*;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Fixtures {
 
@@ -128,11 +128,6 @@ public class Fixtures {
                 return null;
             }
 
-            @Override
-            public Credentials getCredentials() {
-                return null;
-            }
-
             private final Person whoIs = Fixtures.createPerson(new Name("Nick Vaidyanathan"),
                     Fixtures.getBirthdate(Year.parse("1985"), MonthDay.of(6, 11)),
                     Fixtures.getEmailAddress(new Name("master"), new Name("debater.com")));
@@ -166,11 +161,6 @@ public class Fixtures {
                 return null;
             }
 
-            @Override
-            public Credentials getCredentials() {
-                return null;
-            }
-
             private final Person whoIs = Fixtures.createPerson(new Name("Dr. Anthony Dash"),
                     Fixtures.getBirthdate(Year.parse("1957"), MonthDay.of(7, 13)),
                     Fixtures.getEmailAddress(new Name("doctor"), new Name("good.org")));
@@ -201,11 +191,6 @@ public class Fixtures {
         return new Caregiver() {
             @Override
             public UUID getID() {
-                return null;
-            }
-
-            @Override
-            public Credentials getCredentials() {
                 return null;
             }
 
@@ -296,31 +281,14 @@ public class Fixtures {
     }
 
     private static String createRandomEmail() {
-        return String.format("%s@%s.%s", createRandomAlphabeticString(), createRandomAlphabeticString(), createRandomAlphabeticString());
+        return String.format("%s@%s.%s", Randomizr.INSTANCE.createRandomAlphabeticString(), Randomizr.INSTANCE.createRandomAlphabeticString(), Randomizr.INSTANCE.createRandomAlphabeticString());
     }
 
     private static String createRandomBirthday() {
-        return String.format("%04d-%02d-%02d", createRandomNumberBetween(1900, 2020), createRandomNumberBetween(1,12), createRandomNumberBetween(1, 31));
-    }
-
-    private static int createRandomNumberBetween(final int start, final int end) {
-        return ThreadLocalRandom.current().nextInt(start, end);
+        return String.format("%04d-%02d-%02d", Randomizr.INSTANCE.createRandomNumberBetween(1900, 2020), Randomizr.INSTANCE.createRandomNumberBetween(1,12), Randomizr.INSTANCE.createRandomNumberBetween(1, 31));
     }
 
     private static String createRandomName() {
-        return String.format("%s %s", createRandomAlphabeticString(), createRandomAlphabeticString());
-    }
-
-    private static String createRandomAlphabeticString() {
-        final int length = ThreadLocalRandom.current().nextInt(10);
-        final StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            builder.append(createRandomAlphabeticCharacter());
-        }
-        return builder.toString();
-    }
-
-    private static char createRandomAlphabeticCharacter() {
-        return (char) (ThreadLocalRandom.current().nextInt(26) + 'a');
+        return String.format("%s %s", Randomizr.INSTANCE.createRandomAlphabeticString(), Randomizr.INSTANCE.createRandomAlphabeticString());
     }
 }
