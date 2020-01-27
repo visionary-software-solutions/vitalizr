@@ -12,10 +12,16 @@ import java.util.Scanner;
 public final class AddWeightToPerson extends AddVitalToPerson {
     @Override
     protected Vital saveVital(final Scanner scanner) {
-        final String[] tokens = scanner.next().split("&");
+        final String[] tokens = scanner.useDelimiter("\u0004").next().split("&");
         final Person person = Human.createPerson(tokens[0]);
-        final MetricWeight store = new MetricWeight(Instant.now(), Integer.valueOf(tokens[1]), person);
+        final Weight store = getWeight(tokens[1], tokens[2], person);
         Vitalizr.storeWeightFor(store);
         return store;
+    }
+
+    private Weight getWeight(final String quantity, final String unit, final Person person) {
+        return Gram.INSTANCE.getSymbol().equalsIgnoreCase(unit) ?
+                new MetricWeight(Instant.now(), Double.parseDouble(quantity), person)
+                : new ImperialWeight(Instant.now(), Double.parseDouble(quantity), person);
     }
 }

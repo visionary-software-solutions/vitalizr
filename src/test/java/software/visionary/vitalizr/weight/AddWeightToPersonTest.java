@@ -1,0 +1,30 @@
+package software.visionary.vitalizr.weight;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import software.visionary.vitalizr.Fixtures;
+import software.visionary.vitalizr.Vitalizr;
+import software.visionary.vitalizr.api.Person;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Scanner;
+
+final class AddWeightToPersonTest {
+    @Test
+    void canSaveVital() {
+        final Person p = Fixtures.createRandomPerson();
+        final Double kilograms = 101.7;
+        final String input = String.format("%s&%f&%s\u0004", p, kilograms, Gram.INSTANCE.getSymbol());
+        final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+        final Scanner scanner = new Scanner(stream);
+        final AddWeightToPerson action = new AddWeightToPerson();
+        action.saveVital(scanner);
+        final Collection<Weight> stored = Vitalizr.getWeightsFor(p);
+        Assertions.assertFalse(stored.isEmpty());
+        Assertions.assertTrue(stored.parallelStream()
+                .anyMatch(bp -> bp.getQuantity().equals(kilograms)));
+    }
+}
