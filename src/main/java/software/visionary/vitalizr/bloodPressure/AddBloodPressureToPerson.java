@@ -17,7 +17,7 @@ public final class AddBloodPressureToPerson extends AddVitalToPerson {
         final String[] tokens = input.split("&");
         final Person person = Human.createPerson(tokens[0]);
         final Combined store = Combined.systolicAndDiastolicBloodPressure(Instant.now(), Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]), person);
-        Vitalizr.storeBloodPressureFor(store);
+        Vitalizr.storeBloodPressure(store);
         return store;
     }
 }

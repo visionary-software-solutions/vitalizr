@@ -75,7 +75,7 @@ public final class Application {
     private static void addWeightToPerson(final String input) {
         final String delimiter = "&";
         final String[] tokens = input.split(delimiter);
-        Vitalizr.storeWeightFor(new MetricWeight(Instant.now(), Integer.valueOf(tokens[1]), Human.createPerson(tokens[0])));
+        Vitalizr.storeWeight(new MetricWeight(Instant.now(), Integer.valueOf(tokens[1]), Human.createPerson(tokens[0])));
     }
 
     private static void listPeople() {

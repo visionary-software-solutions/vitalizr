@@ -18,7 +18,7 @@ class BodyMassIndexStorageIntegrationTest {
         // And: A Body Mass Index at a particular point in time and quantity to be stored
         final BodyMassIndex toStore = Fixtures.bmiAt(43.1, Instant.now(), mom);
         // When: I call store
-        Vitalizr.storeBodyMassIndexFor(toStore);
+        Vitalizr.storeBodyMassIndex(toStore);
         // Then: the weight is stored
         final Collection<BodyMassIndex> stored = Vitalizr.getBodyMassIndicesFor(mom);
         assertTrue(stored.contains(toStore));

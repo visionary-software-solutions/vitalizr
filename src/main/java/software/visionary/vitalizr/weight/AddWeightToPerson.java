@@ -15,7 +15,7 @@ public final class AddWeightToPerson extends AddVitalToPerson {
         final String[] tokens = scanner.useDelimiter("\u0004").next().split("&");
         final Person person = Human.createPerson(tokens[0]);
         final Weight store = getWeight(tokens[1], tokens[2], person);
-        Vitalizr.storeWeightFor(store);
+        Vitalizr.storeWeight(store);
         return store;
     }
 

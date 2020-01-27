@@ -18,16 +18,16 @@ class BodyWaterPercentageQueryIntegrationTest {
         final Person mom = Fixtures.person();
         // And: that person measured their body water percentage 2 weeks ago
         final BodyWaterPercentage first = Fixtures.bodyWaterPercentageAt(50.5, Fixtures.observationAtMidnightNDaysAgo(14), mom);
-        Vitalizr.storeBodyWaterPercentageFor(first);
+        Vitalizr.storeBodyWaterPercentage(first);
         // And: that person measured their body water percentage  3 days ago
         final BodyWaterPercentage second = Fixtures.bodyWaterPercentageAt(51.2, Fixtures.observationAtMidnightNDaysAgo(3), mom);
-        Vitalizr.storeBodyWaterPercentageFor(second);
+        Vitalizr.storeBodyWaterPercentage(second);
         // And: that person measured their body water percentage  2 days ago
         final BodyWaterPercentage third = Fixtures.bodyWaterPercentageAt(50.8, Fixtures.observationAtMidnightNDaysAgo(2), mom);
-        Vitalizr.storeBodyWaterPercentageFor(third);
+        Vitalizr.storeBodyWaterPercentage(third);
         // And: that person measured their body water percentage  1 days ago
         final BodyWaterPercentage fourth = Fixtures.bodyWaterPercentageAt(49.2, Fixtures.observationAtMidnightNDaysAgo(1), mom);
-        Vitalizr.storeBodyWaterPercentageFor(fourth);
+        Vitalizr.storeBodyWaterPercentage(fourth);
         // And: A time range to query for
         final Interval oneWeekAgoToNow = Fixtures.oneWeekAgoToNow();
         // When: I fetch the body water percentage

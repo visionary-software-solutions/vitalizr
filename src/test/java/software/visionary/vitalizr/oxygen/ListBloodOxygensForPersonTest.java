@@ -5,10 +5,6 @@ import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
-import software.visionary.vitalizr.bodyWater.BioelectricalImpedance;
-import software.visionary.vitalizr.bodyWater.BodyWaterPercentage;
-import software.visionary.vitalizr.bodyWater.ListBodyWaterPercentagesForPerson;
-import software.visionary.vitalizr.pulse.HeartrateMonitor;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -23,7 +19,7 @@ final class ListBloodOxygensForPersonTest {
         final Integer spO2 = 94;
         final Person p = Fixtures.createRandomPerson();
         final BloodOxygen saved = new PeripheralOxygenSaturation(Instant.now(), spO2, p);
-        Vitalizr.storeBloodOxygenFor(saved);
+        Vitalizr.storeBloodOxygen(saved);
         final String input = String.format("%s\u0004", p);
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);

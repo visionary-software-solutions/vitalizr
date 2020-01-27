@@ -22,7 +22,7 @@ class WeightStorageIntegrationTest {
         // Given: A person to store weight for
         // Given: A weight at a particular point in time and quantity to be stored
         // When: I call store
-        Vitalizr.storeWeightFor(weight);
+        Vitalizr.storeWeight(weight);
         // Then: the weight is stored
         final Collection<Weight> stored = Vitalizr.getWeightsFor(PERSON);
         assertTrue(stored.contains(weight));

@@ -19,7 +19,7 @@ final class ListPulsesTest {
         final Integer pulse = 58;
         final Person p = Fixtures.createRandomPerson();
         final Pulse saved = new HeartrateMonitor(Instant.now(), pulse, p);
-        Vitalizr.storePulseFor(saved);
+        Vitalizr.storePulse(saved);
         final String input = String.format("%s\u0004", p);
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);

@@ -17,7 +17,7 @@ public final class AddBloodSugarToPerson extends AddVitalToPerson {
         final String[] tokens = input.split("&");
         final Person person = Human.createPerson(tokens[0]);
         final BloodSugar store = new WholeBloodGlucose(Instant.now(), Integer.parseInt(tokens[1]), person);
-        Vitalizr.storeBloodSugarFor(store);
+        Vitalizr.storeBloodSugar(store);
         return store;
     }
 }

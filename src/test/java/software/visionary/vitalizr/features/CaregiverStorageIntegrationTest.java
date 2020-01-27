@@ -17,7 +17,7 @@ class CaregiverStorageIntegrationTest {
         // And: Another person who is a caregiver for that person
         final Caregiver giver = Fixtures.caregiver(mom);
         // When: I call store
-        Vitalizr.addCaregiver(giver);
+        Vitalizr.storeTrustedContact(giver);
         // Then: the other person is stored as part of the original person's caregivers
         final Collection<Caregiver> careTeam = Vitalizr.getCaregiversFor(mom);
         Assertions.assertTrue(careTeam.contains(giver));

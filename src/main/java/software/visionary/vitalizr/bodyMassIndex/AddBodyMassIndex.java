@@ -15,7 +15,7 @@ public final class AddBodyMassIndex extends AddVitalToPerson {
         final String[] tokens = scanner.useDelimiter("\u0004").next().split("&");
         final Person person = Human.createPerson(tokens[0]);
         final BodyMassIndex store = new QueteletIndex(Instant.now(), Double.parseDouble(tokens[1]), person);
-        Vitalizr.storeBodyMassIndexFor(store);
+        Vitalizr.storeBodyMassIndex(store);
         return store;
     }
 }

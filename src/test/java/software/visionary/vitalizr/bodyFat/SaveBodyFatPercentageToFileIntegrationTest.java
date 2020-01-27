@@ -28,7 +28,7 @@ class SaveBodyFatPercentageToFileIntegrationTest {
         // And: Some Vitals for the person
         final Collection<BodyFatPercentage> alsoStored = fats(mom);
         // And: Vitalizr has stored those vitals
-        alsoStored.forEach(Vitalizr::storeBodyFatPercentageFor);
+        alsoStored.forEach(Vitalizr::storeBodyFatPercentage);
         // And: A File to write the data to
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_save_vitals")).toFile();
         data.deleteOnExit();

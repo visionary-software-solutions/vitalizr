@@ -18,7 +18,7 @@ class BloodPressureStorageIntegrationTest {
         // And: A blood pressure at a particular point in time and quantity to be stored
         final BloodPressure toStore = Combined.systolicAndDiastolicBloodPressure(Instant.now(), 153, 80, mom);
         // When: I call store
-        Vitalizr.storeBloodPressureFor(toStore);
+        Vitalizr.storeBloodPressure(toStore);
         // Then: the weight is stored
         final Collection<BloodPressure> stored = Vitalizr.getBloodPressuresFor(mom);
         assertTrue(stored.contains(toStore));

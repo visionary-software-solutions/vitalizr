@@ -19,7 +19,7 @@ final class ListBodyWaterPercentagesForPersonTest {
         final Double fatPercentage = 28.2;
         final Person p = Fixtures.createRandomPerson();
         final BodyWaterPercentage saved = new BioelectricalImpedance(Instant.now(), fatPercentage, p);
-        Vitalizr.storeBodyWaterPercentageFor(saved);
+        Vitalizr.storeBodyWaterPercentage(saved);
         final String input = String.format("%s\u0004", p);
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);

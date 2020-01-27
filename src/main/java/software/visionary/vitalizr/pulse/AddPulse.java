@@ -15,7 +15,7 @@ public final class AddPulse extends AddVitalToPerson {
         final String[] tokens = scanner.useDelimiter("\u0004").next().split("&");
         final Person person = Human.createPerson(tokens[0]);
         final Pulse store = new HeartrateMonitor(Instant.now(), Integer.parseInt(tokens[1]), person);
-        Vitalizr.storePulseFor(store);
+        Vitalizr.storePulse(store);
         return store;
     }
 }

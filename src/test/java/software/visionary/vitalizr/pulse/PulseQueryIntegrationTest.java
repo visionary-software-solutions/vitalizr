@@ -18,16 +18,16 @@ class PulseQueryIntegrationTest {
         final Person mom = Fixtures.person();
         // And: that person measured their pulse 2 weeks ago
         final Pulse first = Fixtures.pulseAt(90, Fixtures.observationAtMidnightNDaysAgo(14), mom);
-        Vitalizr.storePulseFor(first);
+        Vitalizr.storePulse(first);
         // And: that person measured their pulse 3 days ago
         final Pulse second = Fixtures.pulseAt(72, Fixtures.observationAtMidnightNDaysAgo(3), mom);
-        Vitalizr.storePulseFor(second);
+        Vitalizr.storePulse(second);
         // And: that person measured their pulse 2 days ago
         final Pulse third = Fixtures.pulseAt(81, Fixtures.observationAtMidnightNDaysAgo(2), mom);
-        Vitalizr.storePulseFor(third);
+        Vitalizr.storePulse(third);
         // And: that person measured their pulse 1 days ago
         final Pulse fourth = Fixtures.pulseAt(62, Fixtures.observationAtMidnightNDaysAgo(1), mom);
-        Vitalizr.storePulseFor(fourth);
+        Vitalizr.storePulse(fourth);
         // And: A time range to query for
         final Interval oneWeekAgoToNow = Fixtures.oneWeekAgoToNow();
         // When: I fetch the pulses

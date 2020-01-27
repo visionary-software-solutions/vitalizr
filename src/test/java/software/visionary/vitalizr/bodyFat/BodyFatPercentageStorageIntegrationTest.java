@@ -18,7 +18,7 @@ class BodyFatPercentageStorageIntegrationTest {
         // And: A Body Water Percentage at a particular point in time and quantity to be stored
         final BodyFatPercentage toStore = Fixtures.bodyFatPercentageAt(50.2, Instant.now(), mom);
         // When: I call store
-        Vitalizr.storeBodyFatPercentageFor(toStore);
+        Vitalizr.storeBodyFatPercentage(toStore);
         // Then: the weight is stored
         final Collection<BodyFatPercentage> stored = Vitalizr.getBodyFatPercentagesFor(mom);
         assertTrue(stored.contains(toStore));

@@ -19,7 +19,7 @@ final class ListBloodSugarsForPersonTest {
         final Integer glucose = 140;
         final Person p = Fixtures.createRandomPerson();
         final BloodSugar saved = new WholeBloodGlucose(Instant.now(), glucose, p);
-        Vitalizr.storeBloodSugarFor(saved);
+        Vitalizr.storeBloodSugar(saved);
         final String input = String.format("%s\u0004", p);
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);

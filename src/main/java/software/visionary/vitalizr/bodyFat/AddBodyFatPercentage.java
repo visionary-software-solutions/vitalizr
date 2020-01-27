@@ -17,7 +17,7 @@ public final class AddBodyFatPercentage extends AddVitalToPerson {
         final String[] tokens = input.split("&");
         final Person person = Human.createPerson(tokens[0]);
         final BodyFatPercentage store = new BioelectricalImpedance(Instant.now(), Double.parseDouble(tokens[1]), person);
-        Vitalizr.storeBodyFatPercentageFor(store);
+        Vitalizr.storeBodyFatPercentage(store);
         return store;
     }
 }

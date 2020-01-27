@@ -18,16 +18,16 @@ class BodyFatPercentageQueryIntegrationTest {
         final Person mom = Fixtures.person();
         // And: that person measured their body Fat percentage 2 weeks ago
         final BodyFatPercentage first = Fixtures.bodyFatPercentageAt(50.5, Fixtures.observationAtMidnightNDaysAgo(14), mom);
-        Vitalizr.storeBodyFatPercentageFor(first);
+        Vitalizr.storeBodyFatPercentage(first);
         // And: that person measured their body Fat percentage  3 days ago
         final BodyFatPercentage second = Fixtures.bodyFatPercentageAt(51.2, Fixtures.observationAtMidnightNDaysAgo(3), mom);
-        Vitalizr.storeBodyFatPercentageFor(second);
+        Vitalizr.storeBodyFatPercentage(second);
         // And: that person measured their body Fat percentage  2 days ago
         final BodyFatPercentage third = Fixtures.bodyFatPercentageAt(50.8, Fixtures.observationAtMidnightNDaysAgo(2), mom);
-        Vitalizr.storeBodyFatPercentageFor(third);
+        Vitalizr.storeBodyFatPercentage(third);
         // And: that person measured their body Fat percentage  1 days ago
         final BodyFatPercentage fourth = Fixtures.bodyFatPercentageAt(49.2, Fixtures.observationAtMidnightNDaysAgo(1), mom);
-        Vitalizr.storeBodyFatPercentageFor(fourth);
+        Vitalizr.storeBodyFatPercentage(fourth);
         // And: A time range to query for
         final Interval oneWeekAgoToNow = Fixtures.oneWeekAgoToNow();
         // When: I fetch the body Fat percentage

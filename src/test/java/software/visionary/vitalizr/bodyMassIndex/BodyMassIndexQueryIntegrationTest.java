@@ -18,16 +18,16 @@ class BodyMassIndexQueryIntegrationTest {
         final Person mom = Fixtures.person();
         // And: that person measured their BMI 2 weeks ago
         final BodyMassIndex first = Fixtures.bmiAt(33.9, Fixtures.observationAtMidnightNDaysAgo(14), mom);
-        Vitalizr.storeBodyMassIndexFor(first);
+        Vitalizr.storeBodyMassIndex(first);
         // And: that person measured their BMI  3 days ago
         final BodyMassIndex second = Fixtures.bmiAt(33.4, Fixtures.observationAtMidnightNDaysAgo(3), mom);
-        Vitalizr.storeBodyMassIndexFor(second);
+        Vitalizr.storeBodyMassIndex(second);
         // And: that person measured their BMI  2 days ago
         final BodyMassIndex third = Fixtures.bmiAt(33.1, Fixtures.observationAtMidnightNDaysAgo(2), mom);
-        Vitalizr.storeBodyMassIndexFor(third);
+        Vitalizr.storeBodyMassIndex(third);
         // And: that person measured their BMI  1 days ago
         final BodyMassIndex fourth = Fixtures.bmiAt(33.0, Fixtures.observationAtMidnightNDaysAgo(1), mom);
-        Vitalizr.storeBodyMassIndexFor(fourth);
+        Vitalizr.storeBodyMassIndex(fourth);
         // And: A time range to query for
         final Interval oneWeekAgoToNow = Fixtures.oneWeekAgoToNow();
         // When: I fetch the O2s

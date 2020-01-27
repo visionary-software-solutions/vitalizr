@@ -29,7 +29,7 @@ class SaveBodyWaterPercentageToFileIntegrationTest {
         // And: Some Vitals for the person
         final Collection<BodyWaterPercentage> alsoStored = waters(mom);
         // And: Vitalizr has stored those vitals
-        alsoStored.forEach(Vitalizr::storeBodyWaterPercentageFor);
+        alsoStored.forEach(Vitalizr::storeBodyWaterPercentage);
         // And: A File to write the data to
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_save_vitals")).toFile();
         data.deleteOnExit();

@@ -19,7 +19,7 @@ final class ListBodyMassIndicesForPersonTest {
         final Double bmi = 33.1;
         final Person p = Fixtures.createRandomPerson();
         final BodyMassIndex saved = new QueteletIndex(Instant.now(), bmi, p);
-        Vitalizr.storeBodyMassIndexFor(saved);
+        Vitalizr.storeBodyMassIndex(saved);
         final String input = String.format("%s\u0004", p);
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);

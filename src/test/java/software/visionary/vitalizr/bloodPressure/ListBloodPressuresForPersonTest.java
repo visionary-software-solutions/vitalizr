@@ -22,7 +22,7 @@ final class ListBloodPressuresForPersonTest {
         final Integer diastolic = 70;
         final Person p = Fixtures.createRandomPerson();
         final BloodPressure saved = Combined.systolicAndDiastolicBloodPressure(Instant.now(), systolic, diastolic, p);
-        Vitalizr.storeBloodPressureFor(saved);
+        Vitalizr.storeBloodPressure(saved);
         final String input = String.format("%s\u0004", p);
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);

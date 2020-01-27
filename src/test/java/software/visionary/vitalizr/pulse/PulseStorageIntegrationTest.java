@@ -18,7 +18,7 @@ class PulseStorageIntegrationTest {
         // And: A pulse at a particular point in time and quantity to be stored
         final Pulse toStore = Fixtures.pulseAt(91, Instant.now(), mom);
         // When: I call store
-        Vitalizr.storePulseFor(toStore);
+        Vitalizr.storePulse(toStore);
         // Then: the weight is stored
         final Collection<Pulse> stored = Vitalizr.getPulsesFor(mom);
         assertTrue(stored.contains(toStore));

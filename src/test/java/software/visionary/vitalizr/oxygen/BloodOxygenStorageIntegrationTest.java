@@ -18,7 +18,7 @@ class BloodOxygenStorageIntegrationTest {
         // And: A blood oxygen at a particular point in time and quantity to be stored
         final BloodOxygen toStore = Fixtures.oxygenAt(94, Instant.now(), mom);
         // When: I call store
-        Vitalizr.storeBloodOxygenFor(toStore);
+        Vitalizr.storeBloodOxygen(toStore);
         // Then: the weight is stored
         final Collection<BloodOxygen> stored = Vitalizr.getBloodOxygensFor(mom);
         assertTrue(stored.contains(toStore));

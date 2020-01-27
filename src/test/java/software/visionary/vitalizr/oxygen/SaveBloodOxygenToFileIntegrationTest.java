@@ -28,7 +28,7 @@ class SaveBloodOxygenToFileIntegrationTest {
         // And: Some Vitals for the person
         final Collection<BloodOxygen> alsoStored = bloodOxygens(mom);
         // And: Vitalizr has stored those vitals
-        alsoStored.forEach(Vitalizr::storeBloodOxygenFor);
+        alsoStored.forEach(Vitalizr::storeBloodOxygen);
         // And: A File to write the data to
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_save_vitals")).toFile();
         data.deleteOnExit();

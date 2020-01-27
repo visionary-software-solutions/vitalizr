@@ -18,16 +18,16 @@ class BloodOxygenQueryIntegrationTest {
         final Person mom = Fixtures.person();
         // And: that person measured their O2 2 weeks ago
         final BloodOxygen first = Fixtures.oxygenAt(92, Fixtures.observationAtMidnightNDaysAgo(14), mom);
-        Vitalizr.storeBloodOxygenFor(first);
+        Vitalizr.storeBloodOxygen(first);
         // And: that person measured their O2 3 days ago
         final BloodOxygen second = Fixtures.oxygenAt(94, Fixtures.observationAtMidnightNDaysAgo(3), mom);
-        Vitalizr.storeBloodOxygenFor(second);
+        Vitalizr.storeBloodOxygen(second);
         // And: that person measured their O2 2 days ago
         final BloodOxygen third = Fixtures.oxygenAt(96, Fixtures.observationAtMidnightNDaysAgo(2), mom);
-        Vitalizr.storeBloodOxygenFor(third);
+        Vitalizr.storeBloodOxygen(third);
         // And: that person measured their O2 1 days ago
         final BloodOxygen fourth = Fixtures.oxygenAt(97, Fixtures.observationAtMidnightNDaysAgo(1), mom);
-        Vitalizr.storeBloodOxygenFor(fourth);
+        Vitalizr.storeBloodOxygen(fourth);
         // And: A time range to query for
         final Interval oneWeekAgoToNow = Fixtures.oneWeekAgoToNow();
         // When: I fetch the O2s

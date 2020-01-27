@@ -17,7 +17,7 @@ class FamilyStorageIntegrationTest {
         // And: Another person who is part of that person's Family
         final Family nick = Fixtures.family(mom);
         // When: I call store
-        Vitalizr.addFamilyMember(nick);
+        Vitalizr.storeTrustedContact(nick);
         // Then: the other person is stored as part of the original person's family
         final Collection<Family> members = Vitalizr.getFamilyFor(mom);
         Assertions.assertTrue(members.contains(nick));

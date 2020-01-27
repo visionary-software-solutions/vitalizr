@@ -25,16 +25,16 @@ class WeightQueryIntegrationTest {
         // Given: A person to retrieve weight for
         // And: that person measured their weight 2 weeks ago
         final Weight first = weights.get(0);
-        Vitalizr.storeWeightFor(first);
+        Vitalizr.storeWeight(first);
         // And: that person measured their weight 3 days ago
         final Weight second = weights.get(1);
-        Vitalizr.storeWeightFor(second);
+        Vitalizr.storeWeight(second);
         // And: that person measured their weight 2 days ago
         final Weight third = weights.get(2);
-        Vitalizr.storeWeightFor(third);
+        Vitalizr.storeWeight(third);
         // And: that person measured their weight 1 days ago
         final Weight fourth = weights.get(3);
-        Vitalizr.storeWeightFor(fourth);
+        Vitalizr.storeWeight(fourth);
         // And: A time range to query for
         final Interval oneWeekAgoToNow = Fixtures.oneWeekAgoToNow();
         // When: I fetch the weights

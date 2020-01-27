@@ -35,8 +35,8 @@ class SaveVitalsToFileIntegrationTest {
         final Collection<BloodPressure> thirdStored = bloodPressures(mom);
         final Collection<BloodSugar> fourthStored = bloodSugars(mom);
         // And: Vitalizr has stored those vitals
-        thirdStored.forEach(Vitalizr::storeBloodPressureFor);
-        fourthStored.forEach(Vitalizr::storeBloodSugarFor);
+        thirdStored.forEach(Vitalizr::storeBloodPressure);
+        fourthStored.forEach(Vitalizr::storeBloodSugar);
         // And: A File to write the data to
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_save_vitals")).toFile();
         data.deleteOnExit();

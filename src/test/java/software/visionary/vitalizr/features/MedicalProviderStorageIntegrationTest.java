@@ -17,7 +17,7 @@ class MedicalProviderStorageIntegrationTest {
         // And: Another person who is a medical provider for that person
         final MedicalProvider doctor = Fixtures.doctor(mom);
         // When: I call store
-        Vitalizr.addMedicalProvider(doctor);
+        Vitalizr.storeTrustedContact(doctor);
         // Then: the other person is stored as part of the original person's medical providers
         final Collection<MedicalProvider> careTeam = Vitalizr.getMedicalProvidersFor(mom);
         Assertions.assertTrue(careTeam.contains(doctor));

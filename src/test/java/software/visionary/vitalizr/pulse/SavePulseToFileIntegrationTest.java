@@ -28,7 +28,7 @@ class SavePulseToFileIntegrationTest {
         // And: Some Vitals for the person
         final Collection<Pulse> alsoStored = pulses(p);
         // And: Vitalizr has stored those vitals
-        alsoStored.forEach(Vitalizr::storePulseFor);
+        alsoStored.forEach(Vitalizr::storePulse);
         // And: A File to write the data to
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), p.getEmailAddress().toString() + "_save_vitals")).toFile();
         data.deleteOnExit();

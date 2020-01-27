@@ -15,7 +15,7 @@ public final class AddBloodOxygen extends AddVitalToPerson {
         final String[] tokens = scanner.useDelimiter("\u0004").next().split("&");
         final Person person = Human.createPerson(tokens[0]);
         final BloodOxygen store = new PeripheralOxygenSaturation(Instant.now(), Integer.parseInt(tokens[1]), person);
-        Vitalizr.storeBloodOxygenFor(store);
+        Vitalizr.storeBloodOxygen(store);
         return store;
     }
 }

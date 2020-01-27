@@ -32,7 +32,7 @@ class SaveWeightToFileIntegrationTest {
         // Given: A person
         // And: Some Weights for the person
         // And: Vitalizr has stored those vitals
-        stored.forEach(Vitalizr::storeWeightFor);
+        stored.forEach(Vitalizr::storeWeight);
         // And: A File to write the data to
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), PERSON.getEmailAddress().toString() + "_save_vitals")).toFile();
         data.deleteOnExit();

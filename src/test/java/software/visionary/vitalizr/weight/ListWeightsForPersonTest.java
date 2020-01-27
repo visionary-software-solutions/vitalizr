@@ -19,7 +19,7 @@ final class ListWeightsForPersonTest {
         final Double weight = 232.6;
         final Person p = Fixtures.createRandomPerson();
         final Weight saved = new ImperialWeight(Instant.now(), weight, p);
-        Vitalizr.storeWeightFor(saved);
+        Vitalizr.storeWeight(saved);
         final String input = String.format("%s\u0004", p);
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);

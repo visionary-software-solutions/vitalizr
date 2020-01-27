@@ -18,16 +18,16 @@ class BloodPressureQueryIntegrationTest {
         final Person mom = Fixtures.person();
         // And: that person measured their BP 2 weeks ago
         final BloodPressure first = Combined.systolicAndDiastolicBloodPressure(Fixtures.observationAtMidnightNDaysAgo(14), 151, 71, mom);
-        Vitalizr.storeBloodPressureFor(first);
+        Vitalizr.storeBloodPressure(first);
         // And: that person measured their BP 3 days ago
         final BloodPressure second = Combined.systolicAndDiastolicBloodPressure(Fixtures.observationAtMidnightNDaysAgo(3), 139, 68, mom);
-        Vitalizr.storeBloodPressureFor(second);
+        Vitalizr.storeBloodPressure(second);
         // And: that person measured their BP 2 days ago
         final BloodPressure third = Combined.systolicAndDiastolicBloodPressure(Fixtures.observationAtMidnightNDaysAgo(2), 145, 71, mom);
-        Vitalizr.storeBloodPressureFor(third);
+        Vitalizr.storeBloodPressure(third);
         // And: that person measured their BP 1 days ago
         final BloodPressure fourth = Combined.systolicAndDiastolicBloodPressure(Fixtures.observationAtMidnightNDaysAgo(1), 145, 76, mom);
-        Vitalizr.storeBloodPressureFor(fourth);
+        Vitalizr.storeBloodPressure(fourth);
         // And: A time range to query for
         final Interval oneWeekAgoToNow = Fixtures.oneWeekAgoToNow();
         // When: I fetch the BPs

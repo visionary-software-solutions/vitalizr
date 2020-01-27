@@ -47,7 +47,7 @@ public final class Vitalizr {
         return HOME;
     }
 
-    public static void storeWeightFor(final Weight toStore) {
+    public static void storeWeight(final Weight toStore) {
         storeVital(toStore);
     }
 
@@ -87,7 +87,7 @@ public final class Vitalizr {
         return getVitalsMatching(queried, (vital) -> vital.belongsTo().equals(person) && interval.contains(vital.observedAt()) && queried.isAssignableFrom(vital.getClass()));
     }
 
-    public static void storeBloodPressureFor(final BloodPressure toStore) {
+    public static void storeBloodPressure(final BloodPressure toStore) {
         storeVital(toStore);
     }
 
@@ -99,7 +99,7 @@ public final class Vitalizr {
         return getVitalsInInterval(person, interval, BloodPressure.class);
     }
 
-    public static void storePulseFor(final Pulse pulse) {
+    public static void storePulse(final Pulse pulse) {
         storeVital(pulse);
     }
 
@@ -111,7 +111,7 @@ public final class Vitalizr {
         return getVitalsInInterval(person, interval, Pulse.class);
     }
 
-    public static void storeBloodOxygenFor(final BloodOxygen oxygen) {
+    public static void storeBloodOxygen(final BloodOxygen oxygen) {
         storeVital(oxygen);
     }
 
@@ -123,7 +123,7 @@ public final class Vitalizr {
         return getVitalsInInterval(person, interval, BloodOxygen.class);
     }
 
-    public static void storeBloodSugarFor(final BloodSugar toStore) {
+    public static void storeBloodSugar(final BloodSugar toStore) {
         storeVital(toStore);
     }
 
@@ -147,10 +147,6 @@ public final class Vitalizr {
         return getVitalsInInterval(person, interval, BodyTemperature.class);
     }
 
-    public static void addFamilyMember(final Family family) {
-        storeTrustedContact(family);
-    }
-
     public static void storeTrustedContact(final TrustedContact contact) {
         CONTACTS.save(contact);
     }
@@ -169,16 +165,8 @@ public final class Vitalizr {
         return found;
     }
 
-    public static void addMedicalProvider(final MedicalProvider provider) {
-        storeTrustedContact(provider);
-    }
-
     public static Collection<MedicalProvider> getMedicalProvidersFor(final Person person) {
         return getTrustedContacts(person, MedicalProvider.class);
-    }
-
-    public static void addCaregiver(final Caregiver giver) {
-        storeTrustedContact(giver);
     }
 
     public static Collection<Caregiver> getCaregiversFor(final Person person) {
@@ -222,7 +210,7 @@ public final class Vitalizr {
         SERIALIZER.serialize(toWrite, data);
     }
 
-    public static void storeBodyMassIndexFor(final BodyMassIndex bodyMassIndex) {
+    public static void storeBodyMassIndex(final BodyMassIndex bodyMassIndex) {
         storeVital(bodyMassIndex);
     }
 
@@ -234,7 +222,7 @@ public final class Vitalizr {
         return getVitalFor(person, BodyMassIndex.class);
     }
 
-    public static void storeBodyWaterPercentageFor(final BodyWaterPercentage toStore) {
+    public static void storeBodyWaterPercentage(final BodyWaterPercentage toStore) {
         storeVital(toStore);
     }
 
@@ -246,7 +234,7 @@ public final class Vitalizr {
         return getVitalsInInterval(person, interval, BodyWaterPercentage.class);
     }
 
-    public static void storeBodyFatPercentageFor(final BodyFatPercentage toStore) {
+    public static void storeBodyFatPercentage(final BodyFatPercentage toStore) {
         storeVital(toStore);
     }
 
