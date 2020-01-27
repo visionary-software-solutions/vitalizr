@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
-import software.visionary.vitalizr.NaturalNumber;
 import software.visionary.vitalizr.api.Lifeform;
 
 import java.time.Instant;
@@ -51,7 +50,7 @@ class MetricWeightTest {
 
     @Test
     void defaultsToGrams() {
-        Assertions.assertEquals(Gram.INSTANCE, toTest.getUnit());
+        Assertions.assertEquals(Kilogram.INSTANCE, toTest.getUnit());
     }
 
     @Test

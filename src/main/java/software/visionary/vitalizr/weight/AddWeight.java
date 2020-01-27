@@ -20,7 +20,7 @@ public final class AddWeight extends AddVital {
     }
 
     private Weight getWeight(final String quantity, final String unit, final Person person) {
-        return Gram.INSTANCE.getSymbol().equalsIgnoreCase(unit) ?
+        return Kilogram.INSTANCE.getSymbol().equalsIgnoreCase(unit) ?
                 new MetricWeight(Instant.now(), Double.parseDouble(quantity), person)
                 : new ImperialWeight(Instant.now(), Double.parseDouble(quantity), person);
     }

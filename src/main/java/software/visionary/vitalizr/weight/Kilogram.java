@@ -2,16 +2,16 @@ package software.visionary.vitalizr.weight;
 
 import software.visionary.vitalizr.api.Unit;
 
-public enum Gram implements Unit {
+public enum Kilogram implements Unit {
     INSTANCE;
 
     @Override
     public String getName() {
-        return Gram.class.getSimpleName();
+        return Kilogram.class.getSimpleName();
     }
 
     @Override
     public String getSymbol() {
-        return "g";
+        return "kg";
     }
 }

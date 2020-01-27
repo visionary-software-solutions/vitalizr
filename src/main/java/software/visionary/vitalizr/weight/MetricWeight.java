@@ -15,7 +15,7 @@ public final class MetricWeight extends SerializableVital implements Weight {
 
     @Override
     public Unit getUnit() {
-        return Gram.INSTANCE;
+        return Kilogram.INSTANCE;
     }
 
     public MetricWeightSerializationProxy asSerializationProxy() {

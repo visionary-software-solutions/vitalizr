@@ -17,7 +17,7 @@ final class AddWeightTest {
     void canSaveVital() {
         final Person p = Fixtures.createRandomPerson();
         final Double kilograms = 101.7;
-        final String input = String.format("%s&%f&%s\u0004", p, kilograms, Gram.INSTANCE.getSymbol());
+        final String input = String.format("%s&%f&%s\u0004", p, kilograms, Kilogram.INSTANCE.getSymbol());
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
         final AddWeight action = new AddWeight();
