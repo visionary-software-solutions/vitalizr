@@ -12,8 +12,8 @@ public abstract class ListVitals extends Wish {
     protected void doCommand(final Scanner scanner, final BufferedWriter writer) {
         try {
             Vitalizr.loadAll();
-            final Collection<? extends Vital> weights = getVitals(scanner);
-            writer.write(weights.stream().map(Object::toString).collect(Collectors.joining(",")));
+            final Collection<? extends Vital> vitals = getVitals(scanner);
+            writer.write(vitals.stream().map(Object::toString).collect(Collectors.joining(",")));
             writer.newLine();
         } catch (final Exception e) {
             throw new RuntimeException(e);

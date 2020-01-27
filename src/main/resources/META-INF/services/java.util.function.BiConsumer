@@ -6,13 +6,13 @@ software.visionary.vitalizr.bloodPressure.ListBloodPressuresForPerson
 software.visionary.vitalizr.bloodSugar.AddBloodSugarToPerson
 software.visionary.vitalizr.bloodSugar.ListBloodSugarsForPerson
 software.visionary.vitalizr.bodyFat.AddBodyFatPercentage
-software.visionary.vitalizr.bodyFat.ListBloodFatPercentagesForPerson
+software.visionary.vitalizr.bodyFat.ListBodyFatPercentagesForPerson
 software.visionary.vitalizr.bodyMassIndex.AddBodyMassIndex
-software.visionary.vitalizr.bodyMassIndex.ListBloodMassIndicesForPerson
+software.visionary.vitalizr.bodyMassIndex.ListBodyMassIndicesForPerson
 software.visionary.vitalizr.bodyTemperature.AddBodyTemperature
 software.visionary.vitalizr.bodyTemperature.ListBodyTemperaturesForPerson
 software.visionary.vitalizr.bodyWater.AddBodyWaterPercentage
-software.visionary.vitalizr.bodyWater.ListBloodWaterPercentagesForPerson
+software.visionary.vitalizr.bodyWater.ListBodyWaterPercentagesForPerson
 software.visionary.vitalizr.oxygen.AddBloodOxygen
 software.visionary.vitalizr.oxygen.ListBloodOxygensForPerson
 software.visionary.vitalizr.pulse.AddPulse
