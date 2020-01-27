@@ -1,10 +1,8 @@
-package software.visionary.vitalizr.bloodPressure;
+package software.visionary.vitalizr.weight;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
-import software.visionary.vitalizr.Fraction;
-import software.visionary.vitalizr.NaturalNumber;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 
@@ -15,21 +13,20 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Scanner;
 
-final class ListBloodPressuresForPersonTest {
+final class ListWeightsTest {
     @Test
     void canRetrieveVital() {
-        final Integer systolic = 140;
-        final Integer diastolic = 70;
+        final Double weight = 232.6;
         final Person p = Fixtures.createRandomPerson();
-        final BloodPressure saved = Combined.systolicAndDiastolicBloodPressure(Instant.now(), systolic, diastolic, p);
-        Vitalizr.storeBloodPressure(saved);
+        final Weight saved = new ImperialWeight(Instant.now(), weight, p);
+        Vitalizr.storeWeight(saved);
         final String input = String.format("%s\u0004", p);
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
-        final ListBloodPressuresForPerson action = new ListBloodPressuresForPerson();
-        final Collection<BloodPressure> stored = action.getVitals(scanner);
+        final ListWeights action = new ListWeights();
+        final Collection<Weight> stored = action.getVitals(scanner);
         Assertions.assertFalse(stored.isEmpty());
         Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(new Fraction(new NaturalNumber(systolic), new NaturalNumber(diastolic)))));
+                .anyMatch(bp -> bp.getQuantity().equals(weight)));
     }
 }

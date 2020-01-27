@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Scanner;
 
-final class AddBloodSugarToPersonTest {
+final class AddBloodSugarTest {
     @Test
     void canSaveVital() {
         final Person p = Fixtures.createRandomPerson();
@@ -20,7 +20,7 @@ final class AddBloodSugarToPersonTest {
         final String input = String.format("%s&%d&\u0004", p, glucose);
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
-        final AddBloodSugarToPerson action = new AddBloodSugarToPerson();
+        final AddBloodSugar action = new AddBloodSugar();
         action.saveVital(scanner);
         final Collection<BloodSugar> stored = Vitalizr.getBloodSugarsFor(p);
         Assertions.assertFalse(stored.isEmpty());

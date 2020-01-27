@@ -1,4 +1,4 @@
-package software.visionary.vitalizr.bloodSugar;
+package software.visionary.vitalizr.weight;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,25 +9,22 @@ import software.visionary.vitalizr.api.Person;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.util.Collection;
 import java.util.Scanner;
 
-final class ListBloodSugarsForPersonTest {
+final class AddWeightTest {
     @Test
-    void canRetrieveVital() {
-        final Integer glucose = 140;
+    void canSaveVital() {
         final Person p = Fixtures.createRandomPerson();
-        final BloodSugar saved = new WholeBloodGlucose(Instant.now(), glucose, p);
-        Vitalizr.storeBloodSugar(saved);
-        final String input = String.format("%s\u0004", p);
+        final Double kilograms = 101.7;
+        final String input = String.format("%s&%f&%s\u0004", p, kilograms, Gram.INSTANCE.getSymbol());
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
-        final ListBloodSugarsForPerson action = new ListBloodSugarsForPerson();
-        final Collection<BloodSugar> stored = action.getVitals(scanner);
+        final AddWeight action = new AddWeight();
+        action.saveVital(scanner);
+        final Collection<Weight> stored = Vitalizr.getWeightsFor(p);
         Assertions.assertFalse(stored.isEmpty());
-        // TODO: Shouldn't WholeBloodGlucose use a NaturalNumber?
         Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(glucose)));
+                .anyMatch(bp -> bp.getQuantity().equals(kilograms)));
     }
 }

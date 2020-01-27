@@ -1,4 +1,4 @@
-package software.visionary.vitalizr.bodyFat;
+package software.visionary.vitalizr.bloodSugar;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,20 +13,21 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Scanner;
 
-final class ListBodyFatPercentagesForPersonTest {
+final class ListBloodSugarsTest {
     @Test
     void canRetrieveVital() {
-        final Double fatPercentage = 28.2;
+        final Integer glucose = 140;
         final Person p = Fixtures.createRandomPerson();
-        final BodyFatPercentage saved = new BioelectricalImpedance(Instant.now(), fatPercentage, p);
-        Vitalizr.storeBodyFatPercentage(saved);
+        final BloodSugar saved = new WholeBloodGlucose(Instant.now(), glucose, p);
+        Vitalizr.storeBloodSugar(saved);
         final String input = String.format("%s\u0004", p);
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
-        final ListBodyFatPercentagesForPerson action = new ListBodyFatPercentagesForPerson();
-        final Collection<BodyFatPercentage> stored = action.getVitals(scanner);
+        final ListBloodSugars action = new ListBloodSugars();
+        final Collection<BloodSugar> stored = action.getVitals(scanner);
         Assertions.assertFalse(stored.isEmpty());
+        // TODO: Shouldn't WholeBloodGlucose use a NaturalNumber?
         Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(fatPercentage)));
+                .anyMatch(bp -> bp.getQuantity().equals(glucose)));
     }
 }

@@ -11,21 +11,23 @@ import software.visionary.vitalizr.api.Person;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Scanner;
 
-final class AddBloodPressureToPersonTest {
+final class ListBloodPressuresTest {
     @Test
-    void canSaveVital() {
-        final Person p = Fixtures.createRandomPerson();
+    void canRetrieveVital() {
         final Integer systolic = 140;
         final Integer diastolic = 70;
-        final String input = String.format("%s&%d&%d\u0004", p, systolic, diastolic);
+        final Person p = Fixtures.createRandomPerson();
+        final BloodPressure saved = Combined.systolicAndDiastolicBloodPressure(Instant.now(), systolic, diastolic, p);
+        Vitalizr.storeBloodPressure(saved);
+        final String input = String.format("%s\u0004", p);
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
-        final AddBloodPressureToPerson action = new AddBloodPressureToPerson();
-        action.saveVital(scanner);
-        final Collection<BloodPressure> stored = Vitalizr.getBloodPressuresFor(p);
+        final ListBloodPressures action = new ListBloodPressures();
+        final Collection<BloodPressure> stored = action.getVitals(scanner);
         Assertions.assertFalse(stored.isEmpty());
         Assertions.assertTrue(stored.parallelStream()
                 .anyMatch(bp -> bp.getQuantity().equals(new Fraction(new NaturalNumber(systolic), new NaturalNumber(diastolic)))));

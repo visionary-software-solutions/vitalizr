@@ -1,4 +1,4 @@
-package software.visionary.vitalizr.bodyWater;
+package software.visionary.vitalizr.bloodSugar;
 
 import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.ListVitals;
@@ -8,11 +8,11 @@ import software.visionary.vitalizr.api.Person;
 import java.util.Collection;
 import java.util.Scanner;
 
-public final class ListBodyWaterPercentagesForPerson extends ListVitals {
+public final class ListBloodSugars extends ListVitals {
     @Override
-    protected Collection<BodyWaterPercentage> getVitals(final Scanner scanner) {
+    protected Collection<BloodSugar> getVitals(final Scanner scanner) {
         final String input = scanner.useDelimiter("\u0004").next();
         final Person person = Human.createPerson(input);
-        return Vitalizr.getBodyWaterPercentagesFor(person);
+        return Vitalizr.getBloodSugarsFor(person);
     }
 }

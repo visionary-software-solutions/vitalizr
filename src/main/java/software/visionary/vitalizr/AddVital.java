@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.Scanner;
 
-public abstract class AddVitalToPerson extends Wish {
+public abstract class AddVital extends Wish {
     @Override
     protected void doCommand(final Scanner scanner, final BufferedWriter writer) {
         try {

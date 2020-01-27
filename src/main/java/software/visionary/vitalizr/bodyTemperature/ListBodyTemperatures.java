@@ -8,7 +8,7 @@ import software.visionary.vitalizr.api.Person;
 import java.util.Collection;
 import java.util.Scanner;
 
-public final class ListBodyTemperaturesForPerson extends ListVitals {
+public final class ListBodyTemperatures extends ListVitals {
     @Override
     protected Collection<BodyTemperature> getVitals(final Scanner scanner) {
         final String input = scanner.useDelimiter("\u0004").next();

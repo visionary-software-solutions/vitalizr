@@ -1,4 +1,4 @@
-package software.visionary.vitalizr.bodyTemperature;
+package software.visionary.vitalizr.bodyMassIndex;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,20 +13,20 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Scanner;
 
-final class ListBodyTemperaturesForPersonTest {
+final class ListBodyMassIndicesTest {
     @Test
     void canRetrieveVital() {
-        final Double temp = 97.9;
+        final Double bmi = 33.1;
         final Person p = Fixtures.createRandomPerson();
-        final BodyTemperature saved = new ImperialTemperature(Instant.now(), temp, p);
-        Vitalizr.storeTemperature(saved);
+        final BodyMassIndex saved = new QueteletIndex(Instant.now(), bmi, p);
+        Vitalizr.storeBodyMassIndex(saved);
         final String input = String.format("%s\u0004", p);
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
-        final ListBodyTemperaturesForPerson action = new ListBodyTemperaturesForPerson();
-        final Collection<BodyTemperature> stored = action.getVitals(scanner);
+        final ListBodyMassIndices action = new ListBodyMassIndices();
+        final Collection<BodyMassIndex> stored = action.getVitals(scanner);
         Assertions.assertFalse(stored.isEmpty());
         Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(temp)));
+                .anyMatch(bp -> bp.getQuantity().equals(bmi)));
     }
 }

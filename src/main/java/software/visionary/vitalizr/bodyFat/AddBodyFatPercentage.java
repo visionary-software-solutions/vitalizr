@@ -1,6 +1,6 @@
 package software.visionary.vitalizr.bodyFat;
 
-import software.visionary.vitalizr.AddVitalToPerson;
+import software.visionary.vitalizr.AddVital;
 import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
@@ -10,7 +10,7 @@ import java.time.Instant;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public final class AddBodyFatPercentage extends AddVitalToPerson {
+public final class AddBodyFatPercentage extends AddVital {
     @Override
     protected Vital saveVital(final Scanner scanner) {
         final String input = scanner.useDelimiter("\u0004").tokens().collect(Collectors.joining());

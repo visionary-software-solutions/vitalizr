@@ -1,4 +1,4 @@
-package software.visionary.vitalizr.oxygen;
+package software.visionary.vitalizr.bodyWater;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,20 +13,20 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Scanner;
 
-final class ListBloodOxygensForPersonTest {
+final class ListBodyWaterPercentagesTest {
     @Test
     void canRetrieveVital() {
-        final Integer spO2 = 94;
+        final Double fatPercentage = 28.2;
         final Person p = Fixtures.createRandomPerson();
-        final BloodOxygen saved = new PeripheralOxygenSaturation(Instant.now(), spO2, p);
-        Vitalizr.storeBloodOxygen(saved);
+        final BodyWaterPercentage saved = new BioelectricalImpedance(Instant.now(), fatPercentage, p);
+        Vitalizr.storeBodyWaterPercentage(saved);
         final String input = String.format("%s\u0004", p);
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
-        final ListBloodOxygensForPerson action = new ListBloodOxygensForPerson();
-        final Collection<BloodOxygen> stored = action.getVitals(scanner);
+        final ListBodyWaterPercentages action = new ListBodyWaterPercentages();
+        final Collection<BodyWaterPercentage> stored = action.getVitals(scanner);
         Assertions.assertFalse(stored.isEmpty());
         Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(spO2)));
+                .anyMatch(bp -> bp.getQuantity().equals(fatPercentage)));
     }
 }
