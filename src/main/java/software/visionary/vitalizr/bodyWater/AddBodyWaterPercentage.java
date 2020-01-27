@@ -11,7 +11,7 @@ import java.util.Scanner;
 public final class AddBodyWaterPercentage extends AddVitalToPerson {
     @Override
     protected Vital saveVital(final Scanner scanner) {
-        final String[] tokens = scanner.next().split("&");
+        final String[] tokens = scanner.useDelimiter("\u0004").next().split("&");
         final Person person = Human.createPerson(tokens[0]);
         final BodyWaterPercentage store = new BioelectricalImpedance(Instant.now(), Double.parseDouble(tokens[1]), person);
         Vitalizr.storeBodyWaterPercentageFor(store);
