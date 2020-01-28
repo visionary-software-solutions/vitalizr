@@ -12,10 +12,14 @@ public enum Fixtures {
     static Authenticatable randomAuthenticatable() {
         final UUID uuid = UUID.randomUUID();
         final String randomPassword = Randomizr.INSTANCE.createRandomPassword();
+        return createAuthenticatable(uuid, randomPassword);
+    }
+
+    static Authenticatable createAuthenticatable(final UUID uuid, final String password) {
         return new Authenticatable() {
             @Override
             public Credentials getCredentials() {
-                return new PasswordCredentials(this, randomPassword);
+                return new PasswordCredentials(this, password);
             }
 
             @Override

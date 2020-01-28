@@ -53,4 +53,9 @@ public enum  Identifir {
         final Optional<Authenticatable> sought = loadAuthenticatable(id);
         return sought.map(a -> a.getCredentials().decrypt(result)).orElse(new byte[0]);
     }
+
+    boolean authenticateWithPassword(final UUID id, final String password) {
+        final Optional<Authenticatable> sought = loadAuthenticatable(id);
+        return sought.map(a -> new PasswordCredentials(a, password).equals(a.getCredentials())).orElse(false);
+    }
 }
