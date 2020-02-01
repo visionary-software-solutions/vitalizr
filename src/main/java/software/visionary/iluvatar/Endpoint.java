@@ -1,4 +1,4 @@
-package software.visionary.vitalizr;
+package software.visionary.iluvatar;
 
 interface Endpoint {
     void start();

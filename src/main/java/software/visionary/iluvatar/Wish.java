@@ -1,4 +1,4 @@
-package software.visionary.vitalizr;
+package software.visionary.iluvatar;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

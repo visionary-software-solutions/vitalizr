@@ -1,5 +1,6 @@
 package software.visionary.vitalizr;
 
+import software.visionary.iluvatar.Wish;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Vital;
 

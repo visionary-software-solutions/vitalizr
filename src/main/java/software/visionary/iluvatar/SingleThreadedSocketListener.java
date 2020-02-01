@@ -1,4 +1,4 @@
-package software.visionary.vitalizr;
+package software.visionary.iluvatar;
 
 import java.io.IOException;
 import java.io.InputStream;
