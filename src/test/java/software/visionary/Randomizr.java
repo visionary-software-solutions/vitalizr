@@ -6,10 +6,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public enum  Randomizr {
     INSTANCE;
 
-    public int createRandomInt() {
-        return createRandomNumberBetween(Integer.MIN_VALUE, Integer.MAX_VALUE);
-    }
-
     public int createRandomNumberBetween(final int start, final int end) {
         return ThreadLocalRandom.current().nextInt(start, end);
     }
