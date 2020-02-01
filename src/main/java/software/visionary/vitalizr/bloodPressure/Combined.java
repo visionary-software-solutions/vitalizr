@@ -1,9 +1,9 @@
 package software.visionary.vitalizr.bloodPressure;
 
-import software.visionary.Fraction;
+import software.visionary.numbers.Fraction;
 import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.LifeformSerializationProxy;
-import software.visionary.NaturalNumber;
+import software.visionary.numbers.NaturalNumber;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Unit;
 

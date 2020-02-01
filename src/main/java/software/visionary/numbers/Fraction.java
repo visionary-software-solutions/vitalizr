@@ -1,4 +1,4 @@
-package software.visionary;
+package software.visionary.numbers;
 
 import java.util.Objects;
 

@@ -1,6 +1,6 @@
 package software.visionary.iluvatar;
 
-import software.visionary.NaturalNumber;
+import software.visionary.numbers.NaturalNumber;
 
 import java.io.InputStream;
 import java.io.OutputStream;
