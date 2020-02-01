@@ -5,7 +5,7 @@ import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 
-import software.visionary.vitalizr.serialization.GZipFiles;
+import software.visionary.serialization.GZipFiles;
 
 import java.io.File;
 import java.io.IOException;

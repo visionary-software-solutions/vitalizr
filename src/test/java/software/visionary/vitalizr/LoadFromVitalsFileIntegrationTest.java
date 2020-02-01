@@ -1,14 +1,12 @@
 package software.visionary.vitalizr;
 
 import org.junit.jupiter.api.Test;
-import software.visionary.vitalizr.Human;
-import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodPressure.Combined;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
 import software.visionary.vitalizr.bloodSugar.WholeBloodGlucose;
-import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
+import software.visionary.serialization.WriteObjectAsGZip;
 import software.visionary.vitalizr.weight.Weight;
 
 import java.io.File;

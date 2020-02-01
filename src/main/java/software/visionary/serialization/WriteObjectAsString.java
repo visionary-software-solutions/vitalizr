@@ -1,4 +1,4 @@
-package software.visionary.vitalizr.serialization;
+package software.visionary.serialization;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

@@ -1,4 +1,4 @@
-package software.visionary.vitalizr.serialization;
+package software.visionary.serialization;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

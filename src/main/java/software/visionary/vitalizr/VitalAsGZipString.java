@@ -9,8 +9,8 @@ import software.visionary.vitalizr.bodyMassIndex.QueteletIndex;
 import software.visionary.vitalizr.bodyTemperature.*;
 import software.visionary.vitalizr.oxygen.PeripheralOxygenSaturation;
 import software.visionary.vitalizr.pulse.HeartrateMonitor;
-import software.visionary.vitalizr.serialization.GZipFiles;
-import software.visionary.vitalizr.serialization.WriteObjectAsGZip;
+import software.visionary.serialization.GZipFiles;
+import software.visionary.serialization.WriteObjectAsGZip;
 import software.visionary.vitalizr.weight.*;
 
 import java.io.File;

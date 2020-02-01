@@ -1,4 +1,4 @@
-package software.visionary.vitalizr.serialization;
+package software.visionary.serialization;
 
 import java.nio.file.Path;
 import java.util.Objects;
