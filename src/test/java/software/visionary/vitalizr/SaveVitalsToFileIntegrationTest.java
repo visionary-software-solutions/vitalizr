@@ -1,4 +1,4 @@
-package software.visionary.vitalizr.features;
+package software.visionary.vitalizr;
 
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
