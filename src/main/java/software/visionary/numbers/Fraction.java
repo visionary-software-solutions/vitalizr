@@ -22,7 +22,12 @@ public final class Fraction extends Number implements Comparable<Fraction> {
         if (pieces.length > 2) {
             throw new IllegalArgumentException("We don't handle compound fractions. Create separate instances for each numerator / denominator pair.");
         }
-        return new Fraction(Long.valueOf(pieces[0].trim()), Long.valueOf(pieces[1].trim()));
+        return new Fraction(extractNumber(pieces[0]), extractNumber(pieces[1]));
+    }
+
+    public static Double extractNumber(final String piece) {
+        final String trim = piece.trim();
+        return trim.contains(".") ? Double.parseDouble(trim) : Long.parseLong(trim);
     }
 
     @Override
