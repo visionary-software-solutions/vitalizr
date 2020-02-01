@@ -18,13 +18,13 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class PasswordCredentials implements Credentials {
+public final class PasswordCredentials implements Credentials {
     private final Authenticatable owner;
     private final byte[] value;
     private final SecretKey key;
 
     public PasswordCredentials(final Authenticatable human, final String password) {
-        if (password == null || password.trim().isEmpty()) {
+        if (Objects.requireNonNull(password).trim().isEmpty()) {
             throw new IllegalArgumentException("Invalid password");
         }
         this.owner = Objects.requireNonNull(human);
@@ -35,7 +35,7 @@ public class PasswordCredentials implements Credentials {
     private SecretKey asSecretKey(final String password) {
         try {
             final PBEKeySpec pbeKeySpec = new PBEKeySpec(password.toCharArray());
-            SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBEWithMD5AndTripleDES");
+            final SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBEWithMD5AndTripleDES");
             return secretKeyFactory.generateSecret(pbeKeySpec);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException(e);
@@ -55,7 +55,7 @@ public class PasswordCredentials implements Credentials {
 
     @Override
     public int hashCode() {
-        return Objects.hash(owner, value);
+        return Objects.hash(owner, Arrays.hashCode(value));
     }
 
     @Override
