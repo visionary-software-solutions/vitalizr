@@ -24,6 +24,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -33,6 +36,19 @@ public final class Vitalizr {
     private static final Repository<Reminder> REMINDERS = new InMemoryReminderRepository();
     private static final VitalSerializationStrategy<File> SERIALIZER = VitalAsGZipString.INSTANCE;
     private static final Path HOME =  Paths.get(new File("").getAbsolutePath(), ".vitalizr");
+    private static final Repository<Person> PEOPLE = new Repository<>() {
+        private final List<Person> peeps = new CopyOnWriteArrayList<>();
+
+        @Override
+        public void save(final Person toSave) {
+            peeps.add(Objects.requireNonNull(toSave));
+        }
+
+        @Override
+        public void accept(final Consumer<Person> visitor) {
+            peeps.forEach(visitor);
+        }
+    };
 
     static {
         if (!HOME.toFile().exists())
@@ -75,7 +91,9 @@ public final class Vitalizr {
 
     static Collection<Lifeform> listPeople() {
         final Collection<Lifeform> found = new ArrayList<>();
+        // TODO: this is weird. Change this behavior and make PeopleRepository the canonical home for info
         VITALS.accept(vital -> found.add(vital.belongsTo()));
+        PEOPLE.accept(found::add);
         return found;
     }
 
@@ -250,5 +268,9 @@ public final class Vitalizr {
         if (HOME.toFile().exists() && HOME.toFile().isDirectory()) {
             Files.list(HOME).forEach(vitals -> loadVitalsFromFile(vitals.toFile()));
         }
+    }
+
+    static void addPerson(final Person person) {
+        PEOPLE.save(person);
     }
 }
