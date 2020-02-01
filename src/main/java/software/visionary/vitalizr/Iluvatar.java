@@ -1,4 +1,6 @@
-package software.visionary.vitalizr;
+package software.visionary.iluvatar;
+
+import software.visionary.NaturalNumber;
 
 import java.io.InputStream;
 import java.io.OutputStream;

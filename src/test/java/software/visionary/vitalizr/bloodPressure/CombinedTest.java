@@ -4,9 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
-import software.visionary.vitalizr.Fraction;
-import software.visionary.vitalizr.Human;
-import software.visionary.vitalizr.NaturalNumber;
+import software.visionary.Fraction;
+import software.visionary.NaturalNumber;
 import software.visionary.vitalizr.api.Lifeform;
 import software.visionary.vitalizr.api.Person;
 

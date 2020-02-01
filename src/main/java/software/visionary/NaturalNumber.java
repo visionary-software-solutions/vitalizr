@@ -1,4 +1,4 @@
-package software.visionary.vitalizr;
+package software.visionary;
 
 import java.util.Comparator;
 import java.util.Objects;

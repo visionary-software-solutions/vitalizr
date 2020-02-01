@@ -3,8 +3,8 @@ package software.visionary.vitalizr.bloodPressure;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
-import software.visionary.vitalizr.Fraction;
-import software.visionary.vitalizr.NaturalNumber;
+import software.visionary.Fraction;
+import software.visionary.NaturalNumber;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 

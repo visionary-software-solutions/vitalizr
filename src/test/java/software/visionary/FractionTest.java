@@ -1,4 +1,4 @@
-package software.visionary.vitalizr;
+package software.visionary;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
