@@ -48,7 +48,7 @@ public final class Application {
 
     private static void getWeightsForPerson(final String input) {
         final Person sought = Human.createPerson(input);
-        final Collection<Weight> result = Vitalizr.getWeightsFor(sought);
+        final Collection<Weight> result = Vitalizr.getWeightsById(sought.getID());
         displayWeights(result);
     }
 

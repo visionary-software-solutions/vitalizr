@@ -24,6 +24,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -255,5 +257,19 @@ public final class Vitalizr {
                 }
             });
         }
+    }
+
+    public static Collection<Weight> getWeightsById(final UUID input) {
+        final List<Lifeform> found = new ArrayList<>();
+        final Consumer<Vital> query = (vital -> {
+            if (vital.belongsTo().getID().equals(input)) {
+                found.add(vital.belongsTo());
+            }
+        });
+        VITALS.accept(query);
+        return found.stream().findFirst().map(lifeform -> {
+            final Person p = (Person) lifeform;
+            return getWeightsFor(p);
+        }).orElse(new ArrayList<>());
     }
 }
