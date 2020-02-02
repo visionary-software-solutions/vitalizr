@@ -6,12 +6,8 @@ import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Collection;
-import java.util.Scanner;
 
 final class ListBodyMassIndicesTest {
     @Test
@@ -20,11 +16,8 @@ final class ListBodyMassIndicesTest {
         final Person p = Fixtures.createRandomPerson();
         final BodyMassIndex saved = new QueteletIndex(Instant.now(), bmi, p);
         Vitalizr.storeBodyMassIndex(saved);
-        final String input = String.format("%s\u0004", p);
-        final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
-        final Scanner scanner = new Scanner(stream);
         final ListBodyMassIndices action = new ListBodyMassIndices();
-        final Collection<BodyMassIndex> stored = action.getVitals(scanner);
+        final Collection<BodyMassIndex> stored = action.forId(p.getID());
         Assertions.assertFalse(stored.isEmpty());
         Assertions.assertTrue(stored.parallelStream()
                 .anyMatch(bp -> bp.getQuantity().equals(bmi)));

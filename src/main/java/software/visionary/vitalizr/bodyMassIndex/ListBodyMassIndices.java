@@ -1,18 +1,14 @@
 package software.visionary.vitalizr.bodyMassIndex;
 
-import software.visionary.vitalizr.Human;
-import software.visionary.vitalizr.ListVitals;
 import software.visionary.vitalizr.Vitalizr;
-import software.visionary.vitalizr.api.Person;
+import software.visionary.vitalizr.weight.GetAllByID;
 
 import java.util.Collection;
-import java.util.Scanner;
+import java.util.UUID;
 
-public final class ListBodyMassIndices extends ListVitals {
+public final class ListBodyMassIndices extends GetAllByID {
     @Override
-    protected Collection<BodyMassIndex> getVitals(final Scanner scanner) {
-        final String input = scanner.useDelimiter("\u0004").next();
-        final Person person = Human.createPerson(input);
-        return Vitalizr.getBodyMassIndicesFor(person);
+    protected Collection<BodyMassIndex> forId(final UUID id) {
+        return Vitalizr.getBMIsById(id);
     }
 }

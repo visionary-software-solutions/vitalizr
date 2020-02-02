@@ -26,8 +26,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class Vitalizr {
     private static final VitalRepository VITALS = new InMemoryVitalRepository();
@@ -259,7 +261,19 @@ public final class Vitalizr {
         }
     }
 
-    public static Collection<Weight> getWeightsById(final UUID input) {
+    public static Collection<Weight> getWeightsById(final UUID id) {
+        return getById(id, lifeform -> {
+            final Person p = (Person) lifeform;
+            return getWeightsFor(p);
+        });
+    }
+
+    private static <T extends Vital> Collection<T> getById(final UUID input, final Function<Lifeform, Collection<T>> mapper) {
+        final Stream<Lifeform> stream = search(input);
+        return stream.findFirst().map(mapper).orElse(new ArrayList<>());
+    }
+
+    private static Stream<Lifeform> search(final UUID input) {
         final List<Lifeform> found = new ArrayList<>();
         final Consumer<Vital> query = (vital -> {
             if (vital.belongsTo().getID().equals(input)) {
@@ -267,9 +281,13 @@ public final class Vitalizr {
             }
         });
         VITALS.accept(query);
-        return found.stream().findFirst().map(lifeform -> {
+        return found.stream();
+    }
+
+    public static Collection<BodyMassIndex> getBMIsById(final UUID id) {
+        return getById(id, lifeform -> {
             final Person p = (Person) lifeform;
-            return getWeightsFor(p);
-        }).orElse(new ArrayList<>());
+            return getBodyMassIndicesFor(p);
+        });
     }
 }
