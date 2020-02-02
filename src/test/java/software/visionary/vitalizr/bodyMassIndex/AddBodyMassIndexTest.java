@@ -21,10 +21,11 @@ final class AddBodyMassIndexTest {
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
         final AddBodyMassIndex action = new AddBodyMassIndex();
-        action.saveVital(scanner);
+        final BodyMassIndex result = action.deserialize(scanner);
+        Assertions.assertEquals(bmi, result.getQuantity());
+        action.saveVital(result);
         final Collection<BodyMassIndex> stored = Vitalizr.getBodyMassIndicesFor(p);
         Assertions.assertFalse(stored.isEmpty());
-        Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(bmi)));
+        Assertions.assertTrue(stored.contains(result));
     }
 }

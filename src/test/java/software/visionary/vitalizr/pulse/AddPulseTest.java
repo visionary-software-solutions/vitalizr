@@ -21,10 +21,11 @@ final class AddPulseTest {
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
         final AddPulse action = new AddPulse();
-        action.saveVital(scanner);
+        final Pulse result = action.deserialize(scanner);
+        Assertions.assertEquals(pulse, result.getQuantity());
+        action.saveVital(result);
         final Collection<Pulse> stored = Vitalizr.getPulsesFor(p);
         Assertions.assertFalse(stored.isEmpty());
-        Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(pulse)));
+        Assertions.assertTrue(stored.contains(result));
     }
 }

@@ -21,10 +21,11 @@ final class AddBloodOxygenTest {
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
         final AddBloodOxygen action = new AddBloodOxygen();
-        action.saveVital(scanner);
+        final BloodOxygen result = action.deserialize(scanner);
+        Assertions.assertEquals(spO2, result.getQuantity());
+        action.saveVital(result);
         final Collection<BloodOxygen> stored = Vitalizr.getBloodOxygensFor(p);
         Assertions.assertFalse(stored.isEmpty());
-        Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(spO2)));
+        Assertions.assertTrue(stored.contains(result));
     }
 }

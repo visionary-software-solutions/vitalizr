@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.Scanner;
 
-public abstract class AddVital extends Wish {
+public abstract class AddVital<T extends Vital> extends Wish {
     @Override
     protected void doCommand(final Scanner scanner, final BufferedWriter writer) {
         try {
@@ -24,10 +24,14 @@ public abstract class AddVital extends Wish {
 
     private void tryDo(final Scanner scanner, final BufferedWriter writer) throws IOException {
         Vitalizr.loadAll();
-        final Vital store = saveVital(scanner);
+        final T store = deserialize(scanner);
+        saveVital(store);
         final File saveFile = saveVitalsFor(store.belongsTo());
         writer.write(String.format(" Vital %s stored in %s%n", store, saveFile.getAbsolutePath()));
     }
+
+    protected abstract T deserialize(final Scanner scanner);
+    protected abstract void saveVital(final T vital);
 
     private static File saveVitalsFor(final Lifeform lifeform) {
         final Path toSave = Vitalizr.getHomeDirectory();
@@ -43,6 +47,4 @@ public abstract class AddVital extends Wish {
         Vitalizr.saveVitalsToFile(saveFile);
         return saveFile;
     }
-
-    protected abstract Vital saveVital(final Scanner tokens);
 }

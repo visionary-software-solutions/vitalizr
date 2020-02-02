@@ -1,6 +1,5 @@
-package software.visionary.vitalizr.weight;
+package software.visionary.vitalizr;
 
-import software.visionary.vitalizr.ListVitals;
 import software.visionary.vitalizr.api.Vital;
 
 import java.util.Collection;

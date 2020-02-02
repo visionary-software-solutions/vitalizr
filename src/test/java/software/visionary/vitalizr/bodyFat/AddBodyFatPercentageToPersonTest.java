@@ -21,10 +21,11 @@ final class AddBodyFatPercentageToPersonTest {
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
         final AddBodyFatPercentage action = new AddBodyFatPercentage();
-        action.saveVital(scanner);
+        final BodyFatPercentage result = action.deserialize(scanner);
+        Assertions.assertEquals(fat, result.getQuantity());
+        action.saveVital(result);
         final Collection<BodyFatPercentage> stored = Vitalizr.getBodyFatPercentagesFor(p);
         Assertions.assertFalse(stored.isEmpty());
-        Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(fat)));
+        Assertions.assertTrue(stored.contains(result));
     }
 }

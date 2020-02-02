@@ -1,5 +1,6 @@
 package software.visionary.vitalizr.weight;
 
+import software.visionary.vitalizr.GetAllByID;
 import software.visionary.vitalizr.Vitalizr;
 
 import java.util.Collection;

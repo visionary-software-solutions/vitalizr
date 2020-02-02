@@ -2,9 +2,8 @@ package software.visionary.vitalizr.bloodPressure;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import software.visionary.vitalizr.Fixtures;
 import software.visionary.numbers.Fraction;
-import software.visionary.numbers.NaturalNumber;
+import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 
@@ -24,10 +23,14 @@ final class AddBloodPressureTest {
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
         final AddBloodPressure action = new AddBloodPressure();
-        action.saveVital(scanner);
+        final Combined pressure = action.deserialize(scanner);
+        Assertions.assertTrue(pressure.getQuantity() instanceof Fraction);
+        final Fraction num = (Fraction) pressure.getQuantity();
+        Assertions.assertEquals(systolic.intValue(), num.getNumerator().intValue());
+        Assertions.assertEquals(diastolic.intValue(), num.getDenominator().intValue());
+        action.saveVital(pressure);
         final Collection<BloodPressure> stored = Vitalizr.getBloodPressuresFor(p);
         Assertions.assertFalse(stored.isEmpty());
-        Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(new Fraction(new NaturalNumber(systolic), new NaturalNumber(diastolic)))));
+        Assertions.assertTrue(stored.contains(pressure));
     }
 }

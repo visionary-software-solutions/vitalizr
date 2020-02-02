@@ -21,10 +21,11 @@ final class AddBloodSugarTest {
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
         final AddBloodSugar action = new AddBloodSugar();
-        action.saveVital(scanner);
+        final BloodSugar result = action.deserialize(scanner);
+        Assertions.assertEquals(glucose, result.getQuantity());
+        action.saveVital(result);
         final Collection<BloodSugar> stored = Vitalizr.getBloodSugarsFor(p);
         Assertions.assertFalse(stored.isEmpty());
-        Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(glucose)));
+        Assertions.assertTrue(stored.contains(result));
     }
 }

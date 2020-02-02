@@ -15,7 +15,9 @@ import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
 
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Fixtures {
 
@@ -285,7 +287,11 @@ public class Fixtures {
     }
 
     private static String createRandomBirthday() {
-        return String.format("%04d-%02d-%02d", Randomizr.INSTANCE.createRandomNumberBetween(1900, 2020), Randomizr.INSTANCE.createRandomNumberBetween(1,12), Randomizr.INSTANCE.createRandomNumberBetween(1, 31));
+        final LocalDate start = LocalDate.of(1900, Month.JANUARY, 1);
+        final LocalDate end = LocalDate.now().minus(18, ChronoUnit.YEARS);
+        final long randomDay = ThreadLocalRandom.current().nextLong(start.toEpochDay(), end.toEpochDay());
+        final LocalDate date = LocalDate.ofEpochDay(randomDay);
+        return date.toString();
     }
 
     private static String createRandomName() {

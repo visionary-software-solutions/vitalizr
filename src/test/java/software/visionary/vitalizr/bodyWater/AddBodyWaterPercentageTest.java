@@ -21,10 +21,11 @@ final class AddBodyWaterPercentageTest {
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
         final AddBodyWaterPercentage action = new AddBodyWaterPercentage();
-        action.saveVital(scanner);
+        final BodyWaterPercentage result = action.deserialize(scanner);
+        Assertions.assertEquals(water, result.getQuantity());
+        action.saveVital(result);
         final Collection<BodyWaterPercentage> stored = Vitalizr.getBodyWaterPercentagesFor(p);
         Assertions.assertFalse(stored.isEmpty());
-        Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(water)));
+        Assertions.assertTrue(stored.contains(result));
     }
 }

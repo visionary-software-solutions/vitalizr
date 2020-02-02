@@ -21,10 +21,11 @@ final class AddBodyTemperatureTest {
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
         final AddBodyTemperature action = new AddBodyTemperature();
-        action.saveVital(scanner);
+        final BodyTemperature result = action.deserialize(scanner);
+        Assertions.assertEquals(temp, result.getQuantity());
+        action.saveVital(result);
         final Collection<BodyTemperature> stored = Vitalizr.getBodyTemperaturesFor(p);
         Assertions.assertFalse(stored.isEmpty());
-        Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(temp)));
+        Assertions.assertTrue(stored.contains(result));
     }
 }

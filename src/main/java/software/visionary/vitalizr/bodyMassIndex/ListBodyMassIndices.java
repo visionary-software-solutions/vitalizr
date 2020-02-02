@@ -1,7 +1,7 @@
 package software.visionary.vitalizr.bodyMassIndex;
 
 import software.visionary.vitalizr.Vitalizr;
-import software.visionary.vitalizr.weight.GetAllByID;
+import software.visionary.vitalizr.GetAllByID;
 
 import java.util.Collection;
 import java.util.UUID;

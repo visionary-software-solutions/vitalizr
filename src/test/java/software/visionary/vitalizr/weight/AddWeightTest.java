@@ -21,11 +21,13 @@ final class AddWeightTest {
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
         final AddWeight action = new AddWeight();
-        action.saveVital(scanner);
+        final Weight result = action.deserialize(scanner);
+        Assertions.assertEquals(kilograms, result.getQuantity());
+        Assertions.assertEquals(Kilogram.INSTANCE, result.getUnit());
+        action.saveVital(result);
         final Collection<Weight> stored = Vitalizr.getWeightsFor(p);
         Assertions.assertFalse(stored.isEmpty());
-        Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(kilograms) && bp.getUnit().equals(Kilogram.INSTANCE)));
+        Assertions.assertTrue(stored.contains(result));
     }
 
     @Test
@@ -36,10 +38,12 @@ final class AddWeightTest {
         final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
         final Scanner scanner = new Scanner(stream);
         final AddWeight action = new AddWeight();
-        action.saveVital(scanner);
+        final Weight result = action.deserialize(scanner);
+        Assertions.assertEquals(pounds, result.getQuantity());
+        Assertions.assertEquals(Pound.INSTANCE, result.getUnit());
+        action.saveVital(result);
         final Collection<Weight> stored = Vitalizr.getWeightsFor(p);
         Assertions.assertFalse(stored.isEmpty());
-        Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(pounds) && bp.getUnit().equals(Pound.INSTANCE)));
+        Assertions.assertTrue(stored.contains(result));
     }
 }
