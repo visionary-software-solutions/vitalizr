@@ -34,8 +34,9 @@ public abstract class AddVital extends Wish {
         final File saveFile = Paths.get(toSave.toAbsolutePath().toString(), lifeform.getID().toString(), Long.toString(Instant.now().toEpochMilli())).toFile();
         if (!saveFile.exists()) {
             try {
+                saveFile.getParentFile().mkdirs();
                 saveFile.createNewFile();
-            } catch (final IOException e) {
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }

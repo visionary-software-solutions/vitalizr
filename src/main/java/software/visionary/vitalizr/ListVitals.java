@@ -14,11 +14,19 @@ public abstract class ListVitals extends Wish {
         try {
             Vitalizr.loadAll();
             final Collection<? extends Vital> vitals = getVitals(scanner);
-            writer.write(vitals.stream().map(Object::toString).collect(Collectors.joining(",")));
-            writer.newLine();
+            writer.write(serialize(vitals));
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String serialize(final Collection<? extends Vital> vitals) {
+        final String collect = vitals.stream().map(this::serialize).collect(Collectors.joining("\u0023"));
+        return String.format("%s\u0004", collect);
+    }
+
+    private String serialize(final Vital vital) {
+        return String.format("%d\u2049%.02f\u2049%s", vital.observedAt().toEpochMilli(), vital.getQuantity().doubleValue(), vital.getUnit().getSymbol());
     }
 
     protected abstract Collection<? extends Vital> getVitals(final Scanner scanner);

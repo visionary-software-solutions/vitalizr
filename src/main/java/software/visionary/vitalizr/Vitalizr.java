@@ -266,7 +266,18 @@ public final class Vitalizr {
 
     static void loadAll() throws IOException {
         if (HOME.toFile().exists() && HOME.toFile().isDirectory()) {
-            Files.list(HOME).forEach(vitals -> loadVitalsFromFile(vitals.toFile()));
+            Files.list(HOME).forEach(contents -> {
+                if (contents.toFile().isDirectory()) {
+                    try {
+                        Files.list(contents).forEach( f -> loadVitalsFromFile(f.toFile()));
+                    } catch (final IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                else  {
+                    loadVitalsFromFile(contents.toFile());
+                }
+            });
         }
     }
 
