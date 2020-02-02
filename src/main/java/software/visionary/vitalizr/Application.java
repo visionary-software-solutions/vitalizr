@@ -22,10 +22,7 @@ public final class Application {
         final Scanner input = new Scanner(System.in);
         while (true) {
             switch (input.nextLine()) {
-                case "1":
-                    listPeople();
-                    break;
-                case "2":
+               case "2":
                     addWeightToPerson(input.nextLine());
                     break;
                 case "3":
@@ -76,17 +73,5 @@ public final class Application {
         final String delimiter = "&";
         final String[] tokens = input.split(delimiter);
         Vitalizr.storeWeight(new MetricWeight(Instant.now(), Integer.valueOf(tokens[1]), Human.createPerson(tokens[0])));
-    }
-
-    private static void listPeople() {
-        display(Vitalizr.listPeople());
-    }
-
-    private static void display(final Collection<Lifeform> people) {
-        if (people.isEmpty()) {
-            System.out.println("No People stored");
-        } else {
-            people.forEach(Application::display);
-        }
     }
 }
