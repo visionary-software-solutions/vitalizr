@@ -6,9 +6,7 @@ import java.net.Socket;
 
 public class Client {
     public static void main(final String[] args) {
-        if(args == null || args.length == 0) {
-            listPeople();
-        } else if(args.length == 1) {
+        if(args.length == 1) {
             getWeightsForPerson(args[0]);
         } else if(args.length == 3){
             addWeightToPerson(args[0], args[1], args[2]);
@@ -25,16 +23,6 @@ public class Client {
             out.flush();
             final String received = in.readLine();
             System.out.println("received response  " + received);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void listPeople() {
-        try (final Socket sock = new Socket(InetAddress.getLocalHost(), 13337);
-             final BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()))) {
-            final String received = in.readLine();
-            System.out.println(received);
         } catch (IOException e) {
             e.printStackTrace();
         }
