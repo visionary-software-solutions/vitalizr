@@ -18,6 +18,8 @@ public final class AddBodyTemperature extends AddVital<BodyTemperature> {
     protected BodyTemperature deserialize(final Scanner scanner) {
         final String[] tokens = scanner.useDelimiter("\u0004").next().split("&");
         final Person person = Human.createPerson(tokens[0]);
-        return new ImperialTemperature(Instant.now(), Double.parseDouble(tokens[1]), person);
+        return Celsius.INSTANCE.getSymbol().equalsIgnoreCase(tokens[2]) ?
+                new MetricTemperature(Instant.now(), Double.parseDouble(tokens[1]), person) :
+                new ImperialTemperature(Instant.now(), Double.parseDouble(tokens[1]), person);
     }
 }
