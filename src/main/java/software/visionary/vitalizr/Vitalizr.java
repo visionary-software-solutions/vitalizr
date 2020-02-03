@@ -296,4 +296,8 @@ public final class Vitalizr {
     public static Collection<BodyWaterPercentage> getBodyWaterPercentagesForID(final UUID id) {
         return lookup(id, Vitalizr::getBodyWaterPercentagesFor);
     }
+
+    public static Collection<BloodPressure> getBloodPressuresByID(final UUID id) {
+        return lookup(id, Vitalizr::getBloodPressuresFor);
+    }
 }
