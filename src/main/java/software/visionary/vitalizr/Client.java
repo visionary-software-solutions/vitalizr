@@ -12,7 +12,7 @@ enum Client {
     LIST_WEIGHT(13339),
     ADD_BMI(133340),
     LIST_BMI(13341),
-    ADD_FAT(133342),
+    ADD_FAT(13342),
     LIST_FAT(13343);
 
     private int port;
@@ -24,7 +24,7 @@ enum Client {
     public static void main(final String[] args) {
         final Deque<String> deque = new ArrayDeque<>(Arrays.asList(args == null ? new String[0] : args));
         final String toDispatch = String.format("%s_%s", deque.pop(), deque.pop());
-        final Client client = Client.valueOf(toDispatch.toLowerCase());
+        final Client client = Client.valueOf(toDispatch.toUpperCase());
         client.execute(createRequest(client, deque));
 
     }
@@ -32,9 +32,13 @@ enum Client {
     private static String createRequest(final Client client, final Deque<String> deque) {
         switch(client) {
             case ADD_WEIGHT: return String.format("%s&%s&%s\u0004", deque.pop(), deque.pop(), deque.pop());
-            case LIST_WEIGHT: return String.format("%s\u0004", deque.pop());
-            case ADD_BMI: return String.format("%s&%s\u0004", deque.pop(), deque.pop());
-            case LIST_BMI: return String.format("%s\u0004", deque.pop());
+            case LIST_WEIGHT:
+            case LIST_BMI:
+            case LIST_FAT:
+                return String.format("%s\u0004", deque.pop());
+            case ADD_BMI:
+            case ADD_FAT:
+                return String.format("%s&%s\u0004", deque.pop(), deque.pop());
             default: throw new UnsupportedOperationException("We do not support " + client.name());
         }
     }

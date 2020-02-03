@@ -1,7 +1,6 @@
 package software.visionary.vitalizr.bodyMassIndex;
 
 import software.visionary.vitalizr.AddVital;
-import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 

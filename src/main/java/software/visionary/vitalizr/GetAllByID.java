@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public abstract class GetAllByID extends ListVitals {
     @Override
-    protected Collection<? extends Vital> getVitals(final Scanner scanner) {
+    protected final Collection<? extends Vital> getVitals(final Scanner scanner) {
         final String input = scanner.useDelimiter("\u0004").next();
         return forId(UUID.fromString(input));
     }

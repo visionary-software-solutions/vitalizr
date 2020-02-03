@@ -291,4 +291,11 @@ public final class Vitalizr {
     public static Optional<Lifeform> getPersonById(final UUID id) {
         return search(id).findFirst();
     }
+
+    public static Collection<BodyFatPercentage> getBodyFatPercentagesByID(final UUID id) {
+        return getById(id, lifeform -> {
+            final Person p = (Person) lifeform;
+            return Vitalizr.getBodyFatPercentagesFor(p);
+        });
+    }
 }
