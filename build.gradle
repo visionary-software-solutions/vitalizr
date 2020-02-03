@@ -35,12 +35,12 @@ test {
 compileJava {
     sourceCompatibility = 1.9
     targetCompatibility = 1.9
-    mainClassName = "software.visionary.vitalizr.Application"
+    mainClassName = "software.visionary.vitalizr.Client"
 }
 
 jar {
     baseName = "vitalizr"
-    group = "visionarysoftwaresolutions"
+    group = "software.visionary"
     version = "0.0.1-SNAPSHOT"
-    manifest { attributes "Main-Class": "software.visionary.vitalizr.Application" }
+    manifest { attributes "Main-Class": "software.visionary.vitalizr.Client" }
 }

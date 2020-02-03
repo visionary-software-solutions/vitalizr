@@ -13,7 +13,9 @@ enum Client {
     ADD_BMI(13340),
     LIST_BMI(13341),
     ADD_FAT(13342),
-    LIST_FAT(13343);
+    LIST_FAT(13343),
+    ADD_WATER(13344),
+    LIST_WATER(13345);
 
     private int port;
 
@@ -35,9 +37,11 @@ enum Client {
             case LIST_WEIGHT:
             case LIST_BMI:
             case LIST_FAT:
+            case LIST_WATER:
                 return String.format("%s\u0004", deque.pop());
             case ADD_BMI:
             case ADD_FAT:
+            case ADD_WATER:
                 return String.format("%s&%s\u0004", deque.pop(), deque.pop());
             default: throw new UnsupportedOperationException("We do not support " + client.name());
         }
