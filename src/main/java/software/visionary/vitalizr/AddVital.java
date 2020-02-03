@@ -2,6 +2,7 @@ package software.visionary.vitalizr;
 
 import software.visionary.iluvatar.Wish;
 import software.visionary.vitalizr.api.Lifeform;
+import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.api.Vital;
 
 import java.io.BufferedWriter;
@@ -11,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.Scanner;
+import java.util.UUID;
 
 public abstract class AddVital<T extends Vital> extends Wish {
     @Override
@@ -46,5 +48,9 @@ public abstract class AddVital<T extends Vital> extends Wish {
         }
         Vitalizr.saveVitalsToFile(saveFile);
         return saveFile;
+    }
+
+    protected Person lookupExistingOrCreateNew(final String token) {
+        return token.contains(":") ? Human.createPerson(token) : (Person) Vitalizr.getPersonById(UUID.fromString(token)).orElseThrow(RuntimeException::new);
     }
 }

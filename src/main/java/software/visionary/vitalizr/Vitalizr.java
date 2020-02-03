@@ -21,10 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -289,5 +286,9 @@ public final class Vitalizr {
             final Person p = (Person) lifeform;
             return getBodyMassIndicesFor(p);
         });
+    }
+
+    public static Optional<Lifeform> getPersonById(final UUID id) {
+        return search(id).findFirst();
     }
 }

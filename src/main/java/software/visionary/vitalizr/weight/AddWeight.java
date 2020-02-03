@@ -1,7 +1,6 @@
 package software.visionary.vitalizr.weight;
 
 import software.visionary.vitalizr.AddVital;
-import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 
@@ -17,7 +16,7 @@ public final class AddWeight extends AddVital<Weight> {
     @Override
     protected Weight deserialize(final Scanner scanner) {
         final String[] tokens = scanner.useDelimiter("\u0004").next().split("&");
-        final Person person = Human.createPerson(tokens[0]);
+        final Person person = lookupExistingOrCreateNew(tokens[0]);
         return getWeight(tokens[1], tokens[2], person);
     }
 
