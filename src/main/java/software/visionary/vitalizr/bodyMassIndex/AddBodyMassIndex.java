@@ -17,7 +17,7 @@ public final class AddBodyMassIndex extends AddVital<BodyMassIndex> {
     @Override
     protected BodyMassIndex deserialize(final Scanner scanner) {
         final String[] tokens = scanner.useDelimiter("\u0004").next().split("&");
-        final Person person = Human.createPerson(tokens[0]);
+        final Person person = lookupExistingOrCreateNew(tokens[0]);
         return new QueteletIndex(Instant.now(), Double.parseDouble(tokens[1]), person);
     }
 }

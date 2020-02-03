@@ -1,7 +1,6 @@
 package software.visionary.vitalizr.bodyFat;
 
 import software.visionary.vitalizr.AddVital;
-import software.visionary.vitalizr.Human;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 
@@ -19,7 +18,7 @@ public final class AddBodyFatPercentage extends AddVital<BodyFatPercentage> {
     protected BodyFatPercentage deserialize(final Scanner scanner) {
         final String input = scanner.useDelimiter("\u0004").tokens().collect(Collectors.joining());
         final String[] tokens = input.split("&");
-        final Person person = Human.createPerson(tokens[0]);
+        final Person person = lookupExistingOrCreateNew(tokens[0]);
         return new BioelectricalImpedance(Instant.now(), Double.parseDouble(tokens[1]), person);
     }
 }
