@@ -1,33 +1,3 @@
-<h1>Vitalizr</h1>
-<p> As my mother's health has deteriorated, it became more and more important to capture information about her vitals.
-While most people are content to wait to learn their blood pressure, heart rate, blood oxygen levels, and other vitals
-when they visit their doctor's office, in order to care for mom effectively, I want to know these measurements more often.
-Treating her diabetes means managing her blood sugar levels; such is a daily, sometimes hourly, task.</p>
-
-<p>I want a system that makes it easy to record her vitals and analyze this data. Now, it's true, I can easily use pen & paper.
-Pen and paper is essentially what I've been using, a whiteboard with dry erase markers that I capture numbers as I collect them.
-This has all the usual obvious problems: what happens if an entry gets erased accidentally? What if my handwriting is bad?
-What if I run out of space? How do I share it simply with her doctors? How can I see the underlying trends in the data?</p>
-
-<p>I could easily use a spreadsheet. That's suggested to be the "lowest effort" electronic solution.
-It solves digital durability, clarity, is conceptually more difficult to run out of space and easier to share.</p>
-
-<p>But it still involves tedious, manual work. I have to take readings, copy them down into a spreadsheet. If I want to make
-a graph, I have to learn Excel's charting tools. I could do fancy manipulations with Pivot Tables, etc...</p>
-
-<p>But what I really want is a way for all of this to be done for me. I don't want to have to take her blood pressure
-using a blood pressure cuff, read and copy down the numbers, and then send them to a physician later. In my ideal world,
-the cuff is integrated with my data store. When I do a reading, it persists its measurement to a log.
-That log is automatically shared with family and trusted contacts like doctors. The log has machine learning applied to
-find patterns and surface correlations/offer tentative causality hypotheses. The auto-collection of data prevents me from
-making silly mistakes and can integrate with other systems that take actions based on the readings. I want to be able
-to visualize her readings for weight and blood pressure over a week, a month, a year.
-I want to be able to correlate specific events, like hospitalization or illness, with changes in median levels. Speaking
-of medians, I want to be able to simply calculate summary statistics.</p>
-
-<p>From information, we can achieve freedom. So let's build a system that makes it simple to gather this information and easy
-to use it to improve someone's health.</p>
-
 <h2>User Stories</h2>
 <p>As a Vitalizr, because I want to focus on handling Vitals and let another system worry about security,
 I want to look up People from an external system and have that handle encrypting Vital data when serialized.</p>
