@@ -10,7 +10,7 @@ import java.util.Deque;
 enum Client {
     ADD_WEIGHT(13338),
     LIST_WEIGHT(13339),
-    ADD_BMI(133340),
+    ADD_BMI(13340),
     LIST_BMI(13341),
     ADD_FAT(13342),
     LIST_FAT(13343);
