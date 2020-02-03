@@ -9,6 +9,6 @@ import java.util.UUID;
 public final class ListBloodPressures extends GetAllByID {
     @Override
     protected Collection<BloodPressure> forId(final UUID id) {
-        return Vitalizr.getBloodPressuresByID(id);
+        return Vitalizr.lookup(id, Vitalizr::getBloodPressuresFor);
     }
 }

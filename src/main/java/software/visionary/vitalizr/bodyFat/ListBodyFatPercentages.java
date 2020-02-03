@@ -9,6 +9,6 @@ import java.util.UUID;
 public final class ListBodyFatPercentages extends GetAllByID {
     @Override
     protected Collection<BodyFatPercentage> forId(final UUID id) {
-        return Vitalizr.getBodyFatPercentagesByID(id);
+        return Vitalizr.lookup(id, Vitalizr::getBodyFatPercentagesFor);
     }
 }

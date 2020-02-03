@@ -9,6 +9,6 @@ import java.util.UUID;
 public final class ListBodyMassIndices extends GetAllByID {
     @Override
     protected Collection<BodyMassIndex> forId(final UUID id) {
-        return Vitalizr.getBMIsById(id);
+        return Vitalizr.lookup(id, Vitalizr::getBodyMassIndicesFor);
     }
 }

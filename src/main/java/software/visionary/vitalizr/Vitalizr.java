@@ -258,10 +258,6 @@ public final class Vitalizr {
         }
     }
 
-    public static Collection<Weight> getWeightsById(final UUID id) {
-        return lookup(id, Vitalizr::getWeightsFor);
-    }
-
     public static <T extends Vital> Collection<T> lookup(final UUID id, final Function<Person, Collection<T>> function) {
         final Stream<Lifeform> stream = search(id);
         return stream.findFirst().map(lifeform -> {
@@ -281,23 +277,8 @@ public final class Vitalizr {
         return found.stream();
     }
 
-    public static Collection<BodyMassIndex> getBMIsById(final UUID id) {
-        return lookup(id, Vitalizr::getBodyMassIndicesFor);
-    }
-
     public static Optional<Lifeform> getPersonById(final UUID id) {
         return search(id).findFirst();
     }
 
-    public static Collection<BodyFatPercentage> getBodyFatPercentagesByID(final UUID id) {
-        return lookup(id, Vitalizr::getBodyFatPercentagesFor);
-    }
-
-    public static Collection<BodyWaterPercentage> getBodyWaterPercentagesForID(final UUID id) {
-        return lookup(id, Vitalizr::getBodyWaterPercentagesFor);
-    }
-
-    public static Collection<BloodPressure> getBloodPressuresByID(final UUID id) {
-        return lookup(id, Vitalizr::getBloodPressuresFor);
-    }
 }
