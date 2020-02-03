@@ -22,10 +22,10 @@ enum Client {
     LIST_BP(13349),
     ADD_TEMP(13350),
     LIST_TEMP(13351),
-    ADD_O2(13350),
-    LIST_O2(13351),
-    ADD_PULSE(13350),
-    LIST_PULSE(13351);
+    ADD_O2(13352),
+    LIST_O2(13353),
+    ADD_PULSE(13354),
+    LIST_PULSE(13355);
 
     private int port;
 
