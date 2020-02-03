@@ -3,34 +3,44 @@ package software.visionary.vitalizr;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Deque;
 
-public class Client {
+enum Client {
+    ADD_WEIGHT(13338),
+    LIST_WEIGHT(13339),
+    ADD_BMI(133340),
+    LIST_BMI(13341),
+    ADD_FAT(133342),
+    LIST_FAT(13343);
+
+    private int port;
+
+    Client(final int port) {
+        this.port = port;
+    }
+
     public static void main(final String[] args) {
-        final String command = args[0];
-        final String vital = args[1];
-        final String[] params = Arrays.copyOfRange(args, 2, args.length);
-        if (command.equalsIgnoreCase("List")) {
-            if (vital.equalsIgnoreCase("Weights")) {
-                getWeightsForId(params[0]);
-            } else if (vital.equalsIgnoreCase("BMIs")) {
-                getBMIsForId(params[0]);
-            }
-        } else if (command.equalsIgnoreCase("Add")) {
-            if (vital.equalsIgnoreCase("Weight")) {
-                addWeightToPerson(params[0], params[1], params[2]);
-            } else if (vital.equalsIgnoreCase("BMI")) {
-                addBMIToPerson(params[0], params[1]);
-            }
+        final Deque<String> deque = new ArrayDeque<>(Arrays.asList(args == null ? new String[0] : args));
+        final String toDispatch = String.format("%s_%s", deque.pop(), deque.pop());
+        final Client client = Client.valueOf(toDispatch.toLowerCase());
+        client.execute(createRequest(client, deque));
+
+    }
+
+    private static String createRequest(final Client client, final Deque<String> deque) {
+        switch(client) {
+            case ADD_WEIGHT: return String.format("%s&%s&%s\u0004", deque.pop(), deque.pop(), deque.pop());
+            case LIST_WEIGHT: return String.format("%s\u0004", deque.pop());
+            case ADD_BMI: return String.format("%s&%s\u0004", deque.pop(), deque.pop());
+            case LIST_BMI: return String.format("%s\u0004", deque.pop());
+            default: throw new UnsupportedOperationException("We do not support " + client.name());
         }
     }
 
-    private static void getWeightsForId(final String arg) {
-        doRequestReply(13339, String.format("%s\u0004", arg));
-    }
-
-    private static void getBMIsForId(final String arg) {
-        doRequestReply(13341, String.format("%s\u0004", arg));
+    private void execute(final String request) {
+        doRequestReply(port, request);
     }
 
     private static void doRequestReply(final int port, final String request) {
@@ -46,13 +56,4 @@ public class Client {
             e.printStackTrace();
         }
     }
-
-    private static void addWeightToPerson(final String weight, final String unit, final String person) {
-        doRequestReply(13338, String.format("%s&%s&%s\u0004", weight, unit, person));
-    }
-
-    private static void addBMIToPerson(final String bmi, final String person) {
-        doRequestReply(13338, String.format("%s&%s\u0004", bmi, person));
-    }
-
 }
