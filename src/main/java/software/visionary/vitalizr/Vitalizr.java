@@ -259,15 +259,15 @@ public final class Vitalizr {
     }
 
     public static Collection<Weight> getWeightsById(final UUID id) {
-        return getById(id, lifeform -> {
-            final Person p = (Person) lifeform;
-            return getWeightsFor(p);
-        });
+        return lookup(id, Vitalizr::getWeightsFor);
     }
 
-    private static <T extends Vital> Collection<T> getById(final UUID input, final Function<Lifeform, Collection<T>> mapper) {
-        final Stream<Lifeform> stream = search(input);
-        return stream.findFirst().map(mapper).orElse(new ArrayList<>());
+    public static <T extends Vital> Collection<T> lookup(final UUID id, final Function<Person, Collection<T>> function) {
+        final Stream<Lifeform> stream = search(id);
+        return stream.findFirst().map(lifeform -> {
+            final Person p = (Person) lifeform;
+            return function.apply(p);
+        }).orElse(new ArrayList<>());
     }
 
     private static Stream<Lifeform> search(final UUID input) {
@@ -282,10 +282,7 @@ public final class Vitalizr {
     }
 
     public static Collection<BodyMassIndex> getBMIsById(final UUID id) {
-        return getById(id, lifeform -> {
-            final Person p = (Person) lifeform;
-            return getBodyMassIndicesFor(p);
-        });
+        return lookup(id, Vitalizr::getBodyMassIndicesFor);
     }
 
     public static Optional<Lifeform> getPersonById(final UUID id) {
@@ -293,9 +290,10 @@ public final class Vitalizr {
     }
 
     public static Collection<BodyFatPercentage> getBodyFatPercentagesByID(final UUID id) {
-        return getById(id, lifeform -> {
-            final Person p = (Person) lifeform;
-            return Vitalizr.getBodyFatPercentagesFor(p);
-        });
+        return lookup(id, Vitalizr::getBodyFatPercentagesFor);
+    }
+
+    public static Collection<BodyWaterPercentage> getBodyWaterPercentagesForID(final UUID id) {
+        return lookup(id, Vitalizr::getBodyWaterPercentagesFor);
     }
 }

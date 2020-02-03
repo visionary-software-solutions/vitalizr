@@ -6,12 +6,8 @@ import software.visionary.vitalizr.Fixtures;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Collection;
-import java.util.Scanner;
 
 final class ListBodyWaterPercentagesTest {
     @Test
@@ -20,13 +16,9 @@ final class ListBodyWaterPercentagesTest {
         final Person p = Fixtures.createRandomPerson();
         final BodyWaterPercentage saved = new BioelectricalImpedance(Instant.now(), fatPercentage, p);
         Vitalizr.storeBodyWaterPercentage(saved);
-        final String input = String.format("%s\u0004", p);
-        final InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
-        final Scanner scanner = new Scanner(stream);
         final ListBodyWaterPercentages action = new ListBodyWaterPercentages();
-        final Collection<BodyWaterPercentage> stored = action.getVitals(scanner);
+        final Collection<BodyWaterPercentage> stored = action.forId(p.getID());
         Assertions.assertFalse(stored.isEmpty());
-        Assertions.assertTrue(stored.parallelStream()
-                .anyMatch(bp -> bp.getQuantity().equals(fatPercentage)));
+        Assertions.assertTrue(stored.contains(saved));
     }
 }
