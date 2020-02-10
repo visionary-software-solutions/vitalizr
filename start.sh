@@ -1,0 +1,19 @@
+#! /bin/bash
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13338 AddWeight &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13339 ListWeights &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13340 AddBodyMassIndex &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13341 ListBodyMassIndices &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13342 AddBodyFatPercentage &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13343 ListBodyFatPercentages &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13344 AddBodyWaterPercentage &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13345 ListBodyWaterPercentages &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13346 AddBloodSugar &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13347 ListBloodSugars &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13348 AddBloodPressure &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13349 ListBloodPressures &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13350 AddBodyTemperature &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13351 ListBodyTemperatures &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13352 AddBloodOxygen &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13353 ListBloodOxygens &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13354 AddPulse &
+java -cp build/libs/vitalizr-0.0.1-SNAPSHOT.jar software.visionary.iluvatar.Iluvatar 13355 ListPulses &
