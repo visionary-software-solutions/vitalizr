@@ -2,6 +2,7 @@ package software.visionary.vitalizr.oxygen;
 
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
+import software.visionary.vitalizr.VitalPersister;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.serialization.GZipFiles;
@@ -33,7 +34,7 @@ class SaveBloodOxygenToFileIntegrationTest {
         final File data = Files.createFile(Paths.get(System.getProperty("user.dir"), mom.getEmailAddress().toString() + "_save_vitals")).toFile();
         data.deleteOnExit();
         // When: I call saveVitalsToFile
-        Vitalizr.saveVitalsToFile(data);
+        VitalPersister.saveVitalsToFile(data);
         // Then: The vitals should be stored in the file
         final List<String> written = GZipFiles.slurpGZippedFile(data.toPath(), StandardCharsets.UTF_8);
         final List<BloodOxygen> foundOxys = PeripheralOxygenSaturation.Factory.INSTANCE.create(written.stream()).collect(Collectors.toList());

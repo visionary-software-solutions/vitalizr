@@ -37,8 +37,8 @@ final class ObservableVitalRepository implements VitalRepository, Observable {
 
     @Override
     public void save(final Vital toSave) {
-        notifyObservers(new VitalSavedEvent(toSave));
         wrapped.save(toSave);
+        notifyObservers(new VitalSavedEvent(toSave));
     }
 
     @Override

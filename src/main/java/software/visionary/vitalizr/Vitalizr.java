@@ -1,6 +1,7 @@
 package software.visionary.vitalizr;
 
 import org.threeten.extra.Interval;
+import software.visionary.eventr.Observable;
 import software.visionary.vitalizr.api.*;
 import software.visionary.vitalizr.bloodPressure.BloodPressure;
 import software.visionary.vitalizr.bloodSugar.BloodSugar;
@@ -15,11 +16,6 @@ import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
 import software.visionary.vitalizr.weight.Weight;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Consumer;
@@ -29,23 +25,23 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class Vitalizr {
-    private static final VitalRepository VITALS = new InMemoryVitalRepository();
+    private static final VitalRepository VITALS = new ObservableVitalRepository(new InMemoryVitalRepository());
     private static final TrustedContactRepository CONTACTS = new InMemoryTrustedContactRepository();
     private static final Repository<Reminder> REMINDERS = new InMemoryReminderRepository();
-    private static final VitalSerializationStrategy<File> SERIALIZER = VitalAsGZipString.INSTANCE;
-    private static final Path HOME =  Paths.get(new File("").getAbsolutePath(), ".vitalizr");
+    private static final VitalPersister PERSISTER = new VitalPersister(getVitalsMatching(Vital.class, Objects::nonNull));
 
     static {
-        if (!HOME.toFile().exists())
-            try {
-                Files.createDirectory(HOME);
-            } catch (final IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        ((Observable) VITALS).add(PERSISTER);
+    }
 
-    public static Path getHomeDirectory() {
-        return HOME;
+    /**
+     * Used for testing in order to make sure integ tests don't put junk data in data store. Would like to find a way to remove.
+     * @param toUse
+     */
+    public static void setPersister(final VitalPersister toUse) {
+        final Observable observable = (Observable) VITALS;
+        observable.remove(PERSISTER);
+        observable.add(Objects.requireNonNull(toUse));
     }
 
     public static void storeWeight(final Weight toStore) {
@@ -64,7 +60,7 @@ public final class Vitalizr {
         return getVitalsMatching(queried, vital -> vital.belongsTo().equals(toFind) && queried.isAssignableFrom(vital.getClass()));
     }
 
-    private static <T extends Vital> Collection<T> getVitalsMatching(final Class<T> queried, final Predicate<Vital> predicate) {
+    public static <T extends Vital> Collection<T> getVitalsMatching(final Class<T> queried, final Predicate<Vital> predicate) {
         final Collection<T> found = new ArrayList<>();
         VITALS.accept(vital -> {
             if (predicate.test(vital)) {
@@ -195,16 +191,6 @@ public final class Vitalizr {
         return saved;
     }
 
-    public static void loadVitalsFromFile(final File data) {
-        SERIALIZER.deserialize(data).forEach(VITALS::save);
-    }
-
-    public static void saveVitalsToFile(final File data) {
-        final Collection<Vital> toWrite = new ArrayList<>();
-        VITALS.accept(toWrite::add);
-        SERIALIZER.serialize(toWrite, data);
-    }
-
     public static void storeBodyMassIndex(final BodyMassIndex bodyMassIndex) {
         storeVital(bodyMassIndex);
     }
@@ -239,23 +225,6 @@ public final class Vitalizr {
 
     public static Collection<BodyFatPercentage> getBodyFatPercentagesInInterval(final Person person, final Interval interval) {
         return getVitalsInInterval(person, interval, BodyFatPercentage.class);
-    }
-
-    static void loadAll() throws IOException {
-        if (HOME.toFile().exists() && HOME.toFile().isDirectory()) {
-            Files.list(HOME).forEach(contents -> {
-                if (contents.toFile().isDirectory()) {
-                    try {
-                        Files.list(contents).forEach( f -> loadVitalsFromFile(f.toFile()));
-                    } catch (final IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                else  {
-                    loadVitalsFromFile(contents.toFile());
-                }
-            });
-        }
     }
 
     public static <T extends Vital> Collection<T> lookup(final UUID id, final Function<Person, Collection<T>> function) {

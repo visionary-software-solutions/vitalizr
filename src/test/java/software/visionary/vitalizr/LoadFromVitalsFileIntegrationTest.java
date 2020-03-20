@@ -36,7 +36,7 @@ class LoadFromVitalsFileIntegrationTest {
         final WriteObjectAsGZip<Object> writer4 = new WriteObjectAsGZip<>(serialized4, data.toPath());
         writer4.run();
         // When: I call loadVitalsFromFile
-        Vitalizr.loadVitalsFromFile(data);
+        VitalPersister.loadVitalsFromFile(data);
         // And: I query for vitals I know are in that file
         final Collection<Weight> stored = Vitalizr.getWeightsFor(mom);
         // Then: The vitals should be returned

@@ -14,12 +14,52 @@ import software.visionary.vitalizr.bodyWater.BodyWaterPercentage;
 import software.visionary.vitalizr.oxygen.BloodOxygen;
 import software.visionary.vitalizr.pulse.Pulse;
 
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Fixtures {
+
+    static {
+        instrumentForIntegrationTesting();
+    }
+
+    private static void instrumentForIntegrationTesting() {
+        final String directory = System.getProperty("user.dir");
+        final Path root = Paths.get(directory, "tmpTestingDir");
+        Vitalizr.setPersister(new VitalPersister(root, Vitalizr.getVitalsMatching(Vital.class, Objects::nonNull)));
+        Runtime.getRuntime().addShutdownHook(new Thread(
+                () -> {
+                    try {
+                        Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
+                            @Override
+                            public FileVisitResult visitFile(Path file,
+                                                             @SuppressWarnings("unused") BasicFileAttributes attrs)
+                            throws IOException {
+                                Files.delete(file);
+                                return FileVisitResult.CONTINUE;
+                            }
+                            @Override
+                            public FileVisitResult postVisitDirectory(Path dir, IOException e)
+                            throws IOException {
+                                if (e == null) {
+                                    Files.delete(dir);
+                                    return FileVisitResult.CONTINUE;
+                                }
+                                // directory iteration failed
+                                throw e;
+                            }
+                        });
+                    } catch (IOException e) {
+                        throw new RuntimeException("Failed to delete "+root, e);
+                    }
+                }));
+    }
 
     public static Person person() {
         return createPerson(new Name(createRandomName()),

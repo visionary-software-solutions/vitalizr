@@ -2,6 +2,7 @@ package software.visionary.vitalizr.oxygen;
 
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
+import software.visionary.vitalizr.VitalPersister;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.serialization.WriteObjectAsGZip;
@@ -28,7 +29,7 @@ class LoadBloodOxygensFromFileIntegrationTest {
         final WriteObjectAsGZip<Object> writer3 = new WriteObjectAsGZip<>(serialized3, data.toPath());
         writer3.run();
         // When: I call loadVitalsFromFile
-        Vitalizr.loadVitalsFromFile(data);
+        VitalPersister.loadVitalsFromFile(data);
         // And: I query for vitals I know are in that file
         // Then: The vitals should be returned
         final Collection<BloodOxygen> storedAsWell = Vitalizr.getBloodOxygensFor(mom);

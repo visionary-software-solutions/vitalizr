@@ -2,6 +2,7 @@ package software.visionary.vitalizr.bodyTemperature;
 
 import org.junit.jupiter.api.Test;
 import software.visionary.vitalizr.Fixtures;
+import software.visionary.vitalizr.VitalPersister;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.serialization.WriteObjectAsGZip;
@@ -30,7 +31,7 @@ class LoadBodyTemperaturesFromFileIntegrationTest {
         final WriteObjectAsGZip<Object> writer2 = new WriteObjectAsGZip<>(serialized2, data.toPath());
         writer2.run();
         // When: I call loadVitalsFromFile
-        Vitalizr.loadVitalsFromFile(data);
+        VitalPersister.loadVitalsFromFile(data);
         // And: I query for vitals I know are in that file
         final Collection<BodyTemperature> stored = Vitalizr.getBodyTemperaturesFor(PERSON);
         // Then: The vitals should be returned
@@ -48,7 +49,7 @@ class LoadBodyTemperaturesFromFileIntegrationTest {
         final WriteObjectAsGZip<Object> writer2 = new WriteObjectAsGZip<>(serialized2, data.toPath());
         writer2.run();
         // When: I call loadVitalsFromFile
-        Vitalizr.loadVitalsFromFile(data);
+        VitalPersister.loadVitalsFromFile(data);
         // And: I query for vitals I know are in that file
         final Collection<BodyTemperature> stored = Vitalizr.getBodyTemperaturesFor(PERSON);
         // Then: The vitals should be returned

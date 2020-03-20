@@ -4,6 +4,7 @@ import software.visionary.iluvatar.Wish;
 import software.visionary.vitalizr.api.Vital;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -12,7 +13,6 @@ public abstract class ListVitals extends Wish {
     @Override
     protected void doCommand(final Scanner scanner, final BufferedWriter writer) {
         try {
-            Vitalizr.loadAll();
             final Collection<? extends Vital> vitals = getVitals(scanner);
             writer.write(serialize(vitals));
         } catch (final Exception e) {

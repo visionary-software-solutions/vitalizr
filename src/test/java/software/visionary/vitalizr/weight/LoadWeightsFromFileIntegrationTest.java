@@ -4,6 +4,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import software.visionary.vitalizr.Fixtures;
+import software.visionary.vitalizr.VitalPersister;
 import software.visionary.vitalizr.Vitalizr;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.serialization.WriteObjectAsGZip;
@@ -31,7 +32,7 @@ class LoadWeightsFromFileIntegrationTest {
         final WriteObjectAsGZip<Object> writer = new WriteObjectAsGZip<>(serialized, data.toPath());
         writer.run();
         // When: I call loadVitalsFromFile
-        Vitalizr.loadVitalsFromFile(data);
+        VitalPersister.loadVitalsFromFile(data);
         // And: I query for vitals I know are in that file
         final Collection<Weight> stored = Vitalizr.getWeightsFor(PERSON);
         // Then: The vitals should be returned
