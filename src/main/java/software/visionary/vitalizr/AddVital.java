@@ -1,6 +1,6 @@
 package software.visionary.vitalizr;
 
-import software.visionary.iluvatar.Wish;
+import software.visionary.iluvatar.Ainur;
 import software.visionary.vitalizr.api.Person;
 import software.visionary.vitalizr.api.Vital;
 
@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.UUID;
 
-public abstract class AddVital<T extends Vital> extends Wish {
+public abstract class AddVital<T extends Vital> extends Ainur {
     @Override
     protected void doCommand(final Scanner scanner, final BufferedWriter writer) {
         try {

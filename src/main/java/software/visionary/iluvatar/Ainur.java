@@ -7,11 +7,11 @@ import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class Wish implements BiConsumer<InputStream, OutputStream> {
+public abstract class Ainur implements BiConsumer<InputStream, OutputStream> {
     /**
      * Log please.
      */
-    private static final Logger LOG = Logger.getLogger(Wish.class.getName());
+    private static final Logger LOG = Logger.getLogger(Ainur.class.getName());
     @Override
     public void accept(final InputStream received, final OutputStream sent) {
         try (final Scanner scanner = new Scanner(received, StandardCharsets.UTF_8.name());
