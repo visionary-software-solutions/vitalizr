@@ -37,11 +37,11 @@ enum Client {
         final Deque<String> deque = new ArrayDeque<>(Arrays.asList(args == null ? new String[0] : args));
         final String toDispatch = String.format("%s_%s", deque.pop(), deque.pop());
         final Client client = Client.valueOf(toDispatch.toUpperCase());
-        client.execute(createRequest(client, deque));
+        client.execute(client.createRequest(deque));
     }
 
-    private static String createRequest(final Client client, final Deque<String> deque) {
-        switch(client) {
+    private String createRequest(final Deque<String> deque) {
+        switch(this) {
             case ADD_WEIGHT:
             case ADD_TEMP:
                 return String.format("%s&%s&%s\u0004", deque.pop(), deque.pop(), deque.pop());
@@ -63,7 +63,7 @@ enum Client {
             case ADD_O2:
             case ADD_PULSE:
                 return String.format("%s&%s\u0004", deque.pop(), deque.pop());
-            default: throw new UnsupportedOperationException("We do not support " + client.name());
+            default: throw new UnsupportedOperationException("We do not support " + name());
         }
     }
 

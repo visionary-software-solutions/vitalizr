@@ -16,3 +16,4 @@ software.visionary.vitalizr.oxygen.AddBloodOxygen
 software.visionary.vitalizr.oxygen.ListBloodOxygens
 software.visionary.vitalizr.pulse.AddPulse
 software.visionary.vitalizr.pulse.ListPulses
+software.visionary.identifr.AuthenticateWithPassword

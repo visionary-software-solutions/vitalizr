@@ -1,12 +1,13 @@
 package software.visionary.identifr;
 
 import software.visionary.identifr.api.Authenticatable;
+import software.visionary.identifr.api.Credentials;
 import software.visionary.vitalizr.api.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.function.Consumer;
 
 public enum  Identifir {
@@ -26,6 +27,39 @@ public enum  Identifir {
             @Override
             public void accept(final Consumer<Authenticatable> visitor) {
                 listy.forEach(visitor);
+            }
+        };
+    }
+
+    public static void loadFromSecureLocation() {
+        final String credentialsLocation = System.getProperty("visionary.software.identifier.credentials");
+        if (credentialsLocation == null) {
+            return;
+        }
+        final Properties credentials = new Properties();
+        try {
+            credentials.load(Files.newInputStream(Paths.get(credentialsLocation)));
+            credentials.forEach((key, value) -> {
+                final Authenticatable principal = createAuthenticatable(key, value);
+                INSTANCE.storeAuthenticatable(principal);
+            });
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static Authenticatable createAuthenticatable(final Object key, final Object value) {
+        final String password = value.toString();
+        final UUID id = UUID.fromString(key.toString());
+        return new Authenticatable() {
+            @Override
+            public Credentials getCredentials() {
+                return new PasswordCredentials(this, password);
+            }
+
+            @Override
+            public UUID getID() {
+                return id;
             }
         };
     }
