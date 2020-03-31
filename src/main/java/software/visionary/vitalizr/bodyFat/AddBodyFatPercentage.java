@@ -16,8 +16,7 @@ public final class AddBodyFatPercentage extends AddVital<BodyFatPercentage> {
 
     @Override
     protected BodyFatPercentage deserialize(final Scanner scanner) {
-        final String input = scanner.useDelimiter("\u0004").tokens().collect(Collectors.joining());
-        final String[] tokens = input.split("&");
+        final String[] tokens = scanner.useDelimiter("\u0004").next().split("&");
         final Person person = lookupExistingOrCreateNew(tokens[0]);
         return new BioelectricalImpedance(Instant.now(), Double.parseDouble(tokens[1]), person);
     }

@@ -16,8 +16,7 @@ public final class AddBloodSugar extends AddVital<BloodSugar> {
 
     @Override
     protected BloodSugar deserialize(final Scanner scanner) {
-        final String input = scanner.useDelimiter("\u0004").tokens().collect(Collectors.joining());
-        final String[] tokens = input.split("&");
+        final String[] tokens = scanner.useDelimiter("\u0004").next().split("&");
         final Person person = lookupExistingOrCreateNew(tokens[0]);
         return new WholeBloodGlucose(Instant.now(), Integer.parseInt(tokens[1]), person);
     }
